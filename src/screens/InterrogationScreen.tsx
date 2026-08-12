@@ -38,15 +38,15 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
   const idle = '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
 
   return (
-    <div className="flex min-h-dvh flex-col bg-paper-bg">
+    <div className="flex min-h-dvh flex-col bg-atelier-bg">
       <header className="flex items-center justify-between px-5 pt-5">
-        <span className="font-mono text-caption font-semibold tracking-label text-paper-muted">
+        <span className="font-mono text-caption font-semibold tracking-label text-atelier-gold">
           CASE 1 · SIGNATURE
         </span>
         <button
           type="button"
           onClick={() => onClose(characterId, MAX_ASKS - asksLeft)}
-          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-meta text-paper-muted transition-colors hover:text-paper-ink"
+          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-meta text-atelier-muted transition-colors hover:text-atelier-text"
         >
           <span aria-hidden>✕</span> 종료
         </button>
@@ -83,7 +83,7 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
           <button
             type="button"
             onClick={() => onClose(characterId, MAX_ASKS)}
-            className="min-h-13 rounded-md border-2 border-paper-line font-display text-body font-bold text-paper-ink"
+            className="min-h-13 rounded-md border-2 border-atelier-line font-display text-body font-bold text-atelier-text transition-colors hover:border-atelier-gold"
           >
             대화 종료 · 조사실로 돌아가기
           </button>
