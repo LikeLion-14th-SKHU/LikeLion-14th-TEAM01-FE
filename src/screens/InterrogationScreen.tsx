@@ -46,7 +46,7 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
         <button
           type="button"
           onClick={() => onClose(characterId, MAX_ASKS - asksLeft)}
-          className="-mr-2 flex min-h-[44px] items-center gap-1.5 px-2 font-mono text-[12px] text-paper-muted transition-colors hover:text-paper-ink"
+          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-[12px] text-paper-muted transition-colors hover:text-paper-ink"
         >
           <span aria-hidden>✕</span> 종료
         </button>
@@ -83,7 +83,7 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
           <button
             type="button"
             onClick={() => onClose(characterId, MAX_ASKS)}
-            className="min-h-[52px] rounded-md border-2 border-paper-line font-display text-[15px] font-bold text-paper-ink"
+            className="min-h-13 rounded-md border-2 border-paper-line font-display text-[15px] font-bold text-paper-ink"
           >
             대화 종료 · 조사실로 돌아가기
           </button>

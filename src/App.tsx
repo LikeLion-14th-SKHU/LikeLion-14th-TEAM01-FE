@@ -21,14 +21,16 @@ export default function App() {
   const track = DIRECTIONS.find((d) => d.id === state.direction)?.track ?? '디자인 트랙';
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={state.screen + (state.activeCharacterId ?? '')}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      >
+    <div className="min-h-dvh bg-atelier-bg">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={state.screen + (state.activeCharacterId ?? '')}
+          className="min-h-dvh"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
         {state.screen === 'intro' && <IntroScreen onStart={() => go('register')} />}
 
         {state.screen === 'register' && (
@@ -83,7 +85,8 @@ export default function App() {
         {state.screen === 'pass' && (
           <PassScreen designerName={designerName} track={track} onRestart={reset} />
         )}
-      </motion.div>
-    </AnimatePresence>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }

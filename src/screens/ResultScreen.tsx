@@ -25,7 +25,7 @@ export function ResultScreen({ answer, onNext }: Props) {
         <Reveal>
           <div
             className={cn(
-              'grid h-[70px] w-[70px] place-items-center rounded-full text-[26px]',
+              'grid h-17.5 w-17.5 place-items-center rounded-full text-[26px]',
               correct ? 'bg-atelier-goldDim/40 text-atelier-gold' : 'bg-atelier-alert/20 text-atelier-alert',
             )}
           >

@@ -33,7 +33,7 @@ export function HeritageScreen({ designerName, onPass }: Props) {
           <p className="font-mono text-[13px] text-atelier-muted">디자이너 {designerName}</p>
         </Reveal>
         <Reveal className="mt-5">
-          <h2 className="font-display text-[22px] font-bold leading-[1.5]">
+          <h2 className="font-display text-[22px] font-bold leading-normal">
             MCM의 디자인은
             <br />
             <span className="text-atelier-gold">한눈에 알아볼 수 있는 시그니처</span>와
@@ -50,7 +50,7 @@ export function HeritageScreen({ designerName, onPass }: Props) {
           <Reveal key={item.id}>
             <article className="group overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
               <div className="relative">
-                <HoverZoomImage src={item.image} alt={item.title} useGroupHover className="h-[140px] w-full" />
+                <HoverZoomImage src={item.image} alt={item.title} useGroupHover className="h-35 w-full" />
                 <span className="absolute bottom-3 left-3 font-mono text-[10px] font-semibold tracking-[0.12em] text-atelier-text/80">
                   {item.label}
                 </span>

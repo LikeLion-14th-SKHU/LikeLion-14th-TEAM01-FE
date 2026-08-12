@@ -40,7 +40,7 @@ export function EvidenceScreen({ onBack, onDeduce }: Props) {
                   type="button"
                   onClick={() => toggle(doc.id)}
                   aria-expanded={isOpen}
-                  className="flex min-h-[56px] w-full items-center justify-between gap-3 px-4 text-left"
+                  className="flex min-h-14 w-full items-center justify-between gap-3 px-4 text-left"
                 >
                   <span>
                     <span className="block font-display text-[15px] font-bold">{doc.title}</span>

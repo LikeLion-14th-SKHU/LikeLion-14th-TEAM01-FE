@@ -31,7 +31,7 @@ export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
             onChange={(e) => onChange(e.target.value.slice(0, MAX))}
             placeholder="디자이너 이름"
             aria-label="디자이너 이름"
-            className="min-h-[44px] flex-1 bg-transparent text-[22px] text-atelier-text outline-none placeholder:text-atelier-muted/60"
+            className="min-h-11 flex-1 bg-transparent text-[22px] text-atelier-text outline-none placeholder:text-atelier-muted/60"
           />
           <span className="font-mono text-[13px] text-atelier-muted">
             {name.length}/{MAX}

@@ -83,7 +83,7 @@ export function PassScreen({ designerName, track, onRestart }: Props) {
           initial={{ opacity: 0, rotateY: -12 }}
           animate={{ opacity: 1, rotateY: 0 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full rounded-2xl border border-atelier-text/30 bg-gradient-to-br from-atelier-text/[0.14] to-atelier-text/[0.04] p-6 text-left"
+          className="w-full rounded-2xl border border-atelier-text/30 bg-linear-to-br from-atelier-text/[0.14] to-atelier-text/[0.04] p-6 text-left"
         >
           {!flipped ? (
             <div>
@@ -118,7 +118,7 @@ export function PassScreen({ designerName, track, onRestart }: Props) {
             <div className="animate-rise-in">
               <p className="font-mono text-[10px] tracking-[0.16em] text-atelier-muted">PASS BENEFITS</p>
               <div className="mt-4 flex items-start gap-4">
-                <div className="grid h-[92px] w-[92px] shrink-0 place-items-center rounded-lg bg-atelier-text font-mono text-[9px] text-atelier-bg">
+                <div className="grid h-23 w-23 shrink-0 place-items-center rounded-lg bg-atelier-text font-mono text-[9px] text-atelier-bg">
                   QR CODE
                 </div>
                 <p className="text-[13px] leading-[1.7] text-atelier-text/90">

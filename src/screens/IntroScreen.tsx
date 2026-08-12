@@ -14,7 +14,7 @@ export function IntroScreen({ onStart }: Props) {
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover opacity-30"
       />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-atelier-bg/85 via-atelier-bg/80 to-atelier-bg" />
+      <div aria-hidden className="absolute inset-0 bg-linear-to-b from-atelier-bg/85 via-atelier-bg/80 to-atelier-bg" />
 
       <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex flex-col items-center">
         <Reveal>

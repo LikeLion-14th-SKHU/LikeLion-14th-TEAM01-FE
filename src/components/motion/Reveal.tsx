@@ -27,7 +27,10 @@ export function RevealGroup({
         {...(onView
           ? { whileInView: 'shown', viewport: { once: true, amount: 0.25 } }
           : { animate: 'shown' })}
-        variants={{ shown: { transition: { staggerChildren: stagger, delayChildren: delay } } }}
+        variants={{
+          hidden: {},
+          shown: { transition: { staggerChildren: stagger, delayChildren: delay } },
+        }}
       >
         {children}
       </motion.div>
@@ -56,8 +59,13 @@ export function Reveal({ distance = 20, delay = 0, className, children, ...rest 
     <motion.div
       className={cn(className)}
       variants={variants}
-      initial="hidden"
-      {...(inGroup ? {} : { whileInView: 'shown', viewport: { once: true, amount: 0.3 } })}
+      {...(inGroup
+        ? {}
+        : {
+            initial: 'hidden',
+            whileInView: 'shown',
+            viewport: { once: true, amount: 0.3 },
+          })}
       {...rest}
     >
       {children}

@@ -51,7 +51,7 @@ export function RoomSelectScreen({ onSelect }: Props) {
                   src={room.image}
                   alt={room.name}
                   useGroupHover={!room.locked}
-                  className={cn('w-full', room.locked ? 'h-24' : 'h-[150px]')}
+                  className={cn('w-full', room.locked ? 'h-24' : 'h-37.5')}
                 />
                 <span
                   className={cn(
