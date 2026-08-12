@@ -34,16 +34,16 @@ export function CharacterCard({ character, asked, total, onSelect, className }: 
         />
         <div className="flex items-end justify-between gap-4 p-4">
           <div>
-            <p className="font-display text-[18px] font-bold leading-tight">{character.name}</p>
-            <p className="mt-1 font-mono text-[11px] font-semibold text-atelier-gold">{character.role}</p>
-            <p className="mt-2 font-mono text-[13px] text-atelier-muted">
+            <p className="font-display text-card-title font-bold">{character.name}</p>
+            <p className="mt-1 font-mono text-caption font-semibold text-atelier-gold">{character.role}</p>
+            <p className="mt-2 font-mono text-small text-atelier-muted">
               {done ? '모든 질문을 완료했습니다.' : asked + ' / ' + total + ' 질문 완료'}
             </p>
           </div>
           <span
             aria-hidden
             className={cn(
-              'font-mono text-[16px] transition-colors',
+              'font-mono text-base transition-colors',
               done ? 'text-atelier-gold' : 'text-atelier-line group-hover:text-atelier-gold',
             )}
           >

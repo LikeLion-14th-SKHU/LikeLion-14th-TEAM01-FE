@@ -44,14 +44,14 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
             >
               <div className="relative">
                 <HoverZoomImage src={d.image} alt={d.title} useGroupHover className="h-32 w-full" />
-                <span className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-atelier-gold font-mono text-[13px] font-bold text-atelier-bg">
+                <span className="absolute left-3 top-3 grid size-8 place-items-center rounded-full bg-atelier-gold font-mono text-small font-bold text-atelier-bg">
                   {d.badge}
                 </span>
               </div>
               <div className="p-4">
-                <p className="font-display text-[17px] font-bold leading-snug">{d.title}</p>
-                <p className="mt-1.5 font-mono text-[11.5px] font-semibold text-atelier-gold">{d.family}</p>
-                <p className="mt-2 text-[13.5px] leading-[1.6] text-atelier-muted text-pretty">{d.description}</p>
+                <p className="font-display text-card-title font-bold">{d.title}</p>
+                <p className="mt-1.5 font-mono text-caption font-semibold text-atelier-gold">{d.family}</p>
+                <p className="mt-2 text-small text-atelier-muted text-pretty">{d.description}</p>
               </div>
             </button>
           </Reveal>

@@ -27,11 +27,12 @@ export function useTypewriter(source: string, options: Options = {}): Result {
   const skipped = useRef(false);
 
   useEffect(() => {
-    if (source.length === 0) {
-      setCount(0);
-      skipped.current = false;
-    }
-  }, [source.length === 0]);
+    if (source.length !== 0) return;
+
+    skipped.current = false;
+    const resetFrame = requestAnimationFrame(() => setCount(0));
+    return () => cancelAnimationFrame(resetFrame);
+  }, [source.length]);
 
   useEffect(() => {
     if (instant || skipped.current) {

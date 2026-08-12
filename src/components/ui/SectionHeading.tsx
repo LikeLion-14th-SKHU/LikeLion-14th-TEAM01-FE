@@ -17,19 +17,19 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
     >
       {eyebrow && (
         <Reveal>
-          <p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-atelier-gold">
+          <p className="font-mono text-caption font-semibold tracking-eyebrow text-atelier-gold">
             {eyebrow}
           </p>
         </Reveal>
       )}
       <Reveal className="mt-3">
-        <h2 className="font-display text-[26px] font-bold leading-[1.35] text-atelier-text text-pretty">
+        <h2 className="font-display text-display-md font-bold text-atelier-text text-pretty">
           {title}
         </h2>
       </Reveal>
       {description && (
         <Reveal className="mt-3">
-          <p className="text-[15px] leading-[1.65] text-atelier-muted text-pretty">{description}</p>
+          <p className="text-body text-atelier-muted text-pretty">{description}</p>
         </Reveal>
       )}
     </RevealGroup>

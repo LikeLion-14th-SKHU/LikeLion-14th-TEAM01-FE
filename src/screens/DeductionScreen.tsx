@@ -13,7 +13,7 @@ export function DeductionScreen({ onBack, onSubmit }: Props) {
     <ScreenShell onBack={onBack} backLabel="증거 다시 보기" caseLabel="CASE 1 · SIGNATURE">
       <SectionHeading eyebrow="FINAL DEDUCTION" title="최종 추리" />
       <Reveal delay={0.2}>
-        <p className="mt-4 text-[15px] leading-[1.7] text-atelier-muted text-pretty">
+        <p className="mt-4 text-body text-atelier-muted text-pretty">
           {DEDUCTION_QUESTION}
         </p>
       </Reveal>
@@ -26,16 +26,16 @@ export function DeductionScreen({ onBack, onSubmit }: Props) {
               onClick={() => onSubmit(opt.id)}
               className="flex w-full items-start gap-3.5 rounded-xl border border-atelier-line bg-atelier-card p-4 text-left transition-colors duration-300 hover:border-atelier-gold"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-atelier-goldDim/30 font-mono text-[13px] font-bold text-atelier-gold">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-atelier-gold-dim/30 font-mono text-small font-bold text-atelier-gold">
                 {opt.id}
               </span>
-              <span className="text-[14.5px] leading-[1.55] text-pretty">{opt.text}</span>
+              <span className="text-small text-pretty">{opt.text}</span>
             </button>
           </Reveal>
         ))}
       </RevealGroup>
 
-      <p className="mt-6 text-center font-mono text-[11px] text-atelier-muted">
+      <p className="mt-6 text-center font-mono text-caption text-atelier-muted">
         선택하면 즉시 채점됩니다 · 1회 제한
       </p>
     </ScreenShell>

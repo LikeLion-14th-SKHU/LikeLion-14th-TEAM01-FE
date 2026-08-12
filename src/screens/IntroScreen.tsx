@@ -16,26 +16,26 @@ export function IntroScreen({ onStart }: Props) {
       />
       <div aria-hidden className="absolute inset-0 bg-linear-to-b from-atelier-bg/85 via-atelier-bg/80 to-atelier-bg" />
 
-      <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex flex-col items-center">
+      <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex w-full flex-col items-center">
         <Reveal>
-          <p className="rounded-full border border-atelier-goldDim px-5 py-2.5 font-mono text-[11px] font-semibold tracking-[0.2em] text-atelier-gold">
+          <p className="rounded-full border border-atelier-gold-dim px-5 py-2.5 font-mono text-caption font-semibold tracking-eyebrow text-atelier-gold">
             EST. 1976 · MUNICH
           </p>
         </Reveal>
         <Reveal className="mt-7">
-          <h1 className="font-display text-[42px] font-bold leading-[1.15] text-atelier-text">1976,</h1>
+          <h1 className="font-display text-hero font-bold text-atelier-text">1976,</h1>
         </Reveal>
         <Reveal>
-          <p className="font-display text-[42px] font-bold leading-[1.15] text-atelier-gold">München</p>
+          <p className="font-display text-hero font-bold text-atelier-gold">München</p>
         </Reveal>
         <Reveal className="mt-8">
-          <p className="text-[15px] leading-[1.75] text-atelier-text/90 text-pretty">
+          <p className="text-body text-atelier-text/90 text-pretty">
             당신은 새로운 여행용 제품을 개발하는{' '}
             <strong className="font-bold text-atelier-gold">MCM 아틀리에</strong>의 수습 디자이너입니다.
           </p>
         </Reveal>
         <Reveal className="mt-4">
-          <p className="text-[15px] leading-[1.75] text-atelier-text/90 text-pretty">
+          <p className="text-body text-atelier-text/90 text-pretty">
             내일 첫 프레젠테이션을 앞두고 완성했던{' '}
             <strong className="font-bold text-atelier-gold">디자인 시안 두 장</strong>이 사라졌습니다.
           </p>
@@ -46,7 +46,7 @@ export function IntroScreen({ onStart }: Props) {
           </Button>
         </Reveal>
         <Reveal className="mt-4">
-          <p className="text-[12.5px] text-atelier-muted">패턴실, 설계실, 촬영실을 조사해 시안을 되찾으세요.</p>
+          <p className="text-meta text-atelier-muted">패턴실, 설계실, 촬영실을 조사해 시안을 되찾으세요.</p>
         </Reveal>
       </RevealGroup>
     </div>

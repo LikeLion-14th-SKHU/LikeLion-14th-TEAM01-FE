@@ -35,7 +35,7 @@ export function QuestionInput({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-center justify-between px-1">
-        <span className="font-mono text-[11px] text-paper-muted">
+        <span className="font-mono text-caption text-paper-muted">
           {locked ? '질문 기회를 모두 사용했습니다' : '남은 질문 ' + asksLeft + '회'}
         </span>
         {!locked && (
@@ -54,7 +54,7 @@ export function QuestionInput({
               key={s}
               type="button"
               onClick={() => onSubmit(s)}
-              className="rounded-full border border-paper-line px-3 py-2 font-sans text-[12px] text-paper-muted transition-colors hover:text-paper-ink"
+              className="rounded-full border border-paper-line px-3 py-2 font-sans text-meta text-paper-muted transition-colors hover:text-paper-ink"
             >
               {s}
             </button>
@@ -72,8 +72,8 @@ export function QuestionInput({
           aria-label="용의자에게 질문"
           className={cn(
             'min-h-13 flex-1 rounded-md border-2 border-paper-line bg-paper-bg px-4',
-            'font-sans text-[15px] text-paper-ink placeholder:text-paper-muted/70',
-            'focus:border-paper-ink focus:outline-none disabled:opacity-50',
+            'font-sans text-body text-paper-ink placeholder:text-paper-muted/70',
+            'focus:border-paper-ink focus:outline-hidden disabled:opacity-50',
           )}
         />
         <button
@@ -81,7 +81,7 @@ export function QuestionInput({
           disabled={blocked || value.trim().length === 0}
           className={cn(
             'min-h-13 shrink-0 rounded-md border-2 border-paper-line bg-paper-ink px-5',
-            'font-display text-[15px] font-bold text-paper-bg transition-opacity',
+            'font-display text-body font-bold text-paper-bg transition-opacity',
             'disabled:cursor-not-allowed disabled:opacity-40',
           )}
         >

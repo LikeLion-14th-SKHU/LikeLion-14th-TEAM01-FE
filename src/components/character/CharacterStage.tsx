@@ -20,7 +20,7 @@ export function CharacterStage({ src, name, role, className, duration = 1 }: Pro
         />
       </FadeIn>
       {role && (
-        <span className="pointer-events-none absolute left-0 top-0 font-mono text-[11px] tracking-[0.14em] text-paper-muted">
+        <span className="pointer-events-none absolute left-0 top-0 font-mono text-caption tracking-label text-paper-muted">
           {role}
         </span>
       )}

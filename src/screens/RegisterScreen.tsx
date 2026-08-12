@@ -31,9 +31,9 @@ export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
             onChange={(e) => onChange(e.target.value.slice(0, MAX))}
             placeholder="디자이너 이름"
             aria-label="디자이너 이름"
-            className="min-h-11 flex-1 bg-transparent text-[22px] text-atelier-text outline-none placeholder:text-atelier-muted/60"
+            className="min-h-11 flex-1 bg-transparent font-display text-display-sm text-atelier-text outline-hidden placeholder:text-atelier-muted/60"
           />
-          <span className="font-mono text-[13px] text-atelier-muted">
+          <span className="font-mono text-small text-atelier-muted">
             {name.length}/{MAX}
           </span>
         </label>
@@ -41,7 +41,7 @@ export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
         <Button fullWidth onClick={onNext} disabled={name.trim().length === 0} className="mt-7">
           등록 완료 →
         </Button>
-        <p className="mt-3 text-center font-mono text-[11.5px] text-atelier-muted">
+        <p className="mt-3 text-center font-mono text-caption text-atelier-muted">
           이름은 결과 화면과 Designer Pass에 사용됩니다
         </p>
       </Reveal>

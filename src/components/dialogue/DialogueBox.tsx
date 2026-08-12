@@ -25,13 +25,13 @@ export function DialogueBox({
         className,
       )}
     >
-      <h3 className="font-display text-[20px] font-bold text-paper-ink">{name}</h3>
+      <h3 className="font-display text-display-sm font-bold text-paper-ink">{name}</h3>
       <div className="my-3 h-px bg-paper-line/70" />
 
-      <p className="min-h-[5.5rem] font-sans text-[15px] leading-[1.75] text-paper-ink text-pretty">
+      <p className="min-h-22 font-sans text-body text-paper-ink text-pretty">
         {text}
         {isTyping && (
-          <span aria-hidden className="ml-0.5 inline-block h-[1.1em] w-[2px] translate-y-[2px] bg-paper-ink animate-caret-blink" />
+          <span aria-hidden className="ml-0.5 inline-block h-[1.1em] w-0.5 translate-y-0.5 bg-paper-ink animate-caret-blink" />
         )}
       </p>
 
@@ -46,7 +46,7 @@ export function DialogueBox({
             'hover:scale-105 active:scale-95',
           )}
         >
-          <span aria-hidden className="text-[13px]">▶</span>
+          <span aria-hidden className="text-small">▶</span>
         </button>
       )}
     </section>

@@ -67,12 +67,11 @@ export const serverAskCharacter: AskCharacter = async function* ({ characterId, 
         const parsed = JSON.parse(payload) as { text?: string };
         if (parsed.text) yield parsed.text;
       } catch {
-        // 잘못된 스트림 조각은 건너뛴다.
+        // ignore
       }
     }
   }
 };
 
-// 실제 API가 준비되면 VITE_USE_REAL_INTERROGATION=true로 전환한다.
 export const askCharacter: AskCharacter =
   import.meta.env.VITE_USE_REAL_INTERROGATION === 'true' ? serverAskCharacter : mockAskCharacter;

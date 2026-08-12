@@ -55,7 +55,7 @@ export function RoomSelectScreen({ onSelect }: Props) {
                 />
                 <span
                   className={cn(
-                    'absolute left-3 top-3 rounded-full px-3 py-1.5 font-mono text-[10px] font-semibold',
+                    'absolute left-3 top-3 rounded-full px-3 py-1.5 font-mono text-micro font-semibold',
                     room.locked
                       ? 'border border-atelier-line bg-atelier-bg/70 text-atelier-muted'
                       : 'bg-atelier-gold text-atelier-bg',
@@ -65,11 +65,11 @@ export function RoomSelectScreen({ onSelect }: Props) {
                 </span>
               </div>
               <div className="p-4">
-                <p className="font-display text-[19px] font-bold">{room.name}</p>
+                <p className="font-display text-card-title font-bold">{room.name}</p>
                 {!room.locked && (
                   <>
-                    <p className="mt-1.5 font-mono text-[11px] font-semibold text-atelier-gold">{room.code}</p>
-                    <p className="mt-2 text-[13.5px] text-atelier-muted">{room.summary}</p>
+                    <p className="mt-1.5 font-mono text-caption font-semibold text-atelier-gold">{room.code}</p>
+                    <p className="mt-2 text-small text-atelier-muted">{room.summary}</p>
                   </>
                 )}
               </div>

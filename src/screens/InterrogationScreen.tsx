@@ -40,13 +40,13 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
   return (
     <div className="flex min-h-dvh flex-col bg-paper-bg">
       <header className="flex items-center justify-between px-5 pt-5">
-        <span className="font-mono text-[11px] font-semibold tracking-[0.14em] text-paper-muted">
+        <span className="font-mono text-caption font-semibold tracking-label text-paper-muted">
           CASE 1 · SIGNATURE
         </span>
         <button
           type="button"
           onClick={() => onClose(characterId, MAX_ASKS - asksLeft)}
-          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-[12px] text-paper-muted transition-colors hover:text-paper-ink"
+          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-meta text-paper-muted transition-colors hover:text-paper-ink"
         >
           <span aria-hidden>✕</span> 종료
         </button>
@@ -67,7 +67,7 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
         />
 
         {error && (
-          <p role="alert" className="px-1 font-mono text-[12px] text-atelier-alert">
+          <p role="alert" className="px-1 font-mono text-meta text-atelier-alert">
             {error} — 다시 질문해 주세요.
           </p>
         )}
@@ -83,7 +83,7 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
           <button
             type="button"
             onClick={() => onClose(characterId, MAX_ASKS)}
-            className="min-h-13 rounded-md border-2 border-paper-line font-display text-[15px] font-bold text-paper-ink"
+            className="min-h-13 rounded-md border-2 border-paper-line font-display text-body font-bold text-paper-ink"
           >
             대화 종료 · 조사실로 돌아가기
           </button>

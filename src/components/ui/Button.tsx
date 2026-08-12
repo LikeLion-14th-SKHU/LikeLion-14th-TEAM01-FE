@@ -23,7 +23,7 @@ export function Button({ variant = 'primary', fullWidth, className, children, ..
       transition={{ duration: 0.15 }}
       className={cn(
         'inline-flex min-h-13 items-center justify-center gap-2 rounded-md px-6',
-        'font-display text-[15px] font-bold tracking-[0.04em] transition-colors duration-200',
+        'font-display text-body font-bold tracking-wide transition-colors duration-200',
         'disabled:cursor-not-allowed disabled:opacity-40',
         'focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-atelier-gold',
         VARIANTS[variant],

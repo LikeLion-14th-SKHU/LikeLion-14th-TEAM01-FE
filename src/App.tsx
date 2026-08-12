@@ -21,7 +21,7 @@ export default function App() {
   const track = DIRECTIONS.find((d) => d.id === state.direction)?.track ?? '디자인 트랙';
 
   return (
-    <div className="min-h-dvh bg-atelier-bg">
+    <div className="mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg">
       <AnimatePresence mode="wait">
         <motion.div
           key={state.screen + (state.activeCharacterId ?? '')}

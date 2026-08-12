@@ -48,7 +48,7 @@ export function CharacterSelectScreen({ asked, onBack, onSelect, onEvidence }: P
       </RevealGroup>
 
       {!allDone && (
-        <p className="mt-6 text-center font-mono text-[11px] text-atelier-muted">
+        <p className="mt-6 text-center font-mono text-caption text-atelier-muted">
           두 사람의 증언을 모두 확보하면 현장 기록을 열 수 있습니다
         </p>
       )}
