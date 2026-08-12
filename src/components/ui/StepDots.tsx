@@ -13,7 +13,7 @@ export function StepDots({ total, current, className }: Props) {
         <span
           key={i}
           className={cn(
-            'h-[3px] w-9 rounded-sm transition-colors duration-300',
+            'h-0.75 w-9 rounded-sm transition-colors duration-300',
             i < current ? 'bg-atelier-gold' : 'bg-atelier-line',
           )}
         />

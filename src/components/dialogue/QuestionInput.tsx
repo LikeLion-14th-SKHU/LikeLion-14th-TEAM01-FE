@@ -71,7 +71,7 @@ export function QuestionInput({
           placeholder={locked ? '질문 종료' : placeholder}
           aria-label="용의자에게 질문"
           className={cn(
-            'min-h-[52px] flex-1 rounded-md border-2 border-paper-line bg-paper-bg px-4',
+            'min-h-13 flex-1 rounded-md border-2 border-paper-line bg-paper-bg px-4',
             'font-sans text-[15px] text-paper-ink placeholder:text-paper-muted/70',
             'focus:border-paper-ink focus:outline-none disabled:opacity-50',
           )}
@@ -80,7 +80,7 @@ export function QuestionInput({
           type="submit"
           disabled={blocked || value.trim().length === 0}
           className={cn(
-            'min-h-[52px] shrink-0 rounded-md border-2 border-paper-line bg-paper-ink px-5',
+            'min-h-13 shrink-0 rounded-md border-2 border-paper-line bg-paper-ink px-5',
             'font-display text-[15px] font-bold text-paper-bg transition-opacity',
             'disabled:cursor-not-allowed disabled:opacity-40',
           )}

@@ -29,7 +29,7 @@ export function ScreenShell({
           style={{ backgroundImage: 'url(' + backdrop + ')' }}
         />
       )}
-      <div aria-hidden className="pointer-events-none fixed inset-0 bg-gradient-to-b from-atelier-bg/70 via-atelier-bg/85 to-atelier-bg" />
+      <div aria-hidden className="pointer-events-none fixed inset-0 bg-linear-to-b from-atelier-bg/70 via-atelier-bg/85 to-atelier-bg" />
 
       {(onBack || caseLabel) && (
         <header className="relative z-10 flex items-center justify-between px-6 pt-6">
@@ -37,7 +37,7 @@ export function ScreenShell({
             <button
               type="button"
               onClick={onBack}
-              className="-ml-2 flex min-h-[44px] items-center gap-2 px-2 font-mono text-[12px] text-atelier-muted transition-colors hover:text-atelier-text"
+              className="-ml-2 flex min-h-11 items-center gap-2 px-2 font-mono text-[12px] text-atelier-muted transition-colors hover:text-atelier-text"
             >
               <span aria-hidden>←</span>
               {backLabel}
@@ -56,7 +56,7 @@ export function ScreenShell({
       <main className={cn('relative z-10 flex-1 px-6 pb-40 pt-6', className)}>{children}</main>
 
       {footer && (
-        <div className="sticky bottom-0 z-20 bg-gradient-to-t from-atelier-bg via-atelier-bg/95 to-transparent px-6 pb-7 pt-8">
+        <div className="sticky bottom-0 z-20 bg-linear-to-t from-atelier-bg via-atelier-bg/95 to-transparent px-6 pb-7 pt-8">
           {footer}
         </div>
       )}

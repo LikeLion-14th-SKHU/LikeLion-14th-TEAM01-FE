@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Direction } from '../data/directions';
 
 export type Screen =
@@ -43,8 +43,64 @@ const createInitialState = (): GameState => ({
 
 export const MAX_ASKS = 3;
 
+const HISTORY_STATE_KEY = 'mcmGameState';
+
+const getHistoryGameState = (historyState: unknown): GameState | null => {
+  if (!historyState || typeof historyState !== 'object') return null;
+
+  const gameState = (historyState as Record<string, unknown>)[HISTORY_STATE_KEY];
+  if (!gameState || typeof gameState !== 'object' || !('screen' in gameState)) return null;
+
+  return gameState as GameState;
+};
+
 export function useGame() {
   const [state, setState] = useState<GameState>(createInitialState);
+  const previousState = useRef(state);
+  const restoringHistory = useRef(false);
+  const historyReady = useRef(false);
+
+  useEffect(() => {
+    const initialState = previousState.current;
+
+    window.history.replaceState(
+      { ...window.history.state, [HISTORY_STATE_KEY]: initialState },
+      '',
+    );
+    historyReady.current = true;
+
+    const handlePopState = (event: PopStateEvent) => {
+      const restoredState = getHistoryGameState(event.state);
+      if (!restoredState) return;
+
+      restoringHistory.current = true;
+      previousState.current = restoredState;
+      setState(restoredState);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (!historyReady.current) return;
+
+    if (restoringHistory.current) {
+      restoringHistory.current = false;
+      return;
+    }
+
+    const previous = previousState.current;
+    const nextHistoryState = { ...window.history.state, [HISTORY_STATE_KEY]: state };
+
+    if (previous.screen === state.screen) {
+      window.history.replaceState(nextHistoryState, '');
+    } else {
+      window.history.pushState(nextHistoryState, '');
+    }
+
+    previousState.current = state;
+  }, [state]);
 
   const go = useCallback((screen: Screen) => setState((s) => ({ ...s, screen })), []);
 

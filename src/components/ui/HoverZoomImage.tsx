@@ -30,8 +30,8 @@ export function HoverZoomImage({
           style={{ ['--zoom' as string]: String(scale) }}
           className={cn(
             common,
-            'transition-transform duration-[700ms] ease-atelier',
-            'group-hover:scale-[var(--zoom)] motion-reduce:transform-none',
+            'transition-transform duration-700 ease-atelier',
+            'group-hover:scale-(--zoom) motion-reduce:transform-none',
           )}
         />
       ) : (
