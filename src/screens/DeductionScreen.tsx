@@ -1,25 +1,30 @@
-import { DEDUCTION_OPTIONS, DEDUCTION_QUESTION } from '../data/case';
+import type { CaseDefinition } from '../data/case';
 import { ScreenShell } from '../components/ui/ScreenShell';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
+  caseData: CaseDefinition;
   onBack: () => void;
   onSubmit: (id: string) => void;
 }
 
-export function DeductionScreen({ onBack, onSubmit }: Props) {
+export function DeductionScreen({ caseData, onBack, onSubmit }: Props) {
   return (
-    <ScreenShell onBack={onBack} backLabel="증거 다시 보기" caseLabel="CASE 1 · SIGNATURE">
+    <ScreenShell
+      onBack={onBack}
+      backLabel="증거 다시 보기"
+      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
+    >
       <SectionHeading eyebrow="FINAL DEDUCTION" title="최종 추리" />
       <Reveal delay={0.2}>
         <p className="mt-4 text-body text-atelier-muted text-pretty">
-          {DEDUCTION_QUESTION}
+          {caseData.deductionQuestion}
         </p>
       </Reveal>
 
       <RevealGroup onView={false} stagger={0.09} delay={0.3} className="mt-7 flex flex-col gap-3.5">
-        {DEDUCTION_OPTIONS.map((opt) => (
+        {caseData.deductionOptions.map((opt) => (
           <Reveal key={opt.id}>
             <button
               type="button"

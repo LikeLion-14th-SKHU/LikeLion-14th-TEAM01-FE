@@ -84,7 +84,12 @@ export function useInterrogation({
     isLoading,
     completed: asksLeft === 0 && !isLoading,
     error,
-    suggestions: asksLeft === 1 ? fallbackQuestions.slice(0, 2) : [],
+    suggestions:
+      fallbackQuestions.length >= maxAsks
+        ? fallbackQuestions.slice(asksUsed, asksUsed + 1)
+        : asksLeft === 1
+          ? fallbackQuestions.slice(0, 2)
+          : [],
     ask,
   };
 }

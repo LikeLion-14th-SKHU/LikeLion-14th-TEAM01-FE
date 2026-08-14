@@ -1,4 +1,5 @@
-import { CHARACTERS } from '../data/characters';
+import { CASE_CHARACTERS } from '../data/characters';
+import type { CaseDefinition } from '../data/case';
 import { MAX_ASKS } from '../state/useGame';
 import { CharacterCard } from '../components/character/CharacterCard';
 import { ScreenShell } from '../components/ui/ScreenShell';
@@ -7,21 +8,22 @@ import { Button } from '../components/ui/Button';
 import { RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
+  caseData: CaseDefinition;
   asked: Record<string, number>;
   onBack: () => void;
   onSelect: (id: string) => void;
   onEvidence: () => void;
 }
 
-export function CharacterSelectScreen({ asked, onBack, onSelect, onEvidence }: Props) {
-  const allDone = CHARACTERS.every((c) => (asked[c.id] ?? 0) >= MAX_ASKS);
+export function CharacterSelectScreen({ caseData, asked, onBack, onSelect, onEvidence }: Props) {
+  const characters = CASE_CHARACTERS[caseData.id];
+  const allDone = characters.every((character) => (asked[character.id] ?? 0) >= MAX_ASKS);
 
   return (
     <ScreenShell
       onBack={onBack}
       backLabel="작업실 선택"
-      caseLabel="CASE 1 · SIGNATURE"
-      backdrop="/art/room-pattern.jpg"
+      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
       footer={
         allDone ? (
           <Button fullWidth onClick={onEvidence}>
@@ -31,12 +33,12 @@ export function CharacterSelectScreen({ asked, onBack, onSelect, onEvidence }: P
       }
     >
       <SectionHeading
-        title="패턴실 조사"
-        description="사라진 SIGNATURE 시안에 대해 관련자들에게 질문하세요."
+        title={caseData.investigationTitle}
+        description={caseData.investigationDescription}
       />
 
       <RevealGroup onView={false} stagger={0.1} delay={0.25} className="mt-8 flex flex-col gap-4">
-        {CHARACTERS.map((c) => (
+        {characters.map((c) => (
           <CharacterCard
             key={c.id}
             character={c}

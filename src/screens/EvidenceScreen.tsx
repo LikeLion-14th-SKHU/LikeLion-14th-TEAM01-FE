@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { EVIDENCE } from '../data/case';
+import type { CaseDefinition } from '../data/case';
 import { cn } from '../lib/cn';
 import { ScreenShell } from '../components/ui/ScreenShell';
 import { Button } from '../components/ui/Button';
 import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
+  caseData: CaseDefinition;
   onBack: () => void;
   onDeduce: () => void;
 }
 
-export function EvidenceScreen({ onBack, onDeduce }: Props) {
-  const [opened, setOpened] = useState<string[]>([EVIDENCE[0].id]);
+export function EvidenceScreen({ caseData, onBack, onDeduce }: Props) {
+  const [opened, setOpened] = useState<string[]>([caseData.evidence[0].id]);
   const toggle = (id: string) =>
     setOpened((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
@@ -19,7 +20,7 @@ export function EvidenceScreen({ onBack, onDeduce }: Props) {
     <ScreenShell
       onBack={onBack}
       backLabel="작업실 선택"
-      caseLabel="CASE 1 · SIGNATURE"
+      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
       footer={
         <Button fullWidth onClick={onDeduce} disabled={opened.length === 0}>
           최종 추리하기
@@ -31,7 +32,7 @@ export function EvidenceScreen({ onBack, onDeduce }: Props) {
       </Reveal>
 
       <RevealGroup onView={false} stagger={0.1} delay={0.2} className="mt-5 flex flex-col gap-4">
-        {EVIDENCE.map((doc) => {
+        {caseData.evidence.map((doc) => {
           const isOpen = opened.includes(doc.id);
           return (
             <Reveal key={doc.id}>

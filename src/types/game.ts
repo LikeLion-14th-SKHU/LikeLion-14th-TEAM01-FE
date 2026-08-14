@@ -1,4 +1,4 @@
-export type CaseId = 'signature' | 'blueprint' | 'studio';
+export type CaseId = 'signature' | 'function';
 
 export interface Character {
   id: string;
@@ -6,6 +6,7 @@ export interface Character {
   role: string;
   portrait: string;
   standing?: string;
+  openingStatement?: string;
 }
 
 export type MessageRole = 'detective' | 'character';

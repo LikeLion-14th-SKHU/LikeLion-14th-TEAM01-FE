@@ -7,15 +7,17 @@ import { MAX_ASKS } from '../state/useGame';
 import { CharacterStage } from '../components/character/CharacterStage';
 import { DialogueBox } from '../components/dialogue/DialogueBox';
 import { QuestionInput } from '../components/dialogue/QuestionInput';
+import type { CaseDefinition } from '../data/case';
 
 interface Props {
+  caseData: CaseDefinition;
   characterId: string;
   sessionId: string;
   initialAsksUsed: number;
   onClose: (id: string, asksUsed: number) => void;
 }
 
-export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, onClose }: Props) {
+export function InterrogationScreen({ caseData, characterId, sessionId, initialAsksUsed, onClose }: Props) {
   const character = useMemo(() => getCharacter(characterId), [characterId]);
 
   const { messages, asksLeft, isLoading, suggestions, error, ask } = useInterrogation({
@@ -35,13 +37,13 @@ export function InterrogationScreen({ characterId, sessionId, initialAsksUsed, o
     enabled: answering,
   });
 
-  const idle = '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
+  const idle = character.openingStatement ?? '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
 
   return (
-    <div className="flex min-h-dvh flex-col bg-atelier-bg">
+    <div className="flex min-h-dvh flex-col">
       <header className="flex items-center justify-between px-5 pt-16">
         <span className="font-mono text-caption font-semibold tracking-label text-atelier-gold">
-          CASE 1 · SIGNATURE
+          CASE {caseData.number} · {caseData.code}
         </span>
         <button
           type="button"

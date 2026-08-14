@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Direction } from '../data/directions';
+import type { CaseId } from '../types/game';
+
+export type RoomId = 'pattern' | 'drafting';
 
 export type Screen =
   | 'intro'
@@ -19,7 +22,9 @@ export interface GameState {
   screen: Screen;
   designerName: string;
   direction: Direction['id'] | null;
-  roomId: string | null;
+  roomId: RoomId | null;
+  caseId: CaseId | null;
+  completedCases: CaseId[];
   activeCharacterId: string | null;
   asked: Record<string, number>;
   answer: string | null;
@@ -36,6 +41,8 @@ const createInitialState = (): GameState => ({
   designerName: '',
   direction: null,
   roomId: null,
+  caseId: null,
+  completedCases: [],
   activeCharacterId: null,
   asked: {},
   answer: null,
@@ -45,13 +52,26 @@ export const MAX_ASKS = 3;
 
 const HISTORY_STATE_KEY = 'mcmGameState';
 
+const isCaseId = (value: unknown): value is CaseId =>
+  value === 'signature' || value === 'function';
+
 const getHistoryGameState = (historyState: unknown): GameState | null => {
   if (!historyState || typeof historyState !== 'object') return null;
 
   const gameState = (historyState as Record<string, unknown>)[HISTORY_STATE_KEY];
   if (!gameState || typeof gameState !== 'object' || !('screen' in gameState)) return null;
 
-  return gameState as GameState;
+  const stored = gameState as Partial<GameState>;
+
+  return {
+    ...createInitialState(),
+    ...stored,
+    caseId: isCaseId(stored.caseId) ? stored.caseId : null,
+    completedCases: Array.isArray(stored.completedCases)
+      ? stored.completedCases.filter(isCaseId)
+      : [],
+    asked: stored.asked ?? {},
+  };
 };
 
 export function useGame() {
@@ -115,7 +135,14 @@ export function useGame() {
   );
 
   const enterRoom = useCallback(
-    (roomId: string) => setState((s) => ({ ...s, roomId, screen: 'characters' })),
+    (roomId: RoomId) =>
+      setState((s) => ({
+        ...s,
+        roomId,
+        caseId: roomId === 'pattern' ? 'signature' : 'function',
+        answer: null,
+        screen: 'characters',
+      })),
     [],
   );
 
@@ -141,6 +168,29 @@ export function useGame() {
     [],
   );
 
+  const completeCase = useCallback(
+    () =>
+      setState((s) => {
+        if (!s.caseId) return s;
+
+        const completedCases = s.completedCases.includes(s.caseId)
+          ? s.completedCases
+          : [...s.completedCases, s.caseId];
+        const allCompleted = completedCases.includes('signature') && completedCases.includes('function');
+
+        return {
+          ...s,
+          screen: allCompleted ? 'heritage' : 'rooms',
+          roomId: null,
+          caseId: null,
+          activeCharacterId: null,
+          completedCases,
+          answer: null,
+        };
+      }),
+    [],
+  );
+
   const reset = useCallback(() => setState(createInitialState()), []);
 
   return {
@@ -152,6 +202,7 @@ export function useGame() {
     openCharacter,
     closeCharacter,
     submitAnswer,
+    completeCase,
     reset,
   };
 }

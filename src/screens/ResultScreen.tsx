@@ -1,23 +1,25 @@
-import { CORRECT_ANSWER, RESOLUTION } from '../data/case';
+import type { CaseDefinition } from '../data/case';
 import { cn } from '../lib/cn';
 import { ScreenShell } from '../components/ui/ScreenShell';
 import { Button } from '../components/ui/Button';
 import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
+  caseData: CaseDefinition;
   answer: string;
+  isLastCase: boolean;
   onNext: () => void;
 }
 
-export function ResultScreen({ answer, onNext }: Props) {
-  const correct = answer === CORRECT_ANSWER;
+export function ResultScreen({ caseData, answer, isLastCase, onNext }: Props) {
+  const correct = answer === caseData.correctAnswer;
 
   return (
     <ScreenShell
-      caseLabel="CASE 1 · SIGNATURE"
+      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
       footer={
         <Button fullWidth onClick={onNext}>
-          결과 보기 →
+          {isLastCase ? '최종 결과 보기 →' : '다음 사건 조사하기 →'}
         </Button>
       }
     >
@@ -44,22 +46,24 @@ export function ResultScreen({ answer, onNext }: Props) {
         </Reveal>
         <Reveal className="mt-2">
           <p className="font-mono text-small text-atelier-muted">
-            {correct ? '정답: ' + CORRECT_ANSWER : '정답은 ' + CORRECT_ANSWER + '였습니다.'}
+            {correct
+              ? '정답: ' + caseData.correctAnswer
+              : '정답은 ' + caseData.correctAnswer + '였습니다.'}
           </p>
         </Reveal>
       </RevealGroup>
 
       <Reveal delay={0.3} className="mt-7">
         <article className="rounded-xl border border-atelier-line bg-atelier-card p-5">
-          <h3 className="font-display text-card-title font-bold">{RESOLUTION.title}</h3>
+          <h3 className="font-display text-card-title font-bold">{caseData.resolution.title}</h3>
           <p className="mt-3 text-small text-atelier-text/90 text-pretty">
-            {RESOLUTION.body}
+            {caseData.resolution.body}
           </p>
           <p className="mt-5 border-t border-atelier-line pt-4 font-mono text-meta font-semibold text-atelier-gold">
             추리 근거
           </p>
           <ul className="mt-2 flex flex-col gap-1 font-mono text-meta/7 text-atelier-muted">
-            {RESOLUTION.reasons.map((r) => (
+            {caseData.resolution.reasons.map((r) => (
               <li key={r}>· {r}</li>
             ))}
           </ul>
