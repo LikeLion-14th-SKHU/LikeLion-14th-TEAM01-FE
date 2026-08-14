@@ -7,7 +7,6 @@ interface Props {
   backLabel?: string;
   caseLabel?: string;
   footer?: ReactNode;
-  backdrop?: string;
   className?: string;
 }
 
@@ -17,20 +16,10 @@ export function ScreenShell({
   backLabel = '뒤로',
   caseLabel,
   footer,
-  backdrop,
   className,
 }: Props) {
   return (
-    <div className="relative flex min-h-dvh flex-col bg-atelier-bg text-atelier-text">
-      {backdrop && (
-        <div
-          aria-hidden
-          className="pointer-events-none fixed inset-0 bg-cover bg-center opacity-25"
-          style={{ backgroundImage: 'url(' + backdrop + ')' }}
-        />
-      )}
-      <div aria-hidden className="pointer-events-none fixed inset-0 bg-linear-to-b from-atelier-bg/70 via-atelier-bg/85 to-atelier-bg" />
-
+    <div className="relative flex min-h-dvh flex-col text-atelier-text">
       {(onBack || caseLabel) && (
         <header className="relative z-10 flex items-center justify-between px-5 pt-16">
           {onBack ? (
