@@ -40,8 +40,23 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
   const idle = character.openingStatement ?? '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
 
   return (
-    <div className="flex min-h-dvh flex-col md:grid md:h-dvh md:grid-cols-[minmax(0,1fr)_minmax(22rem,0.9fr)] md:grid-rows-[auto_minmax(0,1fr)]">
-      <header className="flex items-center justify-between px-5 pt-16 md:col-span-2 md:px-8 lg:px-10">
+    <div className="relative flex min-h-dvh flex-col md:grid md:h-dvh md:grid-cols-[minmax(0,1fr)_minmax(22rem,0.9fr)] md:grid-rows-[auto_minmax(0,1fr)]">
+      {character.backdrop && (
+        <>
+          <img
+            src={character.backdrop}
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-linear-to-b from-atelier-bg/55 via-atelier-bg/45 to-atelier-bg/85"
+          />
+        </>
+      )}
+
+      <header className="relative z-10 flex items-center justify-between px-5 pt-16 md:col-span-2 md:px-8 lg:px-10">
         <span className="font-mono text-caption font-semibold tracking-label text-atelier-gold">
           CASE {caseData.number} · {caseData.code}
         </span>
@@ -57,10 +72,11 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
       <CharacterStage
         src={character.standing ?? character.portrait}
         name={character.name}
-        className="mt-2 min-h-0 flex-1 px-6 md:col-start-1 md:row-start-2 md:mt-0 md:px-8 md:pb-8 lg:px-10"
+        imageScale={character.standingScale}
+        className="relative z-10 mt-2 min-h-0 flex-1 px-6 md:col-start-1 md:row-start-2 md:mt-0 md:px-8 md:pb-8 lg:px-10"
       />
 
-      <div className="flex flex-col gap-3 px-5 pb-6 md:col-start-2 md:row-start-2 md:min-h-0 md:justify-center md:overflow-y-auto md:px-8 md:pb-8 lg:px-10">
+      <div className="relative z-10 flex flex-col gap-3 px-5 pb-6 md:col-start-2 md:row-start-2 md:min-h-0 md:justify-center md:overflow-y-auto md:px-8 md:pb-8 lg:px-10">
         <DialogueBox
           name={character.name}
           text={answering ? text : idle}

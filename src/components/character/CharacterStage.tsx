@@ -7,15 +7,17 @@ interface Props {
   role?: string;
   className?: string;
   duration?: number;
+  imageScale?: number;
 }
 
-export function CharacterStage({ src, name, role, className, duration = 1 }: Props) {
+export function CharacterStage({ src, name, role, className, duration = 1, imageScale = 1 }: Props) {
   return (
     <div className={cn('relative flex flex-1 items-end justify-center overflow-hidden', className)}>
       <FadeIn duration={duration} scaleFrom={0.96} className="h-full w-full">
         <img
           src={src}
           alt={name}
+          style={{ transform: `scale(${imageScale})`, transformOrigin: 'bottom center' }}
           className="mx-auto h-full w-auto max-w-full object-contain object-bottom"
         />
       </FadeIn>

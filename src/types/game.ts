@@ -6,6 +6,8 @@ export interface Character {
   role: string;
   portrait: string;
   standing?: string;
+  standingScale?: number;
+  backdrop?: string;
   openingStatement?: string;
 }
 
