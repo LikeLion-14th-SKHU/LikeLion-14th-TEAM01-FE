@@ -33,7 +33,7 @@ export interface CaseDefinition {
 export const CASES: Record<CaseId, CaseDefinition> = {
   signature: {
     id: 'signature',
-    number: 1,
+    number: 2,
     code: 'SIGNATURE',
     roomName: '패턴실',
     investigationTitle: '패턴실 조사',
@@ -94,7 +94,7 @@ export const CASES: Record<CaseId, CaseDefinition> = {
   },
   function: {
     id: 'function',
-    number: 2,
+    number: 1,
     code: 'FUNCTION',
     roomName: '설계실',
     investigationTitle: '설계실 조사',

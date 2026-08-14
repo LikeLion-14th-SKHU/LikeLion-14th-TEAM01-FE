@@ -31,6 +31,7 @@ export interface GameState {
   asked: Record<string, number>;
   interviewed: Record<string, boolean>;
   answer: string | null;
+  passEligible: boolean;
 }
 
 const createSessionId = (): string => {
@@ -51,6 +52,7 @@ const createInitialState = (): GameState => ({
   asked: {},
   interviewed: {},
   answer: null,
+  passEligible: true,
 });
 
 export const MAX_ASKS = 3;
@@ -183,7 +185,8 @@ export function useGame() {
         const completedCases = s.completedCases.includes(s.caseId)
           ? s.completedCases
           : [...s.completedCases, s.caseId];
-        const allCompleted = completedCases.includes('signature') && completedCases.includes('function');
+        const allCompleted =
+          s.caseId === 'signature' && completedCases.includes('function');
 
         return {
           ...s,
@@ -195,6 +198,20 @@ export function useGame() {
           answer: null,
         };
       }),
+    [],
+  );
+
+  const endGameWithoutPass = useCallback(
+    () =>
+      setState((s) => ({
+        ...s,
+        screen: 'heritage',
+        roomId: null,
+        caseId: null,
+        activeCharacterId: null,
+        answer: null,
+        passEligible: false,
+      })),
     [],
   );
 
@@ -230,6 +247,7 @@ export function useGame() {
     closeCharacter,
     submitAnswer,
     completeCase,
+    endGameWithoutPass,
     openMyPage,
     closeMyPage,
     reset,

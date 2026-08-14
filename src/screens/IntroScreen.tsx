@@ -60,7 +60,7 @@ export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
           )}
         </Reveal>
         <Reveal className="mt-4">
-          <p className="text-meta text-atelier-muted">패턴실과 설계실을 조사해 시안을 되찾으세요.</p>
+          <p className="text-meta text-atelier-muted">설계실과 패턴실을 조사해 시안을 되찾으세요.</p>
         </Reveal>
       </RevealGroup>
     </div>

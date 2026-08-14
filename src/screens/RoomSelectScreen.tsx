@@ -17,20 +17,20 @@ interface Room {
 
 const ROOMS: Room[] = [
   {
-    id: 'pattern',
-    caseId: 'signature',
-    name: '패턴실',
-    code: 'SIGNATURE',
-    summary: '비세토스 패턴과 외관 디자인',
-    image: '/art/signature.jpg',
-  },
-  {
     id: 'drafting',
     caseId: 'function',
     name: '설계실',
     code: 'FUNCTION',
     summary: '스트랩과 내부 수납 설계',
     image: '/art/function.jpg',
+  },
+  {
+    id: 'pattern',
+    caseId: 'signature',
+    name: '패턴실',
+    code: 'SIGNATURE',
+    summary: '비세토스 패턴과 외관 디자인',
+    image: '/art/signature.jpg',
   },
 ];
 
@@ -56,7 +56,7 @@ export function RoomSelectScreen({ completedCases, onSelect }: Props) {
       >
         {ROOMS.map((room) => {
           const completed = completedCases.includes(room.caseId);
-          const locked = room.caseId === 'function' && !completedCases.includes('signature');
+          const locked = room.caseId === 'signature' && !completedCases.includes('function');
 
           return (
             <Reveal key={room.id}>

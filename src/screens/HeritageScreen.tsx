@@ -6,19 +6,22 @@ import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
   designerName: string;
+  passEligible: boolean;
   onPass: () => void;
 }
 
-export function HeritageScreen({ designerName, onPass }: Props) {
+export function HeritageScreen({ designerName, passEligible, onPass }: Props) {
   return (
     <ScreenShell
       footer={
         <>
           <p className="mb-3 text-center text-meta text-atelier-muted">
-            수사에 기여한 당신을 위해 특별한 보상이 준비되어 있습니다.
+            {passEligible
+              ? '수사에 기여한 당신을 위해 특별한 보상이 준비되어 있습니다.'
+              : '최종 추리에 실패해 Designer Pass를 발급할 수 없습니다.'}
           </p>
-          <Button fullWidth onClick={onPass}>
-            Designer Pass 받기
+          <Button fullWidth onClick={onPass} disabled={!passEligible}>
+            {passEligible ? 'Designer Pass 받기' : 'Designer Pass 발급 조건 미달'}
           </Button>
         </>
       }

@@ -19,7 +19,7 @@ export function ResultScreen({ caseData, answer, isLastCase, onNext }: Props) {
       caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
       footer={
         <Button fullWidth onClick={onNext}>
-          {isLastCase ? '최종 결과 보기 →' : '다음 사건 조사하기 →'}
+          {isLastCase || !correct ? '최종 결과 보기 →' : '다음 사건 조사하기 →'}
         </Button>
       }
       className="md:max-w-2xl"

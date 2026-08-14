@@ -29,6 +29,7 @@ export default function App() {
     closeCharacter,
     submitAnswer,
     completeCase,
+    endGameWithoutPass,
     openMyPage,
     closeMyPage,
     reset,
@@ -136,13 +137,23 @@ export default function App() {
             <ResultScreen
               caseData={activeCase}
               answer={state.answer}
-              isLastCase={activeCase.id === 'function'}
-              onNext={completeCase}
+              isLastCase={
+                activeCase.id === 'signature' && state.completedCases.includes('function')
+              }
+              onNext={
+                state.answer !== activeCase.correctAnswer
+                  ? endGameWithoutPass
+                  : completeCase
+              }
             />
           )}
 
           {state.screen === 'heritage' && (
-            <HeritageScreen designerName={designerName} onPass={() => go('pass')} />
+            <HeritageScreen
+              designerName={designerName}
+              passEligible={state.passEligible}
+              onPass={() => go('pass')}
+            />
           )}
 
           {state.screen === 'pass' && (
