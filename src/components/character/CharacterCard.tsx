@@ -21,7 +21,7 @@ export function CharacterCard({ character, asked, completed = false, total, onSe
         type="button"
         onClick={() => onSelect(character.id)}
         className={cn(
-          'group block w-full overflow-hidden rounded-xl border text-left transition-colors duration-300',
+          'group block h-full w-full overflow-hidden rounded-xl border text-left transition-colors duration-300',
           done
             ? 'border-atelier-line bg-atelier-card/60'
             : 'border-atelier-line bg-atelier-card hover:border-atelier-gold/60',
@@ -31,7 +31,7 @@ export function CharacterCard({ character, asked, completed = false, total, onSe
           src={character.portrait}
           alt={character.name}
           useGroupHover
-          className={cn('w-full', done ? 'h-28' : 'h-56')}
+          className={cn('w-full', done ? 'h-28 md:h-36' : 'h-56 md:h-64')}
         />
         <div className="flex items-end justify-between gap-4 p-4">
           <div>

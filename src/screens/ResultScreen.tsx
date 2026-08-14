@@ -22,6 +22,7 @@ export function ResultScreen({ caseData, answer, isLastCase, onNext }: Props) {
           {isLastCase ? '최종 결과 보기 →' : '다음 사건 조사하기 →'}
         </Button>
       }
+      className="md:max-w-2xl"
     >
       <RevealGroup onView={false} stagger={0.08} className="flex flex-col items-center text-center">
         <Reveal>

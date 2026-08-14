@@ -13,7 +13,7 @@ interface Props {
 export function PassScreen({ pass, onIssue, onRestart }: Props) {
   if (!pass) {
     return (
-      <ScreenShell className="flex items-center">
+      <ScreenShell className="flex items-center md:max-w-xl">
         <RevealGroup onView={false} stagger={0.08} className="flex w-full flex-col items-center text-center">
           <Reveal>
             <div className="grid size-16 place-items-center rounded-full border border-atelier-gold-dim text-display-sm text-atelier-gold">
@@ -52,7 +52,7 @@ export function PassScreen({ pass, onIssue, onRestart }: Props) {
           </p>
         </>
       }
-      className="flex items-center"
+      className="flex items-center md:max-w-2xl"
     >
       <DesignerPassCard pass={pass} />
     </ScreenShell>

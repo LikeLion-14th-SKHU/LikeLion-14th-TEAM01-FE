@@ -12,18 +12,18 @@ const KAKAO_LOGIN_BUTTON =
 
 export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center px-7 text-center">
-      <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex w-full flex-col items-center">
+    <div className="relative flex min-h-dvh flex-col items-center justify-center px-7 text-center md:px-12">
+      <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex w-full max-w-xl flex-col items-center">
         <Reveal>
           <p className="rounded-full border border-atelier-gold-dim px-5 py-2.5 font-mono text-caption font-semibold tracking-eyebrow text-atelier-gold">
             EST. 1976 · MUNICH
           </p>
         </Reveal>
         <Reveal className="mt-7">
-          <h1 className="font-display text-hero font-bold text-atelier-text">1976,</h1>
+          <h1 className="font-display text-hero font-bold text-atelier-text md:text-[3.5rem]">1976,</h1>
         </Reveal>
         <Reveal>
-          <p className="font-display text-hero font-bold text-atelier-gold">München</p>
+          <p className="font-display text-hero font-bold text-atelier-gold md:text-[3.5rem]">München</p>
         </Reveal>
         <Reveal className="mt-8">
           <p className="text-body text-atelier-text/90 text-pretty">
@@ -37,7 +37,7 @@ export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
             <strong className="font-bold text-atelier-gold">디자인 시안 두 장</strong>이 사라졌습니다.
           </p>
         </Reveal>
-        <Reveal className="mt-10 w-full">
+        <Reveal className="mt-10 w-full md:max-w-md">
           {isLoggedIn ? (
             <Button fullWidth onClick={onStart}>
               디자인 시작 →

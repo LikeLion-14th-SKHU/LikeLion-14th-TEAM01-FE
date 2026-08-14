@@ -9,7 +9,7 @@ export function AppHeader({ onMyPage, onLogout }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 flex h-16 items-center justify-between bg-transparent px-5">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-40 flex h-16 items-center justify-between bg-transparent px-5 md:px-8 lg:px-10">
       <div className="pointer-events-auto flex items-center gap-2.5">
         <span
           aria-hidden

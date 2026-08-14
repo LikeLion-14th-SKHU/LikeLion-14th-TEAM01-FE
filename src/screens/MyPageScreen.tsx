@@ -11,7 +11,7 @@ interface Props {
 
 export function MyPageScreen({ pass, onBack }: Props) {
   return (
-    <ScreenShell onBack={onBack} backLabel="이전 화면">
+    <ScreenShell onBack={onBack} backLabel="이전 화면" className="md:max-w-2xl">
       <SectionHeading
         eyebrow="MY PAGE"
         title="마이페이지"

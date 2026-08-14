@@ -21,7 +21,7 @@ export function ScreenShell({
   return (
     <div className="relative flex min-h-dvh flex-col text-atelier-text">
       {(onBack || caseLabel) && (
-        <header className="relative z-10 flex items-center justify-between px-5 pt-16">
+        <header className="relative z-10 flex items-center justify-between px-5 pt-16 md:px-8 lg:px-10">
           {onBack ? (
             <button
               type="button"
@@ -44,7 +44,7 @@ export function ScreenShell({
 
       <main
         className={cn(
-          'relative z-10 flex-1 px-5 pb-40',
+          'relative z-10 mx-auto w-full flex-1 px-5 pb-40 md:px-8 lg:px-10',
           onBack || caseLabel ? 'pt-6' : 'pt-20',
           className,
         )}
@@ -53,8 +53,8 @@ export function ScreenShell({
       </main>
 
       {footer && (
-        <div className="sticky bottom-0 z-20 bg-linear-to-t from-atelier-bg via-atelier-bg/95 to-transparent px-5 pb-6 pt-8">
-          {footer}
+        <div className="sticky bottom-0 z-20 bg-linear-to-t from-atelier-bg via-atelier-bg/95 to-transparent px-5 pb-6 pt-8 md:px-8 lg:px-10">
+          <div className="mx-auto w-full max-w-2xl">{footer}</div>
         </div>
       )}
     </div>

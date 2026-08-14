@@ -45,7 +45,12 @@ export function CharacterSelectScreen({
         description={caseData.investigationDescription}
       />
 
-      <RevealGroup onView={false} stagger={0.1} delay={0.25} className="mt-8 flex flex-col gap-4">
+      <RevealGroup
+        onView={false}
+        stagger={0.1}
+        delay={0.25}
+        className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
+      >
         {characters.map((c) => (
           <CharacterCard
             key={c.id}
@@ -54,6 +59,7 @@ export function CharacterSelectScreen({
             completed={Boolean(interviewed[c.id])}
             total={MAX_ASKS}
             onSelect={onSelect}
+            className="h-full"
           />
         ))}
       </RevealGroup>

@@ -41,16 +41,16 @@ export default function App() {
   const activeCase = state.caseId ? getCase(state.caseId) : null;
 
   return (
-    <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg">
+    <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">
       <img
         src="/art/designer-name.jpg"
         alt=""
         aria-hidden
-        className="pointer-events-none fixed inset-y-0 left-1/2 h-dvh w-full max-w-md -translate-x-1/2 object-cover object-center"
+        className="pointer-events-none fixed inset-y-0 left-1/2 h-dvh w-full max-w-md -translate-x-1/2 object-cover object-center md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-y-0 left-1/2 w-full max-w-md -translate-x-1/2 bg-linear-to-b from-atelier-bg/60 via-atelier-bg/75 to-atelier-bg/95"
+        className="pointer-events-none fixed inset-y-0 left-1/2 w-full max-w-md -translate-x-1/2 bg-linear-to-b from-atelier-bg/60 via-atelier-bg/75 to-atelier-bg/95 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
       />
       {isLoggedIn && (
         <AppHeader

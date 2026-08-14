@@ -48,7 +48,12 @@ export function RoomSelectScreen({ completedCases, onSelect }: Props) {
         description="두 사건을 해결해 디자인을 완성하세요."
       />
 
-      <RevealGroup onView={false} stagger={0.09} delay={0.25} className="mt-7 flex flex-col gap-3.5">
+      <RevealGroup
+        onView={false}
+        stagger={0.09}
+        delay={0.25}
+        className="mt-7 grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-5"
+      >
         {ROOMS.map((room) => {
           const completed = completedCases.includes(room.caseId);
           const locked = room.caseId === 'function' && !completedCases.includes('signature');
@@ -60,7 +65,7 @@ export function RoomSelectScreen({ completedCases, onSelect }: Props) {
                 disabled={locked || completed}
                 onClick={() => onSelect(room.id)}
                 className={cn(
-                  'group block w-full overflow-hidden rounded-xl border text-left transition-colors duration-300',
+                  'group block h-full w-full overflow-hidden rounded-xl border text-left transition-colors duration-300',
                   locked
                     ? 'cursor-not-allowed border-atelier-line bg-atelier-surface opacity-50'
                     : completed
@@ -73,7 +78,10 @@ export function RoomSelectScreen({ completedCases, onSelect }: Props) {
                     src={room.image}
                     alt={room.name}
                     useGroupHover={!locked && !completed}
-                    className={cn('w-full', locked || completed ? 'h-24' : 'h-37.5')}
+                    className={cn(
+                      'w-full',
+                      locked || completed ? 'h-24 md:h-32' : 'h-37.5 md:h-48',
+                    )}
                   />
                   <span
                     className={cn(

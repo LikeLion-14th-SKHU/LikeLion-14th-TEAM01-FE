@@ -45,12 +45,20 @@ export function HeritageScreen({ designerName, onPass }: Props) {
         </Reveal>
       </RevealGroup>
 
-      <RevealGroup stagger={0.1} className="mt-9 flex flex-col gap-4">
+      <RevealGroup
+        stagger={0.1}
+        className="mt-9 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-4"
+      >
         {HERITAGE.map((item) => (
           <Reveal key={item.id}>
-            <article className="group overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
+            <article className="group h-full overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
               <div className="relative">
-                <HoverZoomImage src={item.image} alt={item.title} useGroupHover className="h-35 w-full" />
+                <HoverZoomImage
+                  src={item.image}
+                  alt={item.title}
+                  useGroupHover
+                  className="h-35 w-full md:h-44"
+                />
                 <span className="absolute bottom-3 left-3 font-mono text-micro font-semibold tracking-label text-atelier-text/80">
                   {item.label}
                 </span>

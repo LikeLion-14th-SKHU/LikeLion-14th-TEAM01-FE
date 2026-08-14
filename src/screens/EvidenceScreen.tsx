@@ -31,12 +31,17 @@ export function EvidenceScreen({ caseData, onBack, onDeduce }: Props) {
         <h2 className="font-display text-display-md font-bold">현장 증거</h2>
       </Reveal>
 
-      <RevealGroup onView={false} stagger={0.1} delay={0.2} className="mt-5 flex flex-col gap-4">
+      <RevealGroup
+        onView={false}
+        stagger={0.1}
+        delay={0.2}
+        className="mt-5 grid grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-5"
+      >
         {caseData.evidence.map((doc) => {
           const isOpen = opened.includes(doc.id);
           return (
             <Reveal key={doc.id}>
-              <article className="overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
+              <article className="h-full overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
                 <button
                   type="button"
                   onClick={() => toggle(doc.id)}

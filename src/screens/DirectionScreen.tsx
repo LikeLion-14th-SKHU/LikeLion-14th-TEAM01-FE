@@ -30,20 +30,30 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
         description="세 가지 접근 중 하나를 선택하면 해당 방향의 레퍼런스 자료가 제공됩니다."
       />
 
-      <RevealGroup onView={false} stagger={0.09} delay={0.25} className="mt-7 flex flex-col gap-3.5">
+      <RevealGroup
+        onView={false}
+        stagger={0.09}
+        delay={0.25}
+        className="mt-7 grid grid-cols-1 gap-3.5 md:grid-cols-3 md:gap-4"
+      >
         {DIRECTIONS.map((d) => (
           <Reveal key={d.id}>
             <button
               type="button"
               onClick={() => choose(d.id)}
               className={cn(
-                'group block w-full overflow-hidden rounded-xl border bg-atelier-card text-left transition-all duration-300',
+                'group block h-full w-full overflow-hidden rounded-xl border bg-atelier-card text-left transition-all duration-300',
                 picked === d.id ? 'border-atelier-gold' : 'border-atelier-line hover:border-atelier-gold/60',
                 picked && picked !== d.id && 'opacity-40',
               )}
             >
               <div className="relative">
-                <HoverZoomImage src={d.image} alt={d.title} useGroupHover className="h-32 w-full" />
+                <HoverZoomImage
+                  src={d.image}
+                  alt={d.title}
+                  useGroupHover
+                  className="h-32 w-full md:h-40"
+                />
                 <span className="absolute left-3 top-3 grid size-8 place-items-center rounded-full bg-atelier-gold font-mono text-small font-bold text-atelier-bg">
                   {d.badge}
                 </span>

@@ -23,13 +23,13 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
         </Reveal>
       )}
       <Reveal className="mt-3">
-        <h2 className="font-display text-display-md font-bold text-atelier-text text-pretty">
+        <h2 className="font-display text-display-md font-bold text-atelier-text text-pretty md:text-display-lg">
           {title}
         </h2>
       </Reveal>
       {description && (
         <Reveal className="mt-3">
-          <p className="text-body text-atelier-muted text-pretty">{description}</p>
+          <p className="max-w-2xl text-body text-atelier-muted text-pretty md:text-base">{description}</p>
         </Reveal>
       )}
     </RevealGroup>

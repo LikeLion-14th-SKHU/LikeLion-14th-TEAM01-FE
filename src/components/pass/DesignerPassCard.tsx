@@ -186,7 +186,7 @@ export function DesignerPassCard({ pass }: Props) {
   };
 
   return (
-    <div className="w-full">
+    <div className="mx-auto w-full max-w-xl">
       <motion.button
         type="button"
         onClick={() => setFlipped((current) => !current)}

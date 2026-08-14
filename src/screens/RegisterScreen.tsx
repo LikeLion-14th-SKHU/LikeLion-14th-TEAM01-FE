@@ -15,7 +15,7 @@ const MAX = 20;
 
 export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
   return (
-    <ScreenShell onBack={onBack}>
+    <ScreenShell onBack={onBack} className="md:max-w-xl">
       <StepDots total={3} current={1} className="mb-8" />
 
       <SectionHeading
