@@ -2,10 +2,15 @@ import { Button } from '../components/ui/Button';
 import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
+  isLoggedIn: boolean;
+  onLogin: () => void;
   onStart: () => void;
 }
 
-export function IntroScreen({ onStart }: Props) {
+const KAKAO_LOGIN_BUTTON =
+  'https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_large_wide.png';
+
+export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center px-7 text-center">
       <img
@@ -41,9 +46,26 @@ export function IntroScreen({ onStart }: Props) {
           </p>
         </Reveal>
         <Reveal className="mt-10 w-full">
-          <Button fullWidth onClick={onStart}>
-            디자인 시작 →
-          </Button>
+          {isLoggedIn ? (
+            <Button fullWidth onClick={onStart}>
+              디자인 시작 →
+            </Button>
+          ) : (
+            <Button
+              fullWidth
+              onClick={onLogin}
+              aria-label="카카오 로그인"
+              className="min-h-0 overflow-hidden rounded-xl bg-[#fee500] p-0 hover:brightness-100"
+            >
+              <img
+                src={KAKAO_LOGIN_BUTTON}
+                alt=""
+                aria-hidden
+                draggable={false}
+                className="h-auto w-full"
+              />
+            </Button>
+          )}
         </Reveal>
         <Reveal className="mt-4">
           <p className="text-meta text-atelier-muted">패턴실, 설계실, 촬영실을 조사해 시안을 되찾으세요.</p>

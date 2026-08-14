@@ -32,7 +32,7 @@ export function ScreenShell({
       <div aria-hidden className="pointer-events-none fixed inset-0 bg-linear-to-b from-atelier-bg/70 via-atelier-bg/85 to-atelier-bg" />
 
       {(onBack || caseLabel) && (
-        <header className="relative z-10 flex items-center justify-between px-5 pt-5">
+        <header className="relative z-10 flex items-center justify-between px-5 pt-16">
           {onBack ? (
             <button
               type="button"
@@ -53,7 +53,15 @@ export function ScreenShell({
         </header>
       )}
 
-      <main className={cn('relative z-10 flex-1 px-5 pb-40 pt-6', className)}>{children}</main>
+      <main
+        className={cn(
+          'relative z-10 flex-1 px-5 pb-40',
+          onBack || caseLabel ? 'pt-6' : 'pt-20',
+          className,
+        )}
+      >
+        {children}
+      </main>
 
       {footer && (
         <div className="sticky bottom-0 z-20 bg-linear-to-t from-atelier-bg via-atelier-bg/95 to-transparent px-5 pb-6 pt-8">

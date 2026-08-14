@@ -12,16 +12,27 @@ import { DeductionScreen } from './screens/DeductionScreen';
 import { ResultScreen } from './screens/ResultScreen';
 import { HeritageScreen } from './screens/HeritageScreen';
 import { PassScreen } from './screens/PassScreen';
+import { AppHeader } from './components/layout/AppHeader';
+import { useAuth } from './state/useAuth';
 
 export default function App() {
   const { state, go, setDesignerName, chooseDirection, enterRoom, openCharacter, closeCharacter, submitAnswer, reset } =
     useGame();
+  const { isLoggedIn, loginWithKakao, logout } = useAuth();
 
   const designerName = state.designerName.trim() || '수습 디자이너';
   const track = DIRECTIONS.find((d) => d.id === state.direction)?.track ?? '디자인 트랙';
 
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg">
+    <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg">
+      {isLoggedIn && (
+        <AppHeader
+          onLogout={() => {
+            logout();
+            reset();
+          }}
+        />
+      )}
       <AnimatePresence mode="wait">
         <motion.div
           key={state.screen + (state.activeCharacterId ?? '')}
@@ -31,7 +42,13 @@ export default function App() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
-        {state.screen === 'intro' && <IntroScreen onStart={() => go('register')} />}
+        {state.screen === 'intro' && (
+          <IntroScreen
+            isLoggedIn={isLoggedIn}
+            onLogin={loginWithKakao}
+            onStart={() => go('register')}
+          />
+        )}
 
         {state.screen === 'register' && (
           <RegisterScreen
