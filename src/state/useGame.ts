@@ -15,11 +15,13 @@ export type Screen =
   | 'deduction'
   | 'result'
   | 'heritage'
-  | 'pass';
+  | 'pass'
+  | 'mypage';
 
 export interface GameState {
   sessionId: string;
   screen: Screen;
+  returnScreen: Exclude<Screen, 'mypage'> | null;
   designerName: string;
   direction: Direction['id'] | null;
   roomId: RoomId | null;
@@ -27,6 +29,7 @@ export interface GameState {
   completedCases: CaseId[];
   activeCharacterId: string | null;
   asked: Record<string, number>;
+  interviewed: Record<string, boolean>;
   answer: string | null;
 }
 
@@ -38,6 +41,7 @@ const createSessionId = (): string => {
 const createInitialState = (): GameState => ({
   sessionId: createSessionId(),
   screen: 'intro',
+  returnScreen: null,
   designerName: '',
   direction: null,
   roomId: null,
@@ -45,6 +49,7 @@ const createInitialState = (): GameState => ({
   completedCases: [],
   activeCharacterId: null,
   asked: {},
+  interviewed: {},
   answer: null,
 });
 
@@ -71,6 +76,7 @@ const getHistoryGameState = (historyState: unknown): GameState | null => {
       ? stored.completedCases.filter(isCaseId)
       : [],
     asked: stored.asked ?? {},
+    interviewed: stored.interviewed ?? {},
   };
 };
 
@@ -159,6 +165,7 @@ export function useGame() {
         screen: 'characters',
         activeCharacterId: null,
         asked: { ...s.asked, [id]: Math.max(s.asked[id] ?? 0, asksUsed) },
+        interviewed: { ...s.interviewed, [id]: true },
       })),
     [],
   );
@@ -191,6 +198,26 @@ export function useGame() {
     [],
   );
 
+  const openMyPage = useCallback(
+    () =>
+      setState((s) =>
+        s.screen === 'mypage'
+          ? s
+          : { ...s, returnScreen: s.screen, screen: 'mypage' },
+      ),
+    [],
+  );
+
+  const closeMyPage = useCallback(
+    () =>
+      setState((s) => ({
+        ...s,
+        screen: s.returnScreen ?? 'intro',
+        returnScreen: null,
+      })),
+    [],
+  );
+
   const reset = useCallback(() => setState(createInitialState()), []);
 
   return {
@@ -203,6 +230,8 @@ export function useGame() {
     closeCharacter,
     submitAnswer,
     completeCase,
+    openMyPage,
+    closeMyPage,
     reset,
   };
 }

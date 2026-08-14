@@ -6,13 +6,14 @@ import { Reveal } from '../motion/Reveal';
 interface Props {
   character: Character;
   asked: number;
+  completed?: boolean;
   total: number;
   onSelect: (id: string) => void;
   className?: string;
 }
 
-export function CharacterCard({ character, asked, total, onSelect, className }: Props) {
-  const done = asked >= total;
+export function CharacterCard({ character, asked, completed = false, total, onSelect, className }: Props) {
+  const done = completed || asked >= total;
 
   return (
     <Reveal className={className}>
@@ -37,7 +38,11 @@ export function CharacterCard({ character, asked, total, onSelect, className }: 
             <p className="font-display text-card-title font-bold">{character.name}</p>
             <p className="mt-1 font-mono text-caption font-semibold text-atelier-gold">{character.role}</p>
             <p className="mt-2 font-mono text-small text-atelier-muted">
-              {done ? '모든 질문을 완료했습니다.' : asked + ' / ' + total + ' 질문 완료'}
+              {completed
+                ? '대화를 완료했습니다.'
+                : done
+                  ? '모든 질문을 완료했습니다.'
+                  : asked + ' / ' + total + ' 질문 완료'}
             </p>
           </div>
           <span

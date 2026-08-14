@@ -15,6 +15,8 @@ import { PassScreen } from './screens/PassScreen';
 import { AppHeader } from './components/layout/AppHeader';
 import { useAuth } from './state/useAuth';
 import { getCase } from './data/case';
+import { useDesignerPass } from './state/useDesignerPass';
+import { MyPageScreen } from './screens/MyPageScreen';
 
 export default function App() {
   const {
@@ -27,9 +29,12 @@ export default function App() {
     closeCharacter,
     submitAnswer,
     completeCase,
+    openMyPage,
+    closeMyPage,
     reset,
   } = useGame();
   const { isLoggedIn, loginWithKakao, logout } = useAuth();
+  const { pass, issuePass } = useDesignerPass();
 
   const designerName = state.designerName.trim() || '수습 디자이너';
   const track = DIRECTIONS.find((d) => d.id === state.direction)?.track ?? '디자인 트랙';
@@ -49,6 +54,7 @@ export default function App() {
       />
       {isLoggedIn && (
         <AppHeader
+          onMyPage={openMyPage}
           onLogout={() => {
             logout();
             reset();
@@ -93,6 +99,7 @@ export default function App() {
             <CharacterSelectScreen
               caseData={activeCase}
               asked={state.asked}
+              interviewed={state.interviewed}
               onBack={() => go('rooms')}
               onSelect={openCharacter}
               onEvidence={() => go('evidence')}
@@ -139,7 +146,15 @@ export default function App() {
           )}
 
           {state.screen === 'pass' && (
-            <PassScreen designerName={designerName} track={track} onRestart={reset} />
+            <PassScreen
+              pass={pass}
+              onIssue={() => issuePass(designerName, track)}
+              onRestart={reset}
+            />
+          )}
+
+          {state.screen === 'mypage' && (
+            <MyPageScreen pass={pass} onBack={closeMyPage} />
           )}
         </motion.div>
       </AnimatePresence>

@@ -10,14 +10,22 @@ import { RevealGroup } from '../components/motion/Reveal';
 interface Props {
   caseData: CaseDefinition;
   asked: Record<string, number>;
+  interviewed: Record<string, boolean>;
   onBack: () => void;
   onSelect: (id: string) => void;
   onEvidence: () => void;
 }
 
-export function CharacterSelectScreen({ caseData, asked, onBack, onSelect, onEvidence }: Props) {
+export function CharacterSelectScreen({
+  caseData,
+  asked,
+  interviewed,
+  onBack,
+  onSelect,
+  onEvidence,
+}: Props) {
   const characters = CASE_CHARACTERS[caseData.id];
-  const allDone = characters.every((character) => (asked[character.id] ?? 0) >= MAX_ASKS);
+  const allDone = characters.every((character) => interviewed[character.id]);
 
   return (
     <ScreenShell
@@ -43,6 +51,7 @@ export function CharacterSelectScreen({ caseData, asked, onBack, onSelect, onEvi
             key={c.id}
             character={c}
             asked={asked[c.id] ?? 0}
+            completed={Boolean(interviewed[c.id])}
             total={MAX_ASKS}
             onSelect={onSelect}
           />
@@ -51,7 +60,7 @@ export function CharacterSelectScreen({ caseData, asked, onBack, onSelect, onEvi
 
       {!allDone && (
         <p className="mt-6 text-center font-mono text-caption text-atelier-muted">
-          두 사람의 증언을 모두 확보하면 현장 기록을 열 수 있습니다
+          두 사람과의 대화를 종료하면 현장 기록을 열 수 있습니다
         </p>
       )}
     </ScreenShell>
