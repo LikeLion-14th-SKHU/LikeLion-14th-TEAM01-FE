@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Direction } from '../data/directions';
+import { getCase } from '../data/case';
 import type { CaseId } from '../types/game';
 
 export type RoomId = 'pattern' | 'drafting';
@@ -58,9 +59,75 @@ const createInitialState = (): GameState => ({
 export const MAX_ASKS = 3;
 
 const HISTORY_STATE_KEY = 'mcmGameState';
+const ATTEMPT_STORAGE_KEY = 'mcmCaseAttempts';
+
+interface CaseAttempt {
+  answer: string;
+  correct: boolean;
+}
+
+type SessionAttempts = Partial<Record<CaseId, CaseAttempt>>;
+type AttemptStore = Record<string, SessionAttempts>;
 
 const isCaseId = (value: unknown): value is CaseId =>
   value === 'signature' || value === 'function';
+
+const isCaseAttempt = (value: unknown): value is CaseAttempt => {
+  if (!value || typeof value !== 'object') return false;
+  const attempt = value as Partial<CaseAttempt>;
+  return typeof attempt.answer === 'string' && typeof attempt.correct === 'boolean';
+};
+
+const getAttemptStore = (): AttemptStore => {
+  if (typeof window === 'undefined') return {};
+
+  try {
+    const raw = window.sessionStorage.getItem(ATTEMPT_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? (parsed as AttemptStore) : {};
+  } catch {
+    return {};
+  }
+};
+
+const getSessionAttempts = (sessionId: string): SessionAttempts => {
+  const stored = getAttemptStore()[sessionId];
+  if (!stored || typeof stored !== 'object') return {};
+
+  return {
+    function: isCaseAttempt(stored.function) ? stored.function : undefined,
+    signature: isCaseAttempt(stored.signature) ? stored.signature : undefined,
+  };
+};
+
+const getCaseAttempt = (sessionId: string, caseId: CaseId): CaseAttempt | null =>
+  getSessionAttempts(sessionId)[caseId] ?? null;
+
+const saveCaseAttempt = (sessionId: string, caseId: CaseId, attempt: CaseAttempt) => {
+  try {
+    const store = getAttemptStore();
+    window.sessionStorage.setItem(
+      ATTEMPT_STORAGE_KEY,
+      JSON.stringify({
+        ...store,
+        [sessionId]: { ...store[sessionId], [caseId]: attempt },
+      }),
+    );
+  } catch {
+    // sessionStorage가 차단된 환경에서는 현재 히스토리 상태로만 진행합니다.
+  }
+};
+
+const clearSessionAttempts = (sessionId: string) => {
+  try {
+    const store = getAttemptStore();
+    delete store[sessionId];
+    window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, JSON.stringify(store));
+  } catch {
+    // 저장소 정리에 실패해도 새 sessionId로 게임을 다시 시작할 수 있습니다.
+  }
+};
 
 const getHistoryGameState = (historyState: unknown): GameState | null => {
   if (!historyState || typeof historyState !== 'object') return null;
@@ -70,9 +137,12 @@ const getHistoryGameState = (historyState: unknown): GameState | null => {
 
   const stored = gameState as Partial<GameState>;
 
+  const initialState = createInitialState();
+
   return {
-    ...createInitialState(),
+    ...initialState,
     ...stored,
+    sessionId: typeof stored.sessionId === 'string' ? stored.sessionId : initialState.sessionId,
     caseId: isCaseId(stored.caseId) ? stored.caseId : null,
     completedCases: Array.isArray(stored.completedCases)
       ? stored.completedCases.filter(isCaseId)
@@ -82,8 +152,46 @@ const getHistoryGameState = (historyState: unknown): GameState | null => {
   };
 };
 
+const LOCKED_CASE_SCREENS: Screen[] = [
+  'characters',
+  'interrogation',
+  'evidence',
+  'deduction',
+];
+
+const reconcileAttemptState = (state: GameState): GameState => {
+  const attempts = getSessionAttempts(state.sessionId);
+  const hasFailedAttempt = Object.values(attempts).some(
+    (attempt) => attempt && !attempt.correct,
+  );
+  const passEligible = state.passEligible && !hasFailedAttempt;
+
+  if (!state.caseId) return passEligible === state.passEligible ? state : { ...state, passEligible };
+
+  const attempt = attempts[state.caseId];
+  if (!attempt) return passEligible === state.passEligible ? state : { ...state, passEligible };
+
+  if (state.screen === 'result' || LOCKED_CASE_SCREENS.includes(state.screen)) {
+    return {
+      ...state,
+      screen: 'result',
+      activeCharacterId: null,
+      answer: attempt.answer,
+      passEligible,
+    };
+  }
+
+  return passEligible === state.passEligible ? state : { ...state, passEligible };
+};
+
+const getInitialGameState = (): GameState => {
+  if (typeof window === 'undefined') return createInitialState();
+  const restoredState = getHistoryGameState(window.history.state);
+  return restoredState ? reconcileAttemptState(restoredState) : createInitialState();
+};
+
 export function useGame() {
-  const [state, setState] = useState<GameState>(createInitialState);
+  const [state, setState] = useState<GameState>(getInitialGameState);
   const previousState = useRef(state);
   const restoringHistory = useRef(false);
   const historyReady = useRef(false);
@@ -100,10 +208,15 @@ export function useGame() {
     const handlePopState = (event: PopStateEvent) => {
       const restoredState = getHistoryGameState(event.state);
       if (!restoredState) return;
+      const reconciledState = reconcileAttemptState(restoredState);
 
       restoringHistory.current = true;
-      previousState.current = restoredState;
-      setState(restoredState);
+      previousState.current = reconciledState;
+      window.history.replaceState(
+        { ...event.state, [HISTORY_STATE_KEY]: reconciledState },
+        '',
+      );
+      setState(reconciledState);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -130,7 +243,10 @@ export function useGame() {
     previousState.current = state;
   }, [state]);
 
-  const go = useCallback((screen: Screen) => setState((s) => ({ ...s, screen })), []);
+  const go = useCallback(
+    (screen: Screen) => setState((s) => reconcileAttemptState({ ...s, screen })),
+    [],
+  );
 
   const setDesignerName = useCallback(
     (designerName: string) => setState((s) => ({ ...s, designerName })),
@@ -144,13 +260,30 @@ export function useGame() {
 
   const enterRoom = useCallback(
     (roomId: RoomId) =>
-      setState((s) => ({
-        ...s,
-        roomId,
-        caseId: roomId === 'pattern' ? 'signature' : 'function',
-        answer: null,
-        screen: 'characters',
-      })),
+      setState((s) => {
+        const caseId = roomId === 'pattern' ? 'signature' : 'function';
+        const attempt = getCaseAttempt(s.sessionId, caseId);
+
+        if (attempt) {
+          return {
+            ...s,
+            roomId,
+            caseId,
+            activeCharacterId: null,
+            answer: attempt.answer,
+            passEligible: s.passEligible && attempt.correct,
+            screen: 'result',
+          };
+        }
+
+        return {
+          ...s,
+          roomId,
+          caseId,
+          answer: null,
+          screen: 'characters',
+        };
+      }),
     [],
   );
 
@@ -173,7 +306,27 @@ export function useGame() {
   );
 
   const submitAnswer = useCallback(
-    (answer: string) => setState((s) => ({ ...s, answer, screen: 'result' })),
+    (answer: string) =>
+      setState((s) => {
+        if (!s.caseId) return s;
+
+        const storedAttempt = getCaseAttempt(s.sessionId, s.caseId);
+        const attempt =
+          storedAttempt ??
+          ({
+            answer,
+            correct: answer === getCase(s.caseId).correctAnswer,
+          } satisfies CaseAttempt);
+
+        if (!storedAttempt) saveCaseAttempt(s.sessionId, s.caseId, attempt);
+
+        return {
+          ...s,
+          answer: attempt.answer,
+          passEligible: s.passEligible && attempt.correct,
+          screen: 'result',
+        };
+      }),
     [],
   );
 
@@ -227,15 +380,20 @@ export function useGame() {
 
   const closeMyPage = useCallback(
     () =>
-      setState((s) => ({
-        ...s,
-        screen: s.returnScreen ?? 'intro',
-        returnScreen: null,
-      })),
+      setState((s) =>
+        reconcileAttemptState({
+          ...s,
+          screen: s.returnScreen ?? 'intro',
+          returnScreen: null,
+        }),
+      ),
     [],
   );
 
-  const reset = useCallback(() => setState(createInitialState()), []);
+  const reset = useCallback(() => {
+    clearSessionAttempts(state.sessionId);
+    setState(createInitialState());
+  }, [state.sessionId]);
 
   return {
     state,
