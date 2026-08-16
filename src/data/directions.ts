@@ -13,6 +13,11 @@ export interface Direction {
   description: string;
   artwork: DirectionArtwork;
   track: string;
+  result: {
+    title: string;
+    description: string;
+    productUrl: string | null;
+  };
 }
 
 export const DIRECTIONS: Direction[] = [
@@ -29,6 +34,11 @@ export const DIRECTIONS: Direction[] = [
       frameAspectRatio: 965 / 434,
     },
     track: '핸즈프리 디자인',
+    result: {
+      title: '핸즈프리 크로스바디',
+      description: '두 손을 자유롭게 유지하면서 필요한 소지품을 가까이 둘 수 있도록 완성한 컴팩트 디자인입니다.',
+      productUrl: null,
+    },
   },
   {
     id: 'daily',
@@ -43,6 +53,11 @@ export const DIRECTIONS: Direction[] = [
       frameAspectRatio: 767 / 936,
     },
     track: '데일리 디자인',
+    result: {
+      title: '데일리 쇼퍼백',
+      description: '출근과 가벼운 외출에 필요한 물건을 편안하게 담을 수 있도록 완성한 데일리 디자인입니다.',
+      productUrl: null,
+    },
   },
   {
     id: 'travel',
@@ -57,5 +72,10 @@ export const DIRECTIONS: Direction[] = [
       frameAspectRatio: 1061 / 743,
     },
     track: '트래블 디자인',
+    result: {
+      title: '트래블 위켄더',
+      description: '여정에 필요한 넉넉한 수납과 안정적인 휴대성을 결합해 완성한 트래블 디자인입니다.',
+      productUrl: null,
+    },
   },
 ];

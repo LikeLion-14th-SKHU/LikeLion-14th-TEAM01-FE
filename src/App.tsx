@@ -154,6 +154,7 @@ export default function App() {
             <HeritageScreen
               designerName={designerName}
               passEligible={state.passEligible}
+              direction={selectedDirection}
               onPass={() => go('pass')}
             />
           )}
