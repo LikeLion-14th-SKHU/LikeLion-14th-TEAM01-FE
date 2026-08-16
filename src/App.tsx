@@ -18,6 +18,7 @@ import { useAuth } from './state/useAuth';
 import { getCase } from './data/case';
 import { useDesignerPass } from './state/useDesignerPass';
 import { MyPageScreen } from './screens/MyPageScreen';
+import { useProductRecommendations } from './hooks/useProductRecommendations';
 
 export default function App() {
   const {
@@ -38,7 +39,7 @@ export default function App() {
     closeMyPage,
     reset,
   } = useGame();
-  const { isLoggedIn, loginWithKakao, logout } = useAuth();
+  const { isLoggedIn, authError, loginWithKakao, logout, clearAuthError } = useAuth();
   const {
     pass,
     error: passError,
@@ -46,6 +47,13 @@ export default function App() {
     clear: clearPass,
     clearError: clearPassError,
   } = useDesignerPass();
+  const {
+    recommendations,
+    isLoading: recommendationsLoading,
+    error: recommendationsError,
+    refresh: refreshRecommendations,
+    clear: clearRecommendations,
+  } = useProductRecommendations();
 
   const designerName = state.designerName.trim() || '수습 디자이너';
   const selectedDirection = DIRECTIONS.find((d) => d.id === state.direction) ?? null;
@@ -55,6 +63,16 @@ export default function App() {
   useEffect(() => {
     if (isLoggedIn) hydrate().catch(() => undefined);
   }, [hydrate, isLoggedIn]);
+
+  useEffect(() => {
+    const completed =
+      state.passEligible &&
+      state.completedCases.includes('function') &&
+      state.completedCases.includes('signature');
+    if (isLoggedIn && state.screen === 'heritage' && completed) {
+      refreshRecommendations().catch(() => undefined);
+    }
+  }, [isLoggedIn, refreshRecommendations, state.completedCases, state.passEligible, state.screen]);
 
   const showPass = () => {
     refreshPass(track)
@@ -85,6 +103,7 @@ export default function App() {
           onLogout={() => {
             logout();
             clearPass();
+            clearRecommendations();
             reset();
           }}
         />
@@ -190,6 +209,12 @@ export default function App() {
               designerName={designerName}
               passEligible={state.passEligible}
               direction={selectedDirection}
+              recommendations={recommendations}
+              recommendationsLoading={recommendationsLoading}
+              recommendationsError={recommendationsError}
+              onRetryRecommendations={() => {
+                refreshRecommendations().catch(() => undefined);
+              }}
               onPass={showPass}
             />
           )}
@@ -202,17 +227,18 @@ export default function App() {
             />
           )}
 
-          {(state.error || passError) && (
+          {(state.error || passError || authError) && (
             <div
               role="alert"
               className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl items-start justify-between gap-4 rounded-lg border border-atelier-alert/50 bg-atelier-bg/95 px-4 py-3 font-mono text-meta text-atelier-alert shadow-xl backdrop-blur"
             >
-              <span>{state.error ?? passError}</span>
+              <span>{state.error ?? passError ?? authError}</span>
               <button
                 type="button"
                 onClick={() => {
                   clearError();
                   clearPassError();
+                  clearAuthError();
                 }}
                 className="shrink-0 text-atelier-text"
               >

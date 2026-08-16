@@ -7,6 +7,7 @@ import type {
   FinalDeductionResponse,
   GameProgressResponse,
   MyPageResponse,
+  ProductRecommendationResponse,
   TokenResponse,
 } from './types';
 
@@ -156,4 +157,6 @@ export const api = {
       body: JSON.stringify({ characterType }),
     }),
   getMyPage: () => request<MyPageResponse>('/detective/mypage'),
+  getProductRecommendations: () =>
+    request<ProductRecommendationResponse>('/detective/products/recommendation'),
 };

@@ -10,6 +10,9 @@ interface Props {
   passEligible: boolean;
   direction: Direction | null;
   recommendations?: ProductRecommendation[];
+  recommendationsLoading?: boolean;
+  recommendationsError?: string | null;
+  onRetryRecommendations?: () => void;
   onPass: () => void;
 }
 
@@ -18,8 +21,13 @@ export function HeritageScreen({
   passEligible,
   direction,
   recommendations = [],
+  recommendationsLoading = false,
+  recommendationsError = null,
+  onRetryRecommendations,
   onPass,
 }: Props) {
+  const primaryProductUrl = direction?.result.productUrl ?? recommendations[0]?.productUrl;
+
   return (
     <ScreenShell
       footer={
@@ -109,9 +117,9 @@ export function HeritageScreen({
                 : '최종 추리에 실패해 선택한 실루엣의 디자인 단계를 완료하지 못했습니다.'}
             </p>
 
-            {passEligible && direction?.result.productUrl ? (
+            {passEligible && primaryProductUrl ? (
               <a
-                href={direction.result.productUrl}
+                href={primaryProductUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-6 inline-flex min-h-12 items-center justify-center rounded-md border border-atelier-gold px-5 font-display text-small font-bold text-atelier-gold transition-colors hover:bg-atelier-gold/10"
@@ -127,7 +135,7 @@ export function HeritageScreen({
         </article>
       </Reveal>
 
-      {direction && (
+      {direction && passEligible && (
         <section className="mt-11" aria-labelledby="recommended-products-title">
           <Reveal>
             <p className="font-mono text-caption font-semibold tracking-eyebrow text-atelier-gold">
@@ -141,7 +149,30 @@ export function HeritageScreen({
             </p>
           </Reveal>
 
-          {recommendations.length > 0 ? (
+          {recommendationsLoading ? (
+            <Reveal delay={0.15} className="mt-5">
+              <div className="rounded-xl border border-atelier-line bg-atelier-card/70 px-5 py-10 text-center">
+                <p className="font-mono text-small text-atelier-gold">추천 상품을 불러오는 중…</p>
+              </div>
+            </Reveal>
+          ) : recommendationsError ? (
+            <Reveal delay={0.15} className="mt-5">
+              <div className="rounded-xl border border-atelier-alert/40 bg-atelier-card/70 px-5 py-8 text-center">
+                <p role="alert" className="text-small text-atelier-alert">
+                  {recommendationsError}
+                </p>
+                {onRetryRecommendations && (
+                  <button
+                    type="button"
+                    onClick={onRetryRecommendations}
+                    className="mt-4 min-h-11 rounded-md border border-atelier-gold px-5 font-display text-small font-bold text-atelier-gold"
+                  >
+                    다시 불러오기
+                  </button>
+                )}
+              </div>
+            </Reveal>
+          ) : recommendations.length > 0 ? (
             <RevealGroup
               stagger={0.08}
               className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
@@ -184,7 +215,7 @@ export function HeritageScreen({
               <div className="rounded-xl border border-dashed border-atelier-line bg-atelier-card/70 px-5 py-10 text-center">
                 <p className="font-display text-body font-bold">추천 상품을 준비하고 있습니다.</p>
                 <p className="mt-2 text-small text-atelier-muted">
-                  백엔드 연동 후 {direction.title} 카테고리의 상품이 이곳에 표시됩니다.
+                  {direction.title} 카테고리에 등록된 추천 상품이 없습니다.
                 </p>
               </div>
             </Reveal>

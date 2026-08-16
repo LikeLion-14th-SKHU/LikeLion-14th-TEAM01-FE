@@ -60,3 +60,15 @@ export interface MyPageResponse {
   designerPass: DesignerPassResponse | null;
 }
 
+export interface RecommendedProductResponse {
+  id: number;
+  name: string;
+  imageUrl: string;
+  detailUrl: string;
+  displayOrder: number;
+}
+
+export interface ProductRecommendationResponse {
+  designDirection: DesignDirection;
+  products: RecommendedProductResponse[];
+}
