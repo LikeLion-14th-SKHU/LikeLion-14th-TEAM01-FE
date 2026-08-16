@@ -11,7 +11,7 @@ interface Props {
   caseData: CaseDefinition;
   asked: Record<string, number>;
   interviewed: Record<string, boolean>;
-  onBack: () => void;
+  onBack?: () => void;
   onSelect: (id: string) => void;
   onEvidence: () => void;
 }
@@ -25,7 +25,7 @@ export function CharacterSelectScreen({
   onEvidence,
 }: Props) {
   const characters = CASE_CHARACTERS[caseData.id];
-  const allDone = characters.every((character) => interviewed[character.id]);
+  const allDone = characters.every((character) => (asked[character.id] ?? 0) >= MAX_ASKS);
 
   return (
     <ScreenShell
@@ -56,7 +56,7 @@ export function CharacterSelectScreen({
             key={c.id}
             character={c}
             asked={asked[c.id] ?? 0}
-            completed={Boolean(interviewed[c.id])}
+            completed={Boolean(interviewed[c.id]) || (asked[c.id] ?? 0) >= MAX_ASKS}
             total={MAX_ASKS}
             onSelect={onSelect}
             className="h-full"

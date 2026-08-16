@@ -27,7 +27,7 @@ export function DeductionScreen({ caseData, onBack, onSubmit }: Props) {
         onView={false}
         stagger={0.09}
         delay={0.3}
-        className="mt-7 grid grid-cols-1 gap-3.5 md:grid-cols-3 md:gap-4"
+        className="mt-7 grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-4"
       >
         {caseData.deductionOptions.map((opt) => (
           <Reveal key={opt.id}>
@@ -37,7 +37,7 @@ export function DeductionScreen({ caseData, onBack, onSubmit }: Props) {
               className="flex h-full w-full items-start gap-3.5 rounded-xl border border-atelier-line bg-atelier-card p-4 text-left transition-colors duration-300 hover:border-atelier-gold"
             >
               <span className="grid size-8 shrink-0 place-items-center rounded-full bg-atelier-gold-dim/30 font-mono text-small font-bold text-atelier-gold">
-                {opt.id}
+                {opt.badge}
               </span>
               <span className="text-small text-pretty">{opt.text}</span>
             </button>

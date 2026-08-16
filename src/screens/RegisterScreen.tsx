@@ -11,7 +11,7 @@ interface Props {
   onNext: () => void;
 }
 
-const MAX = 20;
+const MAX = 100;
 
 export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
   return (

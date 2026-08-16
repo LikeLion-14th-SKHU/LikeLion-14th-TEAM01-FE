@@ -17,7 +17,7 @@ export function QuestionInput({
   onSubmit,
   suggestions = [],
   placeholder = '용의자에게 질문하기...',
-  maxLength = 80,
+  maxLength = 2000,
   className,
 }: Props) {
   const [value, setValue] = useState('');

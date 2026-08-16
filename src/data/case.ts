@@ -8,7 +8,8 @@ export interface EvidenceDoc {
 }
 
 export interface DeductionOption {
-  id: 'A' | 'B' | 'C';
+  id: string;
+  badge: 'A' | 'B';
   text: string;
 }
 
@@ -22,7 +23,7 @@ export interface CaseDefinition {
   evidence: EvidenceDoc[];
   deductionQuestion: string;
   deductionOptions: DeductionOption[];
-  correctAnswer: DeductionOption['id'];
+  correctAnswer: string;
   resolution: {
     title: string;
     body: string;
@@ -71,14 +72,12 @@ export const CASES: Record<CaseId, CaseDefinition> = {
         ],
       },
     ],
-    deductionQuestion:
-      '증언과 아카이브 기록, 촬영실 콘택트시트를 종합했을 때 SIGNATURE 시안에 일어난 일은 무엇인가?',
+    deductionQuestion: '증언과 현장 기록을 종합했을 때 SIGNATURE 시안을 가져간 용의자는 누구인가?',
     deductionOptions: [
-      { id: 'A', text: '클라라가 시안을 반납하지 않고 염색실로 가져갔다.' },
-      { id: 'B', text: '요하네스가 RP-03 포트폴리오를 촬영실로 옮겨 추가 촬영한 뒤 반납하지 않았다.' },
-      { id: 'C', text: '시안은 정상적으로 반납됐고 포트폴리오만 우연히 촬영실에 있었다.' },
+      { id: 'clara', badge: 'A', text: '클라라 바우어 · 패턴 장인' },
+      { id: 'johannes', badge: 'B', text: '요하네스 · 사진작가' },
     ],
-    correctAnswer: 'B',
+    correctAnswer: 'johannes',
     resolution: {
       title: '사건 종결',
       body:
@@ -132,14 +131,12 @@ export const CASES: Record<CaseId, CaseDefinition> = {
         ],
       },
     ],
-    deductionQuestion:
-      '두 사람의 증언과 QR 기록을 비교했을 때 FUNCTION 설계도에 일어난 일은 무엇인가?',
+    deductionQuestion: '두 사람의 증언과 현장 기록을 비교했을 때 FUNCTION 설계도를 가져간 용의자는 누구인가?',
     deductionOptions: [
-      { id: 'A', text: '펠릭스가 B-02을 가지고 외부 미팅에 갔다.' },
-      { id: 'B', text: '에밀이 B-02을 테스트실로 가져간 뒤 반납하지 않았다.' },
-      { id: 'C', text: 'FUNCTION 설계도는 처음부터 이동 카트에 실려 있었다.' },
+      { id: 'felix', badge: 'A', text: '펠릭스 슈미트 · 제품 설계자' },
+      { id: 'emil', badge: 'B', text: '에밀 크뤼거 · 테스트 담당자' },
     ],
-    correctAnswer: 'B',
+    correctAnswer: 'emil',
     resolution: {
       title: '사건 종결',
       body:

@@ -43,9 +43,9 @@ export const DIRECTIONS: Direction[] = [
   {
     id: 'daily',
     badge: 'B',
-    title: '일상',
-    family: '쇼퍼 · 데일리 토트',
-    description: '출근부터 가벼운 외출까지. 매일의 물건을 편안하게 담는 여유로운 가방입니다.',
+    title: '데일리 트래블',
+    family: '쇼퍼 · 데일리 & 트래블',
+    description: '출근부터 여행까지. 일상과 이동에 필요한 물건을 편안하게 담는 여유로운 가방입니다.',
     artwork: {
       silhouette: '/art/bag-daily-silhouette.png',
       patternless: '/art/bag-daily-patternless.png',

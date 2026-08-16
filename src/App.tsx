@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useGame } from './state/useGame';
 import { DIRECTIONS } from './data/directions';
@@ -21,8 +22,11 @@ import { MyPageScreen } from './screens/MyPageScreen';
 export default function App() {
   const {
     state,
+    hydrate,
+    clearError,
     go,
     setDesignerName,
+    registerDesigner,
     chooseDirection,
     enterRoom,
     openCharacter,
@@ -35,12 +39,33 @@ export default function App() {
     reset,
   } = useGame();
   const { isLoggedIn, loginWithKakao, logout } = useAuth();
-  const { pass, issuePass } = useDesignerPass();
+  const {
+    pass,
+    error: passError,
+    refresh: refreshPass,
+    clear: clearPass,
+    clearError: clearPassError,
+  } = useDesignerPass();
 
   const designerName = state.designerName.trim() || '수습 디자이너';
   const selectedDirection = DIRECTIONS.find((d) => d.id === state.direction) ?? null;
   const track = selectedDirection?.track ?? '디자인 트랙';
   const activeCase = state.caseId ? getCase(state.caseId) : null;
+
+  useEffect(() => {
+    if (isLoggedIn) hydrate().catch(() => undefined);
+  }, [hydrate, isLoggedIn]);
+
+  const showPass = () => {
+    refreshPass(track)
+      .catch(() => undefined)
+      .finally(() => go('pass'));
+  };
+
+  const showMyPage = () => {
+    refreshPass(track).catch(() => undefined);
+    openMyPage();
+  };
 
   return (
     <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">
@@ -56,9 +81,10 @@ export default function App() {
       />
       {isLoggedIn && (
         <AppHeader
-          onMyPage={openMyPage}
+          onMyPage={showMyPage}
           onLogout={() => {
             logout();
+            clearPass();
             reset();
           }}
         />
@@ -76,7 +102,9 @@ export default function App() {
             <IntroScreen
               isLoggedIn={isLoggedIn}
               onLogin={loginWithKakao}
-              onStart={() => go('register')}
+              onStart={() =>
+                go(state.designerName.trim() ? (state.direction ? 'rooms' : 'direction') : 'register')
+              }
             />
           )}
 
@@ -85,16 +113,21 @@ export default function App() {
               name={state.designerName}
               onChange={setDesignerName}
               onBack={() => go('intro')}
-              onNext={() => go('direction')}
+              onNext={() => registerDesigner().catch(() => undefined)}
             />
           )}
 
           {state.screen === 'direction' && (
-            <DirectionScreen onBack={() => go('register')} onSelect={chooseDirection} />
+            <DirectionScreen onBack={() => go('intro')} onSelect={chooseDirection} />
           )}
 
           {state.screen === 'rooms' && (
-            <RoomSelectScreen completedCases={state.completedCases} onSelect={enterRoom} />
+            <RoomSelectScreen
+              completedCases={state.completedCases}
+              onSelect={(roomId) => {
+                enterRoom(roomId).catch(() => undefined);
+              }}
+            />
           )}
 
           {state.screen === 'characters' && activeCase && (
@@ -102,7 +135,6 @@ export default function App() {
               caseData={activeCase}
               asked={state.asked}
               interviewed={state.interviewed}
-              onBack={() => go('rooms')}
               onSelect={openCharacter}
               onEvidence={() => go('evidence')}
             />
@@ -130,7 +162,9 @@ export default function App() {
             <DeductionScreen
               caseData={activeCase}
               onBack={() => go('evidence')}
-              onSubmit={submitAnswer}
+              onSubmit={(answer) => {
+                submitAnswer(answer).catch(() => undefined);
+              }}
             />
           )}
 
@@ -138,12 +172,13 @@ export default function App() {
             <ResultScreen
               caseData={activeCase}
               answer={state.answer}
+              correct={Boolean(state.deductionCorrect)}
               direction={selectedDirection}
               isLastCase={
                 activeCase.id === 'signature' && state.completedCases.includes('function')
               }
               onNext={
-                state.answer !== activeCase.correctAnswer
+                !state.deductionCorrect
                   ? endGameWithoutPass
                   : completeCase
               }
@@ -155,16 +190,43 @@ export default function App() {
               designerName={designerName}
               passEligible={state.passEligible}
               direction={selectedDirection}
-              onPass={() => go('pass')}
+              onPass={showPass}
             />
           )}
 
           {state.screen === 'pass' && (
             <PassScreen
               pass={pass}
-              onIssue={() => issuePass(designerName, track)}
-              onRestart={reset}
+              onIssue={() => refreshPass(track)}
+              onRestart={showMyPage}
             />
+          )}
+
+          {(state.error || passError) && (
+            <div
+              role="alert"
+              className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl items-start justify-between gap-4 rounded-lg border border-atelier-alert/50 bg-atelier-bg/95 px-4 py-3 font-mono text-meta text-atelier-alert shadow-xl backdrop-blur"
+            >
+              <span>{state.error ?? passError}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  clearError();
+                  clearPassError();
+                }}
+                className="shrink-0 text-atelier-text"
+              >
+                닫기
+              </button>
+            </div>
+          )}
+
+          {state.isBusy && (
+            <div className="fixed inset-0 z-40 grid place-items-center bg-atelier-bg/55 backdrop-blur-[2px]">
+              <p className="rounded-full border border-atelier-gold-dim bg-atelier-card px-5 py-3 font-mono text-caption text-atelier-gold">
+                서버와 동기화 중…
+              </p>
+            </div>
           )}
 
           {state.screen === 'mypage' && (

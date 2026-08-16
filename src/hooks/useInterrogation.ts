@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { getConversation } from '../lib/askCharacter';
 import type { AskCharacter, Character, Message } from '../types/game';
 
 interface Params {
@@ -32,9 +33,38 @@ export function useInterrogation({
 }: Params): Result {
   const [messages, setMessages] = useState<Message[]>([]);
   const [asksUsed, setAsksUsed] = useState(() => Math.min(initialAsksUsed, maxAsks));
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
+
+  useEffect(() => {
+    let active = true;
+
+    getConversation(character.id)
+      .then((conversation) => {
+        if (!active) return;
+        setAsksUsed(Math.min(conversation.questionCount, maxAsks));
+        setMessages(
+          conversation.messages.map((message) => ({
+            id: `${character.id}-${message.sequenceNumber}`,
+            role: message.senderType === 'USER' ? 'detective' : 'character',
+            content: message.content,
+          })),
+        );
+      })
+      .catch((caught) => {
+        if (active) {
+          setError(caught instanceof Error ? caught.message : '대화 내역을 불러오지 못했습니다.');
+        }
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [character.id, maxAsks]);
 
   const asksLeft = Math.max(0, maxAsks - asksUsed);
 
@@ -67,7 +97,9 @@ export function useInterrogation({
         }
       } catch (e) {
         setError(e instanceof Error ? e.message : '답변을 가져오지 못했습니다.');
-        setMessages((prev) => prev.filter((m) => m.id !== answerId));
+        setMessages((prev) =>
+          prev.filter((m) => m.id !== answerId && !(m.role === 'detective' && m.content === question)),
+        );
         setAsksUsed((n) => Math.max(0, n - 1)); // 실패한 질문은 횟수에서 되돌린다
       } finally {
         setMessages((prev) => prev.map((m) => (m.id === answerId ? { ...m, pending: false } : m)));

@@ -9,7 +9,7 @@ import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
   onBack: () => void;
-  onSelect: (id: Direction['id']) => void;
+  onSelect: (id: Direction['id']) => Promise<void>;
 }
 
 export function DirectionScreen({ onBack, onSelect }: Props) {
@@ -18,7 +18,9 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
   const choose = (id: Direction['id']) => {
     if (picked) return;
     setPicked(id);
-    window.setTimeout(() => onSelect(id), 400);
+    window.setTimeout(() => {
+      onSelect(id).catch(() => setPicked(null));
+    }, 400);
   };
 
   return (

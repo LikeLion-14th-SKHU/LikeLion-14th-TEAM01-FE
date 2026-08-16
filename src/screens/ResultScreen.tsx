@@ -9,13 +9,17 @@ import { DesignProgressReveal } from '../components/design/DesignProgressReveal'
 interface Props {
   caseData: CaseDefinition;
   answer: string;
+  correct: boolean;
   direction: Direction | null;
   isLastCase: boolean;
   onNext: () => void;
 }
 
-export function ResultScreen({ caseData, answer, direction, isLastCase, onNext }: Props) {
-  const correct = answer === caseData.correctAnswer;
+export function ResultScreen({ caseData, answer, correct, direction, isLastCase, onNext }: Props) {
+  const selected = caseData.deductionOptions.find((option) => option.id === answer)?.text ?? answer;
+  const correctAnswer =
+    caseData.deductionOptions.find((option) => option.id === caseData.correctAnswer)?.text ??
+    caseData.correctAnswer;
 
   return (
     <ScreenShell
@@ -51,8 +55,8 @@ export function ResultScreen({ caseData, answer, direction, isLastCase, onNext }
         <Reveal className="mt-2">
           <p className="font-mono text-small text-atelier-muted">
             {correct
-              ? '정답: ' + caseData.correctAnswer
-              : '정답은 ' + caseData.correctAnswer + '였습니다.'}
+              ? '선택: ' + selected
+              : '정답은 ' + correctAnswer + '였습니다.'}
           </p>
         </Reveal>
       </RevealGroup>

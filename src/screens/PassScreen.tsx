@@ -25,14 +25,14 @@ export function PassScreen({ pass, onIssue, onRestart }: Props) {
           </Reveal>
           <Reveal className="mt-3">
             <p className="text-small text-atelier-muted">
-              MCM 뮌헨 아틀리에의 공식 디자이너 패스입니다.
+              두 사건 완료 시 서버에서 자동 발급되는 공식 디자이너 패스입니다.
               <br />
-              어떤 디자인이 나올지 두근거리지 않나요?
+              발급 정보를 다시 확인해 주세요.
             </p>
           </Reveal>
           <Reveal className="mt-8 w-full">
             <Button fullWidth onClick={onIssue}>
-              랜덤 패스 뽑기
+              발급 정보 새로고침
             </Button>
           </Reveal>
         </RevealGroup>
@@ -45,7 +45,7 @@ export function PassScreen({ pass, onIssue, onRestart }: Props) {
       footer={
         <>
           <Button fullWidth onClick={onRestart}>
-            다시 시작하기
+            마이페이지에서 확인하기
           </Button>
           <p className="mt-2.5 text-center text-caption text-atelier-muted">
             발급된 패스는 마이페이지에서 다시 볼 수 있어요
