@@ -1,40 +1,61 @@
+export interface DirectionArtwork {
+  silhouette: string;
+  patternless: string;
+  complete: string;
+  frameAspectRatio: number;
+}
+
 export interface Direction {
-    id: 'trolley' | 'backpack' | 'tote';
-    badge: 'A' | 'B' | 'C';
-    title: string;
-    family: string;
-    description: string;
-    image: string;
-    track: string;
-  }
-  
-  export const DIRECTIONS: Direction[] = [
-    {
-      id: 'trolley',
-      badge: 'A',
-      title: '이동이 많은 여행자를 위한 제품',
-      family: '트롤리 · 위켄더 계열',
-      description: '공항과 호텔을 오가는 글로벌 노마드를 위한 설계. 내구성과 수납력을 극대화합니다.',
-      image: '/art/direction-trolley.jpg',
-      track: '트롤리 트랙',
+  id: 'handsfree' | 'daily' | 'travel';
+  badge: 'A' | 'B' | 'C';
+  title: string;
+  family: string;
+  description: string;
+  artwork: DirectionArtwork;
+  track: string;
+}
+
+export const DIRECTIONS: Direction[] = [
+  {
+    id: 'handsfree',
+    badge: 'A',
+    title: '핸즈프리',
+    family: '크로스바디 · 컴팩트',
+    description: '두 손은 자유롭게, 필요한 소지품은 가까이. 가벼운 이동에 어울리는 밀착형 가방입니다.',
+    artwork: {
+      silhouette: '/art/bag-handsfree-silhouette.png',
+      patternless: '/art/bag-handsfree-patternless.png',
+      complete: '/art/bag-handsfree-complete.png',
+      frameAspectRatio: 965 / 434,
     },
-    {
-      id: 'backpack',
-      badge: 'B',
-      title: '도시를 걷는 사람을 위한 제품',
-      family: '백팩 · 크로스바디 계열',
-      description: '매일의 이동에 맞춘 경량 구조. 한 손으로 여닫는 플랩과 밀착 스트랩.',
-      image: '/art/direction-backpack.jpg',
-      track: '백팩 트랙',
+    track: '핸즈프리 디자인',
+  },
+  {
+    id: 'daily',
+    badge: 'B',
+    title: '일상',
+    family: '쇼퍼 · 데일리 토트',
+    description: '출근부터 가벼운 외출까지. 매일의 물건을 편안하게 담는 여유로운 가방입니다.',
+    artwork: {
+      silhouette: '/art/bag-daily-silhouette.png',
+      patternless: '/art/bag-daily-patternless.png',
+      complete: '/art/bag-daily-complete.png',
+      frameAspectRatio: 767 / 936,
     },
-    {
-      id: 'tote',
-      badge: 'C',
-      title: '일과 여행을 함께 담는 제품',
-      family: '토트 · 브리프 계열',
-      description: '서류와 짐을 한 번에. 아틀리에의 가죽 마감과 확장 가능한 내부 구조.',
-      image: '/art/direction-tote.jpg',
-      track: '토트 트랙',
+    track: '데일리 디자인',
+  },
+  {
+    id: 'travel',
+    badge: 'C',
+    title: '여행',
+    family: '위켄더 · 트래블',
+    description: '낯선 도시로 떠나는 여정에 맞춰 넉넉한 수납과 안정적인 휴대성을 갖춘 가방입니다.',
+    artwork: {
+      silhouette: '/art/bag-travel-silhouette.png',
+      patternless: '/art/bag-travel-patternless.png',
+      complete: '/art/bag-travel-complete.png',
+      frameAspectRatio: 1061 / 743,
     },
-  ];
-  
+    track: '트래블 디자인',
+  },
+];

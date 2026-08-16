@@ -26,8 +26,8 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
       <StepDots total={3} current={2} className="mb-8" />
       <SectionHeading
         eyebrow="STEP 2 · DESIGN DIRECTION"
-        title="디자인 방향을 선택하세요"
-        description="세 가지 접근 중 하나를 선택하면 해당 방향의 레퍼런스 자료가 제공됩니다."
+        title="어떤 순간을 위한 가방인가요?"
+        description="원하는 사용 장면을 선택하세요. 두 사건을 해결하며 선택한 실루엣을 하나의 디자인으로 완성합니다."
       />
 
       <RevealGroup
@@ -49,10 +49,12 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
             >
               <div className="relative">
                 <HoverZoomImage
-                  src={d.image}
-                  alt={d.title}
+                  src={d.artwork.silhouette}
+                  alt={`${d.title} 가방 실루엣`}
                   useGroupHover
-                  className="h-32 w-full md:h-40"
+                  scale={1.03}
+                  className="h-52 w-full bg-[#f4f2ee] md:h-56"
+                  imageClassName="object-contain p-3 md:p-4"
                 />
                 <span className="absolute left-3 top-3 grid size-8 place-items-center rounded-full bg-atelier-gold font-mono text-small font-bold text-atelier-bg">
                   {d.badge}

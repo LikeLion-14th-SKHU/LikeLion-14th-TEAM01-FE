@@ -38,7 +38,8 @@ export default function App() {
   const { pass, issuePass } = useDesignerPass();
 
   const designerName = state.designerName.trim() || '수습 디자이너';
-  const track = DIRECTIONS.find((d) => d.id === state.direction)?.track ?? '디자인 트랙';
+  const selectedDirection = DIRECTIONS.find((d) => d.id === state.direction) ?? null;
+  const track = selectedDirection?.track ?? '디자인 트랙';
   const activeCase = state.caseId ? getCase(state.caseId) : null;
 
   return (
@@ -137,6 +138,7 @@ export default function App() {
             <ResultScreen
               caseData={activeCase}
               answer={state.answer}
+              direction={selectedDirection}
               isLastCase={
                 activeCase.id === 'signature' && state.completedCases.includes('function')
               }

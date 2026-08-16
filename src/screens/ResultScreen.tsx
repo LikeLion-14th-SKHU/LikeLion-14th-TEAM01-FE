@@ -1,17 +1,20 @@
 import type { CaseDefinition } from '../data/case';
+import type { Direction } from '../data/directions';
 import { cn } from '../lib/cn';
 import { ScreenShell } from '../components/ui/ScreenShell';
 import { Button } from '../components/ui/Button';
 import { Reveal, RevealGroup } from '../components/motion/Reveal';
+import { DesignProgressReveal } from '../components/design/DesignProgressReveal';
 
 interface Props {
   caseData: CaseDefinition;
   answer: string;
+  direction: Direction | null;
   isLastCase: boolean;
   onNext: () => void;
 }
 
-export function ResultScreen({ caseData, answer, isLastCase, onNext }: Props) {
+export function ResultScreen({ caseData, answer, direction, isLastCase, onNext }: Props) {
   const correct = answer === caseData.correctAnswer;
 
   return (
@@ -53,6 +56,15 @@ export function ResultScreen({ caseData, answer, isLastCase, onNext }: Props) {
           </p>
         </Reveal>
       </RevealGroup>
+
+      {correct && direction && (
+        <Reveal delay={0.25} className="mt-7">
+          <DesignProgressReveal
+            direction={direction}
+            stage={caseData.id === 'function' ? 'function' : 'signature'}
+          />
+        </Reveal>
+      )}
 
       <Reveal delay={0.3} className="mt-7">
         <article className="rounded-xl border border-atelier-line bg-atelier-card p-5">
