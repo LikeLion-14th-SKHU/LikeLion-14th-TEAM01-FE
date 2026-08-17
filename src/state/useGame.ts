@@ -17,6 +17,7 @@ export type Screen =
   | 'register'
   | 'direction'
   | 'rooms'
+  | 'briefing'
   | 'characters'
   | 'interrogation'
   | 'evidence'
@@ -227,7 +228,7 @@ export function useGame() {
         ...stateFromProgress(progress, current.designerName),
         roomId,
         caseId,
-        screen: 'characters',
+        screen: 'briefing',
         asked: {},
         interviewed: {},
         isBusy: false,
@@ -237,6 +238,11 @@ export function useGame() {
       throw error;
     }
   }, []);
+
+  const startInvestigation = useCallback(
+    () => setState((current) => ({ ...current, screen: 'characters' })),
+    [],
+  );
 
   const openCharacter = useCallback(
     (activeCharacterId: string) =>
@@ -326,6 +332,7 @@ export function useGame() {
     registerDesigner,
     chooseDirection,
     enterRoom,
+    startInvestigation,
     openCharacter,
     closeCharacter,
     submitAnswer,

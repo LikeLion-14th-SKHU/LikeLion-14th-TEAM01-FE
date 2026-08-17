@@ -6,6 +6,7 @@ import { IntroScreen } from './screens/IntroScreen';
 import { RegisterScreen } from './screens/RegisterScreen';
 import { DirectionScreen } from './screens/DirectionScreen';
 import { RoomSelectScreen } from './screens/RoomSelectScreen';
+import { CaseBriefingScreen } from './screens/CaseBriefingScreen';
 import { CharacterSelectScreen } from './screens/CharacterSelectScreen';
 import { InterrogationScreen } from './screens/InterrogationScreen';
 import { EvidenceScreen } from './screens/EvidenceScreen';
@@ -37,6 +38,7 @@ export default function App() {
     registerDesigner,
     chooseDirection,
     enterRoom,
+    startInvestigation,
     openCharacter,
     closeCharacter,
     submitAnswer,
@@ -177,6 +179,14 @@ export default function App() {
               onSelect={(roomId) => {
                 enterRoom(roomId).catch(() => undefined);
               }}
+            />
+          )}
+
+          {state.screen === 'briefing' && activeCase && (
+            <CaseBriefingScreen
+              caseData={activeCase}
+              onBack={() => go('rooms')}
+              onStart={startInvestigation}
             />
           )}
 

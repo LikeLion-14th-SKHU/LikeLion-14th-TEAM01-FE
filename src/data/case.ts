@@ -18,6 +18,8 @@ export interface CaseDefinition {
   number: 1 | 2;
   code: 'SIGNATURE' | 'FUNCTION';
   roomName: string;
+  briefingTitle: string;
+  briefing: string[];
   investigationTitle: string;
   investigationDescription: string;
   evidence: EvidenceDoc[];
@@ -31,12 +33,22 @@ export interface CaseDefinition {
   };
 }
 
+export const STORY_OVERVIEW = [
+  '1976년, 뮌헨. 당신은 새로운 여행용 제품을 개발하는 MCM 아틀리에의 수습 디자이너입니다.',
+  '내일 첫 프레젠테이션을 앞두고 완성했던 디자인 시안 두 장이 사라졌습니다. 패턴실, 설계실, 촬영실을 조사해 시안을 되찾고 제품을 완성해야 합니다.',
+];
+
 export const CASES: Record<CaseId, CaseDefinition> = {
   signature: {
     id: 'signature',
     number: 2,
     code: 'SIGNATURE',
     roomName: '패턴실',
+    briefingTitle: '패턴 시안',
+    briefing: [
+      '새로운 여행용 가방의 발표를 앞두고 비세토스 패턴과 외관 디자인이 담긴 SIGNATURE 시안이 사라졌습니다.',
+      '마지막으로 시안을 사용한 사람은 패턴 장인 클라라이고, 시안이 반납된 장소 주변에는 사진작가 요하네스가 있었습니다.',
+    ],
     investigationTitle: '패턴실 조사',
     investigationDescription: '사라진 SIGNATURE 시안에 대해 관련자들에게 질문하세요.',
     evidence: [
@@ -96,6 +108,11 @@ export const CASES: Record<CaseId, CaseDefinition> = {
     number: 1,
     code: 'FUNCTION',
     roomName: '설계실',
+    briefingTitle: '기능 시안',
+    briefing: [
+      '여행용 가방의 기능 테스트가 끝난 뒤 스트랩과 수납 구조가 담긴 FUNCTION 설계도가 사라졌습니다.',
+      '제품 설계자 펠릭스는 설계도를 파란색 설계통에 보관했다고 말하고, 테스트 담당자 에밀은 설계도를 본 적이 없다고 주장합니다.',
+    ],
     investigationTitle: '설계실 조사',
     investigationDescription: '사라진 FUNCTION 설계도에 대해 관련자들에게 질문하세요.',
     evidence: [

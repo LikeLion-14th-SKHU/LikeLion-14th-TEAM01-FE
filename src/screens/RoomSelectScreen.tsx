@@ -19,7 +19,7 @@ const ROOMS: Room[] = [
   {
     id: 'drafting',
     caseId: 'function',
-    name: '설계실',
+    name: '기능 시안',
     code: 'FUNCTION',
     summary: '스트랩과 내부 수납 설계',
     image: '/art/function.jpg',
@@ -27,7 +27,7 @@ const ROOMS: Room[] = [
   {
     id: 'pattern',
     caseId: 'signature',
-    name: '패턴실',
+    name: '패턴 시안',
     code: 'SIGNATURE',
     summary: '비세토스 패턴과 외관 디자인',
     image: '/art/signature.jpg',
