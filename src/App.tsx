@@ -19,6 +19,13 @@ import { getCase } from './data/case';
 import { useDesignerPass } from './state/useDesignerPass';
 import { MyPageScreen } from './screens/MyPageScreen';
 import { useProductRecommendations } from './hooks/useProductRecommendations';
+import { FieldEvidenceScreen } from './screens/FieldEvidenceScreen';
+import { FIELD_EVIDENCE } from './data/fieldEvidence';
+import {
+  getFieldEvidenceCharacterId,
+  getRequestedEvidenceDirection,
+  getStoredEvidenceDirection,
+} from './lib/fieldEvidenceRoute';
 
 export default function App() {
   const {
@@ -59,6 +66,10 @@ export default function App() {
   const selectedDirection = DIRECTIONS.find((d) => d.id === state.direction) ?? null;
   const track = selectedDirection?.track ?? '디자인 트랙';
   const activeCase = state.caseId ? getCase(state.caseId) : null;
+  const fieldEvidenceId = getFieldEvidenceCharacterId();
+  const fieldEvidence = fieldEvidenceId ? FIELD_EVIDENCE[fieldEvidenceId] : null;
+  const evidenceDirection =
+    getRequestedEvidenceDirection() ?? state.direction ?? getStoredEvidenceDirection() ?? 'daily';
 
   useEffect(() => {
     if (isLoggedIn) hydrate().catch(() => undefined);
@@ -84,6 +95,26 @@ export default function App() {
     refreshPass(track).catch(() => undefined);
     openMyPage();
   };
+
+  if (fieldEvidence) {
+    return (
+      <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">
+        <img
+          src="/art/designer-name.jpg"
+          alt=""
+          aria-hidden
+          className="pointer-events-none fixed inset-y-0 left-1/2 h-dvh w-full max-w-md -translate-x-1/2 object-cover object-center md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-y-0 left-1/2 w-full max-w-md -translate-x-1/2 bg-linear-to-b from-atelier-bg/60 via-atelier-bg/75 to-atelier-bg/95 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
+        />
+        <div className="relative z-10 min-h-dvh">
+          <FieldEvidenceScreen evidence={fieldEvidence} direction={evidenceDirection} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">

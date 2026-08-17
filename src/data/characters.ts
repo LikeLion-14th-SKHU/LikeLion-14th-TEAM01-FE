@@ -55,8 +55,16 @@ export const getCharacter = (id: string): Character => {
 };
 
 export const FALLBACK_QUESTIONS: Record<string, string[]> = {
-  clara: ['시안을 정확히 몇 시에 반납했나요?', '반납한 다음에는 어디로 갔나요?'],
-  johannes: ['마지막 촬영은 몇 시였나요?', '빨간색 포트폴리오를 본 적 있나요?'],
+  clara: [
+    '시안을 정확히 몇 시에 반납했나요?',
+    '시안을 어떤 포트폴리오에 넣어 반납했나요?',
+    '반납한 다음에는 어디로 갔나요?',
+  ],
+  johannes: [
+    '마지막 촬영은 몇 시였나요?',
+    '빨간색 포트폴리오를 본 적 있나요?',
+    '오후 3시 52분에는 어디에 있었나요?',
+  ],
   felix: [
     '테스트 준비물은 무엇이었나요?',
     'FUNCTION 설계도는 어디에 보관했나요?',

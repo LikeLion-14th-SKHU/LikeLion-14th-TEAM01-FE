@@ -8,6 +8,7 @@ import type {
 } from '../api/types';
 import type { Direction } from '../data/directions';
 import type { CaseId } from '../types/game';
+import { clearStoredEvidenceDirection, storeEvidenceDirection } from '../lib/fieldEvidenceRoute';
 
 export type RoomId = 'pattern' | 'drafting';
 
@@ -147,6 +148,7 @@ export function useGame() {
     try {
       const [progress, myPage] = await Promise.all([api.getProgress(), api.getMyPage()]);
       const restored = stateFromProgress(progress, myPage.designerName ?? '');
+      if (restored.direction) storeEvidenceDirection(restored.direction);
       const activeCase = progress.currentCase ? caseFromApi[progress.currentCase] : null;
       const asked: Record<string, number> = {};
       const interviewed: Record<string, boolean> = {};
@@ -201,6 +203,9 @@ export function useGame() {
     setState((current) => ({ ...current, isBusy: true, error: null }));
     try {
       const progress = await api.selectDesignDirection(directionToApi[direction]);
+      if (progress.designDirection) {
+        storeEvidenceDirection(directionFromApi[progress.designDirection]);
+      }
       setState((current) => ({
         ...current,
         ...stateFromProgress(progress, current.designerName),
@@ -307,7 +312,10 @@ export function useGame() {
     }));
   }, []);
 
-  const reset = useCallback(() => setState(createInitialState()), []);
+  const reset = useCallback(() => {
+    clearStoredEvidenceDirection();
+    setState(createInitialState());
+  }, []);
 
   return {
     state,
