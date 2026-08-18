@@ -35,7 +35,7 @@ export const DIRECTIONS: Direction[] = [
     },
     track: '핸즈프리 디자인',
     result: {
-      title: '핸즈프리 크로스바디',
+      title: 'Aren 비세토스 크로스바디',
       description: '두 손을 자유롭게 유지하면서 필요한 소지품을 가까이 둘 수 있도록 완성한 컴팩트 디자인입니다.',
       productUrl: null,
     },
@@ -54,7 +54,7 @@ export const DIRECTIONS: Direction[] = [
     },
     track: '데일리 디자인',
     result: {
-      title: '데일리 쇼퍼백',
+      title: 'Leni 비세토스 쇼퍼',
       description: '출근과 가벼운 외출에 필요한 물건을 편안하게 담을 수 있도록 완성한 데일리 디자인입니다.',
       productUrl: null,
     },
@@ -73,7 +73,7 @@ export const DIRECTIONS: Direction[] = [
     },
     track: '트래블 디자인',
     result: {
-      title: '트래블 위켄더',
+      title: 'Ottomar 비세토스 위켄더',
       description: '여정에 필요한 넉넉한 수납과 안정적인 휴대성을 결합해 완성한 트래블 디자인입니다.',
       productUrl: null,
     },
