@@ -220,6 +220,17 @@ export function useGame() {
 
   const enterRoom = useCallback(async (roomId: RoomId) => {
     const caseId: CaseId = roomId === 'pattern' ? 'signature' : 'function';
+
+    if (state.caseId === caseId) {
+      setState((current) => ({
+        ...current,
+        roomId,
+        screen: 'briefing',
+        error: null,
+      }));
+      return;
+    }
+
     setState((current) => ({ ...current, isBusy: true, error: null }));
     try {
       const progress = await api.selectCase(caseToApi[caseId]);
@@ -237,7 +248,7 @@ export function useGame() {
       setState((current) => ({ ...current, isBusy: false, error: errorMessage(error) }));
       throw error;
     }
-  }, []);
+  }, [state.caseId]);
 
   const startInvestigation = useCallback(
     () => setState((current) => ({ ...current, screen: 'characters' })),
