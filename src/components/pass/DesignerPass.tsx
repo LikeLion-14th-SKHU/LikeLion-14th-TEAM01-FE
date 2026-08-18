@@ -66,7 +66,7 @@ export function DesignerPass({
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-[86.9%] w-[43%] -translate-x-1/2 -translate-y-1/2 overflow-hidden text-ellipsis whitespace-nowrap text-center font-display font-bold leading-none tracking-[0.04em]"
+        className="pointer-events-none absolute left-1/2 top-[calc(86.9%_+_7px)] w-[43%] -translate-x-1/2 -translate-y-1/2 overflow-hidden text-ellipsis whitespace-nowrap text-center font-display font-bold leading-none tracking-[0.04em]"
         style={getNameStyle(displayName, variant)}
       >
         {displayName}
