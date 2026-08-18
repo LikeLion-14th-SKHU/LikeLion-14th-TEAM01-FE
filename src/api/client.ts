@@ -6,6 +6,7 @@ import type {
   DesignDirection,
   FinalDeductionResponse,
   GameProgressResponse,
+  LoginExchangeResponse,
   MyPageResponse,
   ProductRecommendationResponse,
   TokenResponse,
@@ -127,7 +128,36 @@ const request = async <T>(path: string, options: RequestOptions = {}): Promise<T
   return (await parseResponse<T>(response)).data;
 };
 
+const requestNoContent = async (path: string, options: RequestOptions = {}): Promise<void> => {
+  const { authenticated = true, retryOnUnauthorized = true, headers, ...init } = options;
+  const tokens = readTokens();
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers: {
+      ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(authenticated && tokens?.accessToken
+        ? { Authorization: `${tokens.tokenType || 'Bearer'} ${tokens.accessToken}` }
+        : {}),
+      ...headers,
+    },
+  });
+
+  if (response.status === 401 && authenticated && retryOnUnauthorized && tokens?.refreshToken) {
+    await refreshTokens();
+    return requestNoContent(path, { ...options, retryOnUnauthorized: false });
+  }
+
+  if (!response.ok) await parseResponse<never>(response);
+};
+
 export const api = {
+  exchangeLoginCode: (code: string) =>
+    request<LoginExchangeResponse>('/detective/auth/exchange', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+      authenticated: false,
+    }),
+  logout: () => requestNoContent('/detective/auth/logout', { method: 'POST' }),
   setDesignerName: (designerName: string) =>
     request<{ designerName: string }>('/detective/designer-name', {
       method: 'POST',

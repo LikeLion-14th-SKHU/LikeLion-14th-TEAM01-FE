@@ -3,6 +3,7 @@ import { Reveal, RevealGroup } from '../components/motion/Reveal';
 
 interface Props {
   isLoggedIn: boolean;
+  isAuthLoading?: boolean;
   onLogin: () => void;
   onStart: () => void;
 }
@@ -10,7 +11,7 @@ interface Props {
 const KAKAO_LOGIN_BUTTON =
   'https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_large_wide.png';
 
-export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
+export function IntroScreen({ isLoggedIn, isAuthLoading = false, onLogin, onStart }: Props) {
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center px-7 text-center md:px-12">
       <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex w-full max-w-xl flex-col items-center">
@@ -46,16 +47,23 @@ export function IntroScreen({ isLoggedIn, onLogin, onStart }: Props) {
             <Button
               fullWidth
               onClick={onLogin}
-              aria-label="카카오 로그인"
+              disabled={isAuthLoading}
+              aria-label={isAuthLoading ? '카카오 로그인 확인 중' : '카카오 로그인'}
               className="min-h-0 overflow-hidden rounded-xl bg-[#fee500] p-0 hover:brightness-100"
             >
-              <img
-                src={KAKAO_LOGIN_BUTTON}
-                alt=""
-                aria-hidden
-                draggable={false}
-                className="h-auto w-full"
-              />
+              {isAuthLoading ? (
+                <span className="flex min-h-14 items-center justify-center font-sans text-body font-semibold text-[#191919]">
+                  카카오 로그인 확인 중…
+                </span>
+              ) : (
+                <img
+                  src={KAKAO_LOGIN_BUTTON}
+                  alt=""
+                  aria-hidden
+                  draggable={false}
+                  className="h-auto w-full"
+                />
+              )}
             </Button>
           )}
         </Reveal>

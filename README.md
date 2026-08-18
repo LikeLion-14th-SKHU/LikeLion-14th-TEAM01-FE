@@ -8,8 +8,7 @@
 - To use another production API, set `VITE_API_BASE_URL` and `VITE_API_ORIGIN` at build time.
 
 Kakao login starts at `/detective/auth/kakao/login`. After Kakao authorization, the backend
-callback redirects to the frontend callback screen with the JWT result in the URL fragment. The
-frontend accepts camelCase token fields from that fragment, with query-string, snake_case, and
-JSON `tokens` fallbacks, stores the tokens, and immediately removes authentication data from the
-URL. The API currently exposes no logout or game-reset endpoint, so logout only clears frontend
-tokens and completed/failed games cannot be restarted from the client.
+redirects to the frontend callback with a short-lived, one-time `code`. The frontend immediately
+removes the code from the URL, exchanges it through `POST /detective/auth/exchange`, and stores the
+returned JWT pair. Logout calls `POST /detective/auth/logout` to revoke the server-side refresh
+token and then clears the frontend tokens.

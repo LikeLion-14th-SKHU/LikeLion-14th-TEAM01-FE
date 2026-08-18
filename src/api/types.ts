@@ -19,6 +19,13 @@ export interface TokenResponse {
   refreshTokenExpiresIn: number;
 }
 
+export interface LoginExchangeResponse {
+  memberId: number;
+  newMember: boolean;
+  nickname: string;
+  tokens: TokenResponse;
+}
+
 export interface GameProgressResponse {
   status: GameStatus;
   designDirection: DesignDirection | null;

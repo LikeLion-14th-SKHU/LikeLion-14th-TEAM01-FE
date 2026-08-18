@@ -48,7 +48,7 @@ export default function App() {
     closeMyPage,
     reset,
   } = useGame();
-  const { isLoggedIn, authError, loginWithKakao, logout, clearAuthError } = useAuth();
+  const { isLoggedIn, isAuthLoading, authError, loginWithKakao, logout, clearAuthError } = useAuth();
   const {
     pass,
     error: passError,
@@ -134,10 +134,13 @@ export default function App() {
         <AppHeader
           onMyPage={showMyPage}
           onLogout={() => {
-            logout();
-            clearPass();
-            clearRecommendations();
-            reset();
+            logout()
+              .catch(() => undefined)
+              .finally(() => {
+                clearPass();
+                clearRecommendations();
+                reset();
+              });
           }}
         />
       )}
@@ -153,6 +156,7 @@ export default function App() {
           {state.screen === 'intro' && (
             <IntroScreen
               isLoggedIn={isLoggedIn}
+              isAuthLoading={isAuthLoading}
               onLogin={loginWithKakao}
               onStart={() =>
                 go(state.designerName.trim() ? (state.direction ? 'rooms' : 'direction') : 'register')

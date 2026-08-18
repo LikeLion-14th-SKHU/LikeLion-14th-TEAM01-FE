@@ -1,89 +1,51 @@
-import { useCallback, useEffect, useState } from 'react';
-import { API_ORIGIN, clearStoredTokens, getStoredTokens, storeTokens } from '../api/client';
-import type { TokenResponse } from '../api/types';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  API_ORIGIN,
+  api,
+  clearStoredTokens,
+  getStoredTokens,
+  storeTokens,
+} from '../api/client';
 
 interface AuthCallbackResult {
-  tokens: TokenResponse | null;
+  code: string | null;
   error: string | null;
   handled: boolean;
 }
 
 const readCallbackResult = (): AuthCallbackResult => {
   const query = new URLSearchParams(window.location.search);
-  const hash = new URLSearchParams(window.location.hash.replace(/^#\??/, ''));
-  const value = (...keys: string[]) => {
-    for (const key of keys) {
-      const found = hash.get(key) ?? query.get(key);
-      if (found) return found;
-    }
-    return null;
-  };
-
-  let nestedTokens: Partial<TokenResponse> | null = null;
-  const serializedTokens = value('tokens');
-  if (serializedTokens) {
-    try {
-      nestedTokens = JSON.parse(serializedTokens) as Partial<TokenResponse>;
-    } catch {
-      nestedTokens = null;
-    }
-  }
-
-  const accessToken = value('accessToken', 'access_token') ?? nestedTokens?.accessToken ?? null;
-  const refreshToken = value('refreshToken', 'refresh_token') ?? nestedTokens?.refreshToken ?? null;
-  const error = value('error_description', 'error', 'message');
-  const handled = Boolean(
-    accessToken ||
-      refreshToken ||
-      error ||
-      serializedTokens ||
-      window.location.pathname.endsWith('/auth/callback'),
-  );
-
-  if (!accessToken || !refreshToken) {
-    return {
-      tokens: null,
-      error: error ?? (handled ? '카카오 로그인 결과에 인증 토큰이 없습니다.' : null),
-      handled,
-    };
-  }
+  const code = query.get('code');
+  const callbackError = query.get('error_description') ?? query.get('error') ?? query.get('message');
+  const handled = Boolean(code || callbackError || window.location.pathname.endsWith('/auth/callback'));
 
   return {
-    tokens: {
-      tokenType: value('tokenType', 'token_type') ?? nestedTokens?.tokenType ?? 'Bearer',
-      accessToken,
-      accessTokenExpiresIn: Number(
-        value('accessTokenExpiresIn', 'access_token_expires_in') ??
-          nestedTokens?.accessTokenExpiresIn ??
-          0,
-      ),
-      refreshToken,
-      refreshTokenExpiresIn: Number(
-        value('refreshTokenExpiresIn', 'refresh_token_expires_in') ??
-          nestedTokens?.refreshTokenExpiresIn ??
-          0,
-      ),
-    },
-    error: null,
+    code,
+    error: callbackError ?? (handled && !code ? '카카오 로그인 코드가 없습니다.' : null),
     handled,
   };
 };
 
-const consumeCallbackResult = (): string | null => {
+const consumeCallbackResult = (): AuthCallbackResult => {
   const result = readCallbackResult();
-  if (!result.handled) return null;
-  if (result.tokens) storeTokens(result.tokens);
-  window.history.replaceState(window.history.state, '', import.meta.env.BASE_URL);
-  return result.error;
+  if (result.handled) {
+    window.history.replaceState(window.history.state, '', import.meta.env.BASE_URL);
+  }
+  return result;
 };
 
 export function useAuth() {
   const [initialAuth] = useState(() => {
-    const error = consumeCallbackResult();
-    return { error, isLoggedIn: Boolean(getStoredTokens()) };
+    const callback = consumeCallbackResult();
+    return {
+      callback,
+      isLoggedIn: callback.code ? false : Boolean(getStoredTokens()),
+    };
   });
-  const [authError, setAuthError] = useState<string | null>(initialAuth.error);
+  const [authError, setAuthError] = useState<string | null>(initialAuth.callback.error);
   const [isLoggedIn, setIsLoggedIn] = useState(initialAuth.isLoggedIn);
+  const [isAuthLoading, setIsAuthLoading] = useState(Boolean(initialAuth.callback.code));
+  const exchangeStarted = useRef(false);
 
   useEffect(() => {
     const sync = () => setIsLoggedIn(Boolean(getStoredTokens()));
@@ -95,16 +57,40 @@ export function useAuth() {
     };
   }, []);
 
+  useEffect(() => {
+    const code = initialAuth.callback.code;
+    if (!code || exchangeStarted.current) return;
+    exchangeStarted.current = true;
+    clearStoredTokens();
+
+    api
+      .exchangeLoginCode(code)
+      .then((result) => {
+        storeTokens(result.tokens);
+        setAuthError(null);
+      })
+      .catch((error: unknown) => {
+        setAuthError(error instanceof Error ? error.message : '카카오 로그인을 완료하지 못했습니다.');
+      })
+      .finally(() => {
+        setIsAuthLoading(false);
+      });
+  }, [initialAuth.callback.code]);
+
   const loginWithKakao = useCallback(() => {
     setAuthError(null);
     window.location.assign(`${API_ORIGIN}/detective/auth/kakao/login`);
   }, []);
 
-  const logout = useCallback(() => {
-    clearStoredTokens();
+  const logout = useCallback(async () => {
+    try {
+      await api.logout();
+    } finally {
+      clearStoredTokens();
+    }
   }, []);
 
   const clearAuthError = useCallback(() => setAuthError(null), []);
 
-  return { isLoggedIn, authError, loginWithKakao, logout, clearAuthError };
+  return { isLoggedIn, isAuthLoading, authError, loginWithKakao, logout, clearAuthError };
 }
