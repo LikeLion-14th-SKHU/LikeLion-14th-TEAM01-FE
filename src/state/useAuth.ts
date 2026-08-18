@@ -90,7 +90,20 @@ export function useAuth() {
     }
   }, []);
 
+  const withdraw = useCallback(async () => {
+    await api.withdrawMember();
+    clearStoredTokens();
+  }, []);
+
   const clearAuthError = useCallback(() => setAuthError(null), []);
 
-  return { isLoggedIn, isAuthLoading, authError, loginWithKakao, logout, clearAuthError };
+  return {
+    isLoggedIn,
+    isAuthLoading,
+    authError,
+    loginWithKakao,
+    logout,
+    withdraw,
+    clearAuthError,
+  };
 }

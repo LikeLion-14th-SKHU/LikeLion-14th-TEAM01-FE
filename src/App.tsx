@@ -48,7 +48,15 @@ export default function App() {
     closeMyPage,
     reset,
   } = useGame();
-  const { isLoggedIn, isAuthLoading, authError, loginWithKakao, logout, clearAuthError } = useAuth();
+  const {
+    isLoggedIn,
+    isAuthLoading,
+    authError,
+    loginWithKakao,
+    logout,
+    withdraw,
+    clearAuthError,
+  } = useAuth();
   const {
     pass,
     error: passError,
@@ -96,6 +104,13 @@ export default function App() {
   const showMyPage = () => {
     refreshPass(track).catch(() => undefined);
     openMyPage();
+  };
+
+  const withdrawAccount = async () => {
+    await withdraw();
+    clearPass();
+    clearRecommendations();
+    reset();
   };
 
   if (fieldEvidence) {
@@ -301,7 +316,7 @@ export default function App() {
           )}
 
           {state.screen === 'mypage' && (
-            <MyPageScreen pass={pass} onBack={closeMyPage} />
+            <MyPageScreen pass={pass} onBack={closeMyPage} onWithdraw={withdrawAccount} />
           )}
         </motion.div>
       </AnimatePresence>

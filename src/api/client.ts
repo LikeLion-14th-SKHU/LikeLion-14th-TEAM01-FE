@@ -158,6 +158,7 @@ export const api = {
       authenticated: false,
     }),
   logout: () => requestNoContent('/detective/auth/logout', { method: 'POST' }),
+  withdrawMember: () => requestNoContent('/detective/members/me', { method: 'DELETE' }),
   setDesignerName: (designerName: string) =>
     request<{ designerName: string }>('/detective/designer-name', {
       method: 'POST',
