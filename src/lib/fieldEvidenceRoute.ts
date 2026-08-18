@@ -3,7 +3,9 @@ import type { Direction } from '../data/directions';
 
 const DIRECTION_STORAGE_KEY = 'mcmSelectedDesignDirection';
 const characterAliases: Record<string, FieldEvidenceCharacterId> = {
+  clara: 'clara',
   emil: 'emil',
+  felix: 'felix',
   johan: 'johannes',
   johannes: 'johannes',
 };
@@ -57,4 +59,3 @@ export const clearStoredEvidenceDirection = () => {
     // 저장소를 사용할 수 없는 환경에서는 정리할 값도 없다.
   }
 };
-

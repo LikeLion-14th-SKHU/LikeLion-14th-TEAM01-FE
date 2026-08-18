@@ -9,6 +9,8 @@ export const CHARACTERS: Character[] = [
     standing: '/art/klara-cutout.png',
     standingScale: 0.9,
     backdrop: '/art/klara_room.png',
+    openingStatement:
+      '오후 2시에 SIGNATURE 시안을 빌렸어요. 패턴 작업을 마친 뒤 시안을 빨간색 포트폴리오에 넣어 아카이브 카트에 반납했습니다. 반납할 때 촬영실 입구가 조금 분주했던 건 기억나요.',
   },
   {
     id: 'johannes',

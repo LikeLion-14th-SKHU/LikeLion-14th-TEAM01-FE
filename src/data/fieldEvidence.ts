@@ -2,7 +2,7 @@ import type { EvidenceDoc } from './case';
 import { CASES } from './case';
 import type { Direction } from './directions';
 
-export type FieldEvidenceCharacterId = 'emil' | 'johannes';
+export type FieldEvidenceCharacterId = 'clara' | 'johannes' | 'felix' | 'emil';
 
 export interface FieldEvidenceDefinition {
   characterId: FieldEvidenceCharacterId;
@@ -11,8 +11,8 @@ export interface FieldEvidenceDefinition {
   caseLabel: string;
   title: string;
   description: string;
-  imageAlt: string;
-  images: Record<Direction['id'], string>;
+  imageAlt?: string;
+  images?: Record<Direction['id'], string>;
   record: EvidenceDoc;
 }
 
@@ -23,6 +23,15 @@ const findEvidence = (caseId: keyof typeof CASES, evidenceId: string): EvidenceD
 };
 
 export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefinition> = {
+  clara: {
+    characterId: 'clara',
+    characterName: '클라라 바우어',
+    role: '패턴 장인',
+    caseLabel: 'CASE 2 · SIGNATURE',
+    title: '클라라의 현장 증거',
+    description: 'SIGNATURE 시안의 대여·반납 내역과 염색실 출입 기록입니다.',
+    record: findEvidence('signature', 'archive'),
+  },
   emil: {
     characterId: 'emil',
     characterName: '에밀 크뤼거',
@@ -55,5 +64,13 @@ export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefin
     },
     record: findEvidence('signature', 'contact'),
   },
+  felix: {
+    characterId: 'felix',
+    characterName: '펠릭스 슈미트',
+    role: '제품 설계자',
+    caseLabel: 'CASE 1 · FUNCTION',
+    title: '펠릭스의 현장 증거',
+    description: 'FUNCTION 설계도의 보관 내역과 펠릭스의 퇴실 기록입니다.',
+    record: findEvidence('function', 'felix-record'),
+  },
 };
-

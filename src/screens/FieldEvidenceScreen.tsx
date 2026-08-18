@@ -27,21 +27,23 @@ export function FieldEvidenceScreen({ evidence, direction }: Props) {
       </Reveal>
 
       <RevealGroup onView={false} stagger={0.12} delay={0.15} className="mt-7 space-y-5">
-        <Reveal>
-          <figure className="overflow-hidden rounded-xl border border-atelier-line bg-atelier-card shadow-2xl shadow-black/25">
-            <img
-              src={evidence.images[direction]}
-              alt={evidence.imageAlt}
-              className="block h-auto w-full bg-black object-contain"
-            />
-            <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-atelier-line px-4 py-3 font-mono text-caption text-atelier-muted md:px-5">
-              <span>{evidence.characterName} · {evidence.role}</span>
-              <span className="text-atelier-gold">
-                {selectedDirection?.title ?? '데일리 트래블'} 시제품 기록
-              </span>
-            </figcaption>
-          </figure>
-        </Reveal>
+        {evidence.images && evidence.imageAlt && (
+          <Reveal>
+            <figure className="overflow-hidden rounded-xl border border-atelier-line bg-atelier-card shadow-2xl shadow-black/25">
+              <img
+                src={evidence.images[direction]}
+                alt={evidence.imageAlt}
+                className="block h-auto w-full bg-black object-contain"
+              />
+              <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-atelier-line px-4 py-3 font-mono text-caption text-atelier-muted md:px-5">
+                <span>{evidence.characterName} · {evidence.role}</span>
+                <span className="text-atelier-gold">
+                  {selectedDirection?.title ?? '데일리 트래블'} 시제품 기록
+                </span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        )}
 
         <Reveal>
           <article className="overflow-hidden rounded-xl border border-atelier-line bg-atelier-card">
@@ -75,4 +77,3 @@ export function FieldEvidenceScreen({ evidence, direction }: Props) {
     </ScreenShell>
   );
 }
-
