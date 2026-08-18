@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FALLBACK_QUESTIONS, getCharacter } from '../data/characters';
+import { getCharacter } from '../data/characters';
 import { askCharacter } from '../lib/askCharacter';
 import { useInterrogation } from '../hooks/useInterrogation';
 import { useTypewriter } from '../hooks/useTypewriter';
@@ -38,7 +38,6 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
     initialAsksUsed,
     maxAsks: MAX_ASKS,
     askCharacter,
-    fallbackQuestions: FALLBACK_QUESTIONS[characterId] ?? [],
   });
 
   const last = messages[messages.length - 1];

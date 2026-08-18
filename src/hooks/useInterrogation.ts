@@ -8,7 +8,6 @@ interface Params {
   initialAsksUsed?: number;
   maxAsks?: number;
   askCharacter: AskCharacter;
-  fallbackQuestions?: string[];
 }
 
 interface Result {
@@ -36,7 +35,6 @@ export function useInterrogation({
   initialAsksUsed = 0,
   maxAsks = 3,
   askCharacter,
-  fallbackQuestions = [],
 }: Params): Result {
   const [messages, setMessages] = useState<Message[]>([]);
   const [initialMessage, setInitialMessage] = useState(
@@ -167,15 +165,7 @@ export function useInterrogation({
     isCompleting,
     completed: conversationCompleted || asksLeft === 0,
     error,
-    suggestions: conversationCompleted
-      ? []
-      : recommendedQuestions.length > 0
-        ? recommendedQuestions
-        : fallbackQuestions.length >= maxAsks
-          ? fallbackQuestions.slice(asksUsed, asksUsed + 1)
-          : asksLeft === 1
-            ? fallbackQuestions.slice(0, 2)
-            : [],
+    suggestions: conversationCompleted || asksLeft === 0 ? [] : recommendedQuestions,
     ask,
     completeEarly,
   };
