@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import type { DesignerPass as DesignerPassData } from '../../types/designerPass';
+import type {
+  DesignerPass as DesignerPassData,
+  DesignerPassVariant,
+} from '../../types/designerPass';
 import { cn } from '../../lib/cn';
-import { DesignerPass, type DesignerPassVariant } from './DesignerPass';
+import { DesignerPass } from './DesignerPass';
 
 interface Props {
   pass: DesignerPassData;
@@ -10,7 +13,7 @@ interface Props {
   className?: string;
 }
 
-export function DesignerPassCard({ pass, variant = 'brown', className }: Props) {
+export function DesignerPassCard({ pass, variant, className }: Props) {
   const [flipped, setFlipped] = useState(false);
 
   return (
@@ -26,7 +29,7 @@ export function DesignerPassCard({ pass, variant = 'brown', className }: Props) 
         className="block w-full rounded-[9%] text-left focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-atelier-gold"
       >
         {!flipped ? (
-          <DesignerPass username={pass.designerName} variant={variant} />
+          <DesignerPass username={pass.designerName} variant={variant ?? pass.variant} />
         ) : (
           <div className="flex aspect-[1086/1448] w-full flex-col justify-center rounded-[9%] border border-atelier-text/30 bg-linear-to-br from-[#312719] via-[#171208] to-[#0e0b08] p-7 shadow-2xl md:p-9">
             <p className="font-mono text-micro tracking-eyebrow text-atelier-muted">PASS BENEFITS</p>

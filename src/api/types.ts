@@ -57,9 +57,13 @@ export interface FinalDeductionResponse {
   progress: GameProgressResponse;
 }
 
+export type DesignerPassGrade = 'BROWN' | 'IVORY' | 'NAVY' | 'GOLDEN';
+
 export interface DesignerPassResponse {
   passCode: string;
   issuedDate: string;
+  grade: DesignerPassGrade | null;
+  displayName: string | null;
 }
 
 export interface MyPageResponse {

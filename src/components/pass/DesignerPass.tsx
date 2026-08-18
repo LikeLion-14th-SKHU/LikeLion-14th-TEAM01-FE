@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import { cn } from '../../lib/cn';
-
-export type DesignerPassVariant = 'brown' | 'gold' | 'ivory' | 'navy';
+import type { DesignerPassVariant } from '../../types/designerPass';
 
 export interface DesignerPassProps {
   username: string;
