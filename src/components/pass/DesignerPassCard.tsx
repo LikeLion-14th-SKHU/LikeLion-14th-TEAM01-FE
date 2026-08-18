@@ -26,7 +26,7 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="block w-full rounded-[9%] text-left [perspective:1200px] focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-atelier-gold"
+        className="block w-full rounded-[9%] text-left outline-none [perspective:1200px]"
       >
         <motion.div
           animate={{ rotateY: flipped ? 180 : 0 }}
@@ -42,21 +42,23 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
 
           <div
             aria-hidden={!flipped}
-            className="absolute inset-0 flex flex-col justify-center rounded-[9%] border border-atelier-text/30 bg-linear-to-br from-[#312719] via-[#171208] to-[#0e0b08] p-7 shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] md:p-9"
+            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]"
           >
-            <p className="font-mono text-micro tracking-eyebrow text-atelier-muted">PASS BENEFITS</p>
-            <div className="mt-5 grid aspect-square w-24 place-items-center rounded-lg bg-atelier-text font-mono text-micro text-atelier-bg md:w-28">
-              QR CODE
-            </div>
-            <p className="mt-5 text-small text-atelier-text/90 text-pretty">
-              매장 직원에게 이 화면을 보여주세요. 1976 아카이브 존 입장과 각인 서비스를 이용할 수
-              있습니다.
-            </p>
-            <div className="mt-5 border-t border-atelier-text/20 pt-4 font-mono text-meta/7 text-atelier-muted">
-              <p>· 유효기간: 팝업 기간 내</p>
-              <p>· 1인 1회 · 양도 불가</p>
-              <p>· {pass.no}</p>
-              <p>· {pass.issueDate}</p>
+            <div className="mx-auto flex h-full w-[83%] flex-col justify-center rounded-[9%] border border-atelier-text/30 bg-linear-to-br from-[#312719] via-[#171208] to-[#0e0b08] p-7 shadow-2xl md:p-9">
+              <p className="font-mono text-micro tracking-eyebrow text-atelier-muted">PASS BENEFITS</p>
+              <div className="mt-5 grid aspect-square w-24 place-items-center rounded-lg bg-atelier-text font-mono text-micro text-atelier-bg md:w-28">
+                QR CODE
+              </div>
+              <p className="mt-5 text-small text-atelier-text/90 text-pretty">
+                매장 직원에게 이 화면을 보여주세요. 1976 아카이브 존 입장과 각인 서비스를 이용할 수
+                있습니다.
+              </p>
+              <div className="mt-5 border-t border-atelier-text/20 pt-4 font-mono text-meta/7 text-atelier-muted">
+                <p>· 유효기간: 팝업 기간 내</p>
+                <p>· 1인 1회 · 양도 불가</p>
+                <p>· {pass.no}</p>
+                <p>· {pass.issueDate}</p>
+              </div>
             </div>
           </div>
         </motion.div>
