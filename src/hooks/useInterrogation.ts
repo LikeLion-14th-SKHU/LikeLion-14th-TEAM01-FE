@@ -82,13 +82,13 @@ export function useInterrogation({
       inFlight.current = true;
       setError(null);
       setIsLoading(true);
-      setAsksUsed((n) => n + 1);
 
+      const questionId = uid();
       const answerId = uid();
       const createdAt = new Date().toISOString();
       setMessages((prev) => [
         ...prev,
-        { id: uid(), role: 'detective', content: question, createdAt },
+        { id: questionId, role: 'detective', content: question, createdAt },
         { id: answerId, role: 'character', content: '', createdAt, pending: true },
       ]);
 
@@ -102,19 +102,19 @@ export function useInterrogation({
             prev.map((m) => (m.id === answerId ? { ...m, content: m.content + chunk } : m)),
           );
         }
+        setAsksUsed((n) => Math.min(maxAsks, n + 1));
       } catch (e) {
         setError(e instanceof Error ? e.message : '답변을 가져오지 못했습니다.');
         setMessages((prev) =>
-          prev.filter((m) => m.id !== answerId && !(m.role === 'detective' && m.content === question)),
+          prev.filter((message) => message.id !== questionId && message.id !== answerId),
         );
-        setAsksUsed((n) => Math.max(0, n - 1)); // 실패한 질문은 횟수에서 되돌린다
       } finally {
         setMessages((prev) => prev.map((m) => (m.id === answerId ? { ...m, pending: false } : m)));
         setIsLoading(false);
         inFlight.current = false;
       }
     },
-    [askCharacter, asksLeft, character.id, conversationCompleted, sessionId],
+    [askCharacter, asksLeft, character.id, conversationCompleted, maxAsks, sessionId],
   );
 
   const completeEarly = useCallback(async (): Promise<boolean> => {
