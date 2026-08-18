@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getConversation } from '../lib/askCharacter';
+import { completeConversation, getConversation } from '../lib/askCharacter';
 import type { AskCharacter, Character, Message } from '../types/game';
 
 interface Params {
@@ -15,10 +15,12 @@ interface Result {
   messages: Message[];
   asksLeft: number;
   isLoading: boolean;
+  isCompleting: boolean;
   completed: boolean;
   error: string | null;
   suggestions: string[];
   ask: (question: string) => Promise<void>;
+  completeEarly: () => Promise<boolean>;
 }
 
 const uid = () => Math.random().toString(36).slice(2, 10);
@@ -33,7 +35,9 @@ export function useInterrogation({
 }: Params): Result {
   const [messages, setMessages] = useState<Message[]>([]);
   const [asksUsed, setAsksUsed] = useState(() => Math.min(initialAsksUsed, maxAsks));
+  const [conversationCompleted, setConversationCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCompleting, setIsCompleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inFlight = useRef(false);
 
@@ -44,6 +48,7 @@ export function useInterrogation({
       .then((conversation) => {
         if (!active) return;
         setAsksUsed(Math.min(conversation.questionCount, maxAsks));
+        setConversationCompleted(conversation.status === 'COMPLETED');
         setMessages(
           conversation.messages.map((message) => ({
             id: `${character.id}-${message.sequenceNumber}`,
@@ -71,7 +76,7 @@ export function useInterrogation({
   const ask = useCallback(
     async (raw: string) => {
       const question = raw.trim();
-      if (!question || inFlight.current || asksLeft === 0) return;
+      if (!question || inFlight.current || conversationCompleted || asksLeft === 0) return;
 
       inFlight.current = true;
       setError(null);
@@ -107,22 +112,50 @@ export function useInterrogation({
         inFlight.current = false;
       }
     },
-    [askCharacter, asksLeft, character.id, sessionId],
+    [askCharacter, asksLeft, character.id, conversationCompleted, sessionId],
   );
+
+  const completeEarly = useCallback(async (): Promise<boolean> => {
+    if (conversationCompleted || asksLeft === 0) return true;
+    if (inFlight.current) return false;
+
+    inFlight.current = true;
+    setError(null);
+    setIsLoading(true);
+    setIsCompleting(true);
+    try {
+      const conversation = await completeConversation(character.id);
+      const completed = conversation.status === 'COMPLETED';
+      setAsksUsed(Math.min(conversation.questionCount, maxAsks));
+      setConversationCompleted(completed);
+      return completed;
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : '대화를 종료하지 못했습니다.');
+      return false;
+    } finally {
+      setIsCompleting(false);
+      setIsLoading(false);
+      inFlight.current = false;
+    }
+  }, [asksLeft, character.id, conversationCompleted, maxAsks]);
 
   return {
     messages,
     asksLeft,
     isLoading,
-    completed: asksLeft === 0 && !isLoading,
+    isCompleting,
+    completed: conversationCompleted || asksLeft === 0,
     error,
     suggestions:
-      fallbackQuestions.length >= maxAsks
-        ? fallbackQuestions.slice(asksUsed, asksUsed + 1)
-        : asksLeft === 1
-          ? fallbackQuestions.slice(0, 2)
-          : [],
+      conversationCompleted
+        ? []
+        : fallbackQuestions.length >= maxAsks
+          ? fallbackQuestions.slice(asksUsed, asksUsed + 1)
+          : asksLeft === 1
+            ? fallbackQuestions.slice(0, 2)
+            : [],
     ask,
+    completeEarly,
   };
 }
 

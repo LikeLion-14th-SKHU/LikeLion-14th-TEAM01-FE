@@ -18,6 +18,9 @@ const getCharacterType = (characterId: string): CharacterType => {
 export const getConversation = (characterId: string): Promise<ConversationResponse> =>
   api.getConversation(getCharacterType(characterId));
 
+export const completeConversation = (characterId: string): Promise<ConversationResponse> =>
+  api.completeConversation(getCharacterType(characterId));
+
 export const askCharacter: AskCharacter = async function* ({ characterId, question }) {
   const conversation = await api.askCharacter(getCharacterType(characterId), question);
   const answer = [...conversation.messages]

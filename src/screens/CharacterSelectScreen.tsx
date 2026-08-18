@@ -25,7 +25,9 @@ export function CharacterSelectScreen({
   onEvidence,
 }: Props) {
   const characters = CASE_CHARACTERS[caseData.id];
-  const allDone = characters.every((character) => (asked[character.id] ?? 0) >= MAX_ASKS);
+  const allDone = characters.every(
+    (character) => Boolean(interviewed[character.id]) || (asked[character.id] ?? 0) >= MAX_ASKS,
+  );
 
   return (
     <ScreenShell

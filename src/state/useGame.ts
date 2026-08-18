@@ -250,13 +250,16 @@ export function useGame() {
     [],
   );
 
-  const closeCharacter = useCallback((id: string, asksUsed: number) => {
+  const closeCharacter = useCallback((id: string, asksUsed: number, completed = false) => {
     setState((current) => ({
       ...current,
       screen: 'characters',
       activeCharacterId: null,
       asked: { ...current.asked, [id]: asksUsed },
-      interviewed: { ...current.interviewed, [id]: asksUsed >= MAX_ASKS },
+      interviewed: {
+        ...current.interviewed,
+        [id]: Boolean(current.interviewed[id]) || completed || asksUsed >= MAX_ASKS,
+      },
     }));
   }, []);
 

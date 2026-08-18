@@ -182,6 +182,10 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ content }),
     }),
+  completeConversation: (characterType: CharacterType) =>
+    request<ConversationResponse>(`/detective/conversations/${characterType}/complete`, {
+      method: 'POST',
+    }),
   deduce: (characterType: CharacterType) =>
     request<FinalDeductionResponse>('/detective/games/final-deduction', {
       method: 'POST',

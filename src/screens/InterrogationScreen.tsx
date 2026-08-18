@@ -14,13 +14,23 @@ interface Props {
   characterId: string;
   sessionId: string;
   initialAsksUsed: number;
-  onClose: (id: string, asksUsed: number) => void;
+  onClose: (id: string, asksUsed: number, completed?: boolean) => void;
 }
 
 export function InterrogationScreen({ caseData, characterId, sessionId, initialAsksUsed, onClose }: Props) {
   const character = useMemo(() => getCharacter(characterId), [characterId]);
 
-  const { messages, asksLeft, isLoading, suggestions, error, ask } = useInterrogation({
+  const {
+    messages,
+    asksLeft,
+    isLoading,
+    isCompleting,
+    completed,
+    suggestions,
+    error,
+    ask,
+    completeEarly,
+  } = useInterrogation({
     character,
     sessionId,
     initialAsksUsed,
@@ -38,6 +48,15 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
   });
 
   const idle = character.openingStatement ?? '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
+  const asksUsed = MAX_ASKS - asksLeft;
+
+  const handleClose = async () => {
+    if (completed) {
+      onClose(characterId, asksUsed, true);
+      return;
+    }
+    if (await completeEarly()) onClose(characterId, asksUsed, true);
+  };
 
   return (
     <div className="relative flex min-h-dvh flex-col md:grid md:h-dvh md:grid-cols-[minmax(0,1fr)_minmax(22rem,0.9fr)] md:grid-rows-[auto_minmax(0,1fr)]">
@@ -62,10 +81,11 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
         </span>
         <button
           type="button"
-          onClick={() => onClose(characterId, MAX_ASKS - asksLeft)}
-          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-meta text-atelier-muted transition-colors hover:text-atelier-text"
+          onClick={() => void handleClose()}
+          disabled={isLoading || isTyping}
+          className="-mr-2 flex min-h-11 items-center gap-1.5 px-2 font-mono text-meta text-atelier-muted transition-colors hover:text-atelier-text disabled:cursor-not-allowed disabled:opacity-40"
         >
-          <span aria-hidden>✕</span> 종료
+          <span aria-hidden>✕</span> {isCompleting ? '종료 중…' : '종료'}
         </button>
       </header>
 
@@ -86,21 +106,21 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
 
         {error && (
           <p role="alert" className="px-1 font-mono text-meta text-atelier-alert">
-            {error} — 다시 질문해 주세요.
+            {error}
           </p>
         )}
 
         <QuestionInput
-          asksLeft={asksLeft}
-          disabled={isLoading || isTyping}
+          asksLeft={completed ? 0 : asksLeft}
+          disabled={isLoading || isTyping || completed}
           suggestions={suggestions}
           onSubmit={ask}
         />
 
-        {asksLeft === 0 && !isTyping && (
+        {completed && !isTyping && (
           <button
             type="button"
-            onClick={() => onClose(characterId, MAX_ASKS)}
+            onClick={() => onClose(characterId, asksUsed, true)}
             className="min-h-13 rounded-md border-2 border-atelier-line font-display text-body font-bold text-atelier-text transition-colors hover:border-atelier-gold"
           >
             대화 종료 · 조사실로 돌아가기
