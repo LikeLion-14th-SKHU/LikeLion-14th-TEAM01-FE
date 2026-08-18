@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '../../lib/cn';
 import type { Message } from '../../types/game';
@@ -58,9 +59,10 @@ export function ConversationHistory({ characterName, messages }: Props) {
         <span className="text-atelier-muted">{questionCount}</span>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
+      {createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
             className="fixed inset-0 z-50 flex items-end justify-center md:items-center md:p-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -148,9 +150,11 @@ export function ConversationHistory({ characterName, messages }: Props) {
                 )}
               </div>
             </motion.section>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </>
   );
 }

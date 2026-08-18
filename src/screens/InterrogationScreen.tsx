@@ -97,40 +97,42 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
         className="relative z-10 mt-2 min-h-0 flex-1 px-6 md:col-start-1 md:row-start-2 md:mt-0 md:px-8 md:pb-8 lg:px-10"
       />
 
-      <div className="relative z-10 flex flex-col gap-3 px-5 pb-6 md:col-start-2 md:row-start-2 md:min-h-0 md:justify-center md:overflow-y-auto md:px-8 md:pb-8 lg:px-10">
-        <div className="flex justify-end">
-          <ConversationHistory characterName={character.name} messages={messages} />
+      <div className="relative z-10 px-5 pb-6 md:col-start-2 md:row-start-2 md:flex md:min-h-0 md:items-center md:overflow-y-auto md:px-8 md:pb-8 lg:px-10">
+        <div className="relative flex w-full flex-col gap-3">
+          <div className="absolute -top-14 right-0 z-20">
+            <ConversationHistory characterName={character.name} messages={messages} />
+          </div>
+
+          <DialogueBox
+            name={character.name}
+            text={answering ? text : idle}
+            isTyping={answering && (isTyping || Boolean(last?.pending))}
+            onAdvance={isTyping ? skip : undefined}
+          />
+
+          {error && (
+            <p role="alert" className="px-1 font-mono text-meta text-atelier-alert">
+              {error}
+            </p>
+          )}
+
+          <QuestionInput
+            asksLeft={completed ? 0 : asksLeft}
+            disabled={isLoading || isTyping || completed}
+            suggestions={suggestions}
+            onSubmit={ask}
+          />
+
+          {completed && !isTyping && (
+            <button
+              type="button"
+              onClick={() => onClose(characterId, asksUsed, true)}
+              className="min-h-13 rounded-md border-2 border-atelier-line font-display text-body font-bold text-atelier-text transition-colors hover:border-atelier-gold"
+            >
+              대화 종료 · 조사실로 돌아가기
+            </button>
+          )}
         </div>
-
-        <DialogueBox
-          name={character.name}
-          text={answering ? text : idle}
-          isTyping={answering && (isTyping || Boolean(last?.pending))}
-          onAdvance={isTyping ? skip : undefined}
-        />
-
-        {error && (
-          <p role="alert" className="px-1 font-mono text-meta text-atelier-alert">
-            {error}
-          </p>
-        )}
-
-        <QuestionInput
-          asksLeft={completed ? 0 : asksLeft}
-          disabled={isLoading || isTyping || completed}
-          suggestions={suggestions}
-          onSubmit={ask}
-        />
-
-        {completed && !isTyping && (
-          <button
-            type="button"
-            onClick={() => onClose(characterId, asksUsed, true)}
-            className="min-h-13 rounded-md border-2 border-atelier-line font-display text-body font-bold text-atelier-text transition-colors hover:border-atelier-gold"
-          >
-            대화 종료 · 조사실로 돌아가기
-          </button>
-        )}
       </div>
     </div>
   );
