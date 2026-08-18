@@ -49,6 +49,8 @@ export interface ConversationResponse {
   remainingQuestionCount: number;
   startedAt: string | null;
   completedAt: string | null;
+  initialMessage: string | null;
+  recommendedQuestions: string[];
   messages: ConversationMessageResponse[];
 }
 

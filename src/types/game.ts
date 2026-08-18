@@ -29,6 +29,9 @@ export interface AskRequest {
 
 export interface AskResponse {
   reply: string;
+  questionCount: number;
+  completed: boolean;
+  recommendedQuestions: string[];
 }
 
-export type AskCharacter = (req: AskRequest) => AsyncIterable<string>;
+export type AskCharacter = (req: AskRequest) => Promise<AskResponse>;

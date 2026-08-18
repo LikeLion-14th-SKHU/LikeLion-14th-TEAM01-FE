@@ -13,6 +13,7 @@ interface Params {
 
 interface Result {
   messages: Message[];
+  initialMessage: string;
   asksLeft: number;
   isLoading: boolean;
   isCompleting: boolean;
@@ -24,6 +25,10 @@ interface Result {
 }
 
 const uid = () => Math.random().toString(36).slice(2, 10);
+const DEFAULT_INITIAL_MESSAGE = '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
+
+const normalizeSuggestions = (questions: string[] | undefined): string[] =>
+  (questions ?? []).map((question) => question.trim()).filter(Boolean);
 
 export function useInterrogation({
   character,
@@ -34,6 +39,10 @@ export function useInterrogation({
   fallbackQuestions = [],
 }: Params): Result {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [initialMessage, setInitialMessage] = useState(
+    character.openingStatement ?? DEFAULT_INITIAL_MESSAGE,
+  );
+  const [recommendedQuestions, setRecommendedQuestions] = useState<string[]>([]);
   const [asksUsed, setAsksUsed] = useState(() => Math.min(initialAsksUsed, maxAsks));
   const [conversationCompleted, setConversationCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +58,12 @@ export function useInterrogation({
         if (!active) return;
         setAsksUsed(Math.min(conversation.questionCount, maxAsks));
         setConversationCompleted(conversation.status === 'COMPLETED');
+        setInitialMessage(
+          conversation.initialMessage?.trim() ||
+            character.openingStatement ||
+            DEFAULT_INITIAL_MESSAGE,
+        );
+        setRecommendedQuestions(normalizeSuggestions(conversation.recommendedQuestions));
         setMessages(
           conversation.messages.map((message) => ({
             id: `${character.id}-${message.sequenceNumber}`,
@@ -70,7 +85,7 @@ export function useInterrogation({
     return () => {
       active = false;
     };
-  }, [character.id, maxAsks]);
+  }, [character.id, character.openingStatement, maxAsks]);
 
   const asksLeft = Math.max(0, maxAsks - asksUsed);
 
@@ -93,16 +108,19 @@ export function useInterrogation({
       ]);
 
       try {
-        for await (const chunk of askCharacter({
+        const response = await askCharacter({
           characterId: character.id,
           sessionId,
           question,
-        })) {
-          setMessages((prev) =>
-            prev.map((m) => (m.id === answerId ? { ...m, content: m.content + chunk } : m)),
-          );
-        }
-        setAsksUsed((n) => Math.min(maxAsks, n + 1));
+        });
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === answerId ? { ...message, content: response.reply } : message,
+          ),
+        );
+        setAsksUsed(Math.min(response.questionCount, maxAsks));
+        setConversationCompleted(response.completed);
+        setRecommendedQuestions(normalizeSuggestions(response.recommendedQuestions));
       } catch (e) {
         setError(e instanceof Error ? e.message : '답변을 가져오지 못했습니다.');
         setMessages((prev) =>
@@ -143,14 +161,16 @@ export function useInterrogation({
 
   return {
     messages,
+    initialMessage,
     asksLeft,
     isLoading,
     isCompleting,
     completed: conversationCompleted || asksLeft === 0,
     error,
-    suggestions:
-      conversationCompleted
-        ? []
+    suggestions: conversationCompleted
+      ? []
+      : recommendedQuestions.length > 0
+        ? recommendedQuestions
         : fallbackQuestions.length >= maxAsks
           ? fallbackQuestions.slice(asksUsed, asksUsed + 1)
           : asksLeft === 1

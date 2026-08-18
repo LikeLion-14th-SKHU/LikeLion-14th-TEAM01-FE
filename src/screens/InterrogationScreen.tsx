@@ -23,6 +23,7 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
 
   const {
     messages,
+    initialMessage,
     asksLeft,
     isLoading,
     isCompleting,
@@ -48,7 +49,6 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
     enabled: answering,
   });
 
-  const idle = character.openingStatement ?? '무엇이든 물어보세요. 기억나는 대로 답하겠습니다.';
   const asksUsed = MAX_ASKS - asksLeft;
 
   const handleClose = async () => {
@@ -105,7 +105,7 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
 
           <DialogueBox
             name={character.name}
-            text={answering ? text : idle}
+            text={answering ? text : initialMessage}
             isTyping={answering && (isTyping || Boolean(last?.pending))}
             onAdvance={isTyping ? skip : undefined}
           />

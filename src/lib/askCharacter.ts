@@ -21,12 +21,16 @@ export const getConversation = (characterId: string): Promise<ConversationRespon
 export const completeConversation = (characterId: string): Promise<ConversationResponse> =>
   api.completeConversation(getCharacterType(characterId));
 
-export const askCharacter: AskCharacter = async function* ({ characterId, question }) {
+export const askCharacter: AskCharacter = async ({ characterId, question }) => {
   const conversation = await api.askCharacter(getCharacterType(characterId), question);
-  const answer = [...conversation.messages]
-    .reverse()
-    .find((message) => message.senderType === 'CHARACTER')?.content;
+  const latestMessage = conversation.messages.at(-1);
+  const answer = latestMessage?.senderType === 'CHARACTER' ? latestMessage.content.trim() : '';
 
   if (!answer) throw new Error('용의자의 답변이 비어 있습니다.');
-  yield answer;
+  return {
+    reply: answer,
+    questionCount: conversation.questionCount,
+    completed: conversation.status === 'COMPLETED',
+    recommendedQuestions: conversation.recommendedQuestions ?? [],
+  };
 };
