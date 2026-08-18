@@ -55,15 +55,18 @@ export function DesignerPass({
 
   return (
     <div
+      data-designer-pass
       className={cn('relative w-full max-w-md', className)}
       style={{ containerType: 'inline-size' }}
     >
       <img
+        data-designer-pass-image
         src={PASS_IMAGES[variant]}
         alt={`${displayName}님의 Designer Pass`}
         className={cn('block h-auto w-full select-none', imageClassName)}
       />
       <span
+        data-designer-pass-name
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-[calc(86.9%_+_6px)] w-[43%] -translate-x-1/2 -translate-y-1/2 overflow-hidden text-ellipsis whitespace-nowrap text-center font-display font-bold leading-none tracking-[0.04em]"
         style={getNameStyle(displayName, variant)}

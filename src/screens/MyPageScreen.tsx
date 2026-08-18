@@ -34,7 +34,7 @@ export function MyPageScreen({ pass, onBack, onWithdraw }: Props) {
       <SectionHeading
         eyebrow="MY PAGE"
         title="마이페이지"
-        description="발급받은 Designer Pass를 확인할 수 있습니다."
+        description="발급받은 Designer Pass를 확인하고 이미지로 저장할 수 있습니다."
       />
 
       <Reveal delay={0.2} className="mt-9">

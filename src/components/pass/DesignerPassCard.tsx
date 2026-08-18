@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type {
   DesignerPass as DesignerPassData,
   DesignerPassVariant,
 } from '../../types/designerPass';
 import { cn } from '../../lib/cn';
+import { downloadDesignerPass } from '../../lib/downloadDesignerPass';
 import { DesignerPass } from './DesignerPass';
+import { Button } from '../ui/Button';
 
 interface Props {
   pass: DesignerPassData;
@@ -15,6 +17,22 @@ interface Props {
 
 export function DesignerPassCard({ pass, variant, className }: Props) {
   const [flipped, setFlipped] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const passFrontRef = useRef<HTMLDivElement>(null);
+
+  const saveAsImage = async () => {
+    if (saving || !passFrontRef.current) return;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      await downloadDesignerPass(passFrontRef.current, pass.designerName);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : '패스 이미지를 저장하지 못했습니다.');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className={cn('mx-auto w-full max-w-sm', className)}>
@@ -34,6 +52,7 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
           className="relative aspect-[1086/1448] w-full [transform-style:preserve-3d]"
         >
           <div
+            ref={passFrontRef}
             aria-hidden={flipped}
             className="absolute inset-0 [backface-visibility:hidden]"
           >
@@ -67,6 +86,20 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
       <p className="mt-3 text-center font-mono text-caption text-atelier-muted">
         패스를 탭하면 {flipped ? '앞면' : '혜택'}을 볼 수 있어요
       </p>
+      <Button
+        fullWidth
+        variant="outline"
+        onClick={() => void saveAsImage()}
+        disabled={saving}
+        className="mt-5"
+      >
+        {saving ? '이미지 만드는 중…' : 'Designer Pass 이미지로 저장'}
+      </Button>
+      {saveError && (
+        <p role="alert" className="mt-2 text-center font-mono text-caption text-atelier-alert">
+          {saveError}
+        </p>
+      )}
     </div>
   );
 }
