@@ -7,6 +7,7 @@ import { MAX_ASKS } from '../state/useGame';
 import { CharacterStage } from '../components/character/CharacterStage';
 import { DialogueBox } from '../components/dialogue/DialogueBox';
 import { QuestionInput } from '../components/dialogue/QuestionInput';
+import { ConversationHistory } from '../components/dialogue/ConversationHistory';
 import type { CaseDefinition } from '../data/case';
 
 interface Props {
@@ -97,6 +98,10 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
       />
 
       <div className="relative z-10 flex flex-col gap-3 px-5 pb-6 md:col-start-2 md:row-start-2 md:min-h-0 md:justify-center md:overflow-y-auto md:px-8 md:pb-8 lg:px-10">
+        <div className="flex justify-end">
+          <ConversationHistory characterName={character.name} messages={messages} />
+        </div>
+
         <DialogueBox
           name={character.name}
           text={answering ? text : idle}

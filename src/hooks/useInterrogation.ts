@@ -54,6 +54,7 @@ export function useInterrogation({
             id: `${character.id}-${message.sequenceNumber}`,
             role: message.senderType === 'USER' ? 'detective' : 'character',
             content: message.content,
+            createdAt: message.createdAt,
           })),
         );
       })
@@ -84,10 +85,11 @@ export function useInterrogation({
       setAsksUsed((n) => n + 1);
 
       const answerId = uid();
+      const createdAt = new Date().toISOString();
       setMessages((prev) => [
         ...prev,
-        { id: uid(), role: 'detective', content: question },
-        { id: answerId, role: 'character', content: '', pending: true },
+        { id: uid(), role: 'detective', content: question, createdAt },
+        { id: answerId, role: 'character', content: '', createdAt, pending: true },
       ]);
 
       try {

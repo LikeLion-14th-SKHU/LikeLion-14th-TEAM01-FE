@@ -17,6 +17,7 @@ export interface Message {
   id: string;
   role: MessageRole;
   content: string;
+  createdAt?: string;
   pending?: boolean;
 }
 

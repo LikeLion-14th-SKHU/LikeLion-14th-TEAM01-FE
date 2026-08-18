@@ -13,7 +13,7 @@ export function EvidenceScreen({ caseData, onBack, onDeduce }: Props) {
   return (
     <ScreenShell
       onBack={onBack}
-      backLabel="작업실 선택"
+      backLabel="조사로 돌아가기"
       caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
       footer={
         <Button fullWidth onClick={onDeduce}>

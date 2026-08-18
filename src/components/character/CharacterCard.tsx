@@ -39,9 +39,9 @@ export function CharacterCard({ character, asked, completed = false, total, onSe
             <p className="mt-1 font-mono text-caption font-semibold text-atelier-gold">{character.role}</p>
             <p className="mt-2 font-mono text-small text-atelier-muted">
               {completed
-                ? '대화를 완료했습니다.'
+                ? '대화 완료 · 내역 보기'
                 : done
-                  ? '모든 질문을 완료했습니다.'
+                  ? '모든 질문 완료 · 내역 보기'
                   : asked + ' / ' + total + ' 질문 완료'}
             </p>
           </div>
