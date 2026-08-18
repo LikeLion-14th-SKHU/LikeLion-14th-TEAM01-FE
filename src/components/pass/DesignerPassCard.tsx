@@ -23,15 +23,27 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
         onClick={() => setFlipped((current) => !current)}
         aria-label={`Designer Pass ${flipped ? '앞면' : '혜택'} 보기`}
         aria-pressed={flipped}
-        initial={{ opacity: 0, rotateY: -8 }}
-        animate={{ opacity: 1, rotateY: 0 }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="block w-full rounded-[9%] text-left focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-atelier-gold"
+        className="block w-full rounded-[9%] text-left [perspective:1200px] focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-atelier-gold"
       >
-        {!flipped ? (
-          <DesignerPass username={pass.designerName} variant={variant ?? pass.variant} />
-        ) : (
-          <div className="flex aspect-[1086/1448] w-full flex-col justify-center rounded-[9%] border border-atelier-text/30 bg-linear-to-br from-[#312719] via-[#171208] to-[#0e0b08] p-7 shadow-2xl md:p-9">
+        <motion.div
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative aspect-[1086/1448] w-full [transform-style:preserve-3d]"
+        >
+          <div
+            aria-hidden={flipped}
+            className="absolute inset-0 [backface-visibility:hidden]"
+          >
+            <DesignerPass username={pass.designerName} variant={variant ?? pass.variant} />
+          </div>
+
+          <div
+            aria-hidden={!flipped}
+            className="absolute inset-0 flex flex-col justify-center rounded-[9%] border border-atelier-text/30 bg-linear-to-br from-[#312719] via-[#171208] to-[#0e0b08] p-7 shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] md:p-9"
+          >
             <p className="font-mono text-micro tracking-eyebrow text-atelier-muted">PASS BENEFITS</p>
             <div className="mt-5 grid aspect-square w-24 place-items-center rounded-lg bg-atelier-text font-mono text-micro text-atelier-bg md:w-28">
               QR CODE
@@ -47,7 +59,7 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
               <p>· {pass.issueDate}</p>
             </div>
           </div>
-        )}
+        </motion.div>
       </motion.button>
 
       <p className="mt-3 text-center font-mono text-caption text-atelier-muted">
