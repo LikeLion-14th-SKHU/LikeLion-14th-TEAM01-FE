@@ -25,7 +25,7 @@ export function PassScreen({ pass, onIssue, onRestart }: Props) {
           </Reveal>
           <Reveal className="mt-3">
             <p className="text-small text-atelier-muted">
-              두 사건 완료 시 서버에서 자동 발급되는 공식 디자이너 패스입니다.
+              사라진 두 시안을 모두 찾으면 서버에서 자동 발급되는 공식 디자이너 패스입니다.
               <br />
               발급 정보를 다시 확인해 주세요.
             </p>

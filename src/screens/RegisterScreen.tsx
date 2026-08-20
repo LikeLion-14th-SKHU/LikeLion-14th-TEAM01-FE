@@ -21,7 +21,7 @@ export function RegisterScreen({ name, onChange, onBack, onNext }: Props) {
       <SectionHeading
         eyebrow="STEP 1 · DESIGNER REGISTRATION"
         title={<>아틀리에에 오신 것을<br />환영합니다</>}
-        description="당신의 첫 번째 여행용 제품을 디자인하세요."
+        description="아틀리에에서 사용할 당신의 디자이너 이름을 등록해 주세요."
       />
 
       <Reveal delay={0.3} className="mt-12">

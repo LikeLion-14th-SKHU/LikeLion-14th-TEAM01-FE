@@ -59,10 +59,11 @@ export function ConversationHistory({ characterName, messages }: Props) {
         <span className="text-atelier-muted">{questionCount}</span>
       </button>
 
-      {createPortal(
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
             className="fixed inset-0 z-50 flex items-end justify-center md:items-center md:p-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -150,11 +151,11 @@ export function ConversationHistory({ characterName, messages }: Props) {
                 )}
               </div>
             </motion.section>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body,
-      )}
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </>
   );
 }

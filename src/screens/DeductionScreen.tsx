@@ -14,7 +14,7 @@ export function DeductionScreen({ caseData, onBack, onSubmit }: Props) {
     <ScreenShell
       onBack={onBack}
       backLabel="증거 다시 보기"
-      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
+      caseLabel={`CASE ${caseData.number} · ${caseData.briefingTitle}`}
     >
       <SectionHeading eyebrow="FINAL DEDUCTION" title="최종 추리" />
       <Reveal delay={0.2}>

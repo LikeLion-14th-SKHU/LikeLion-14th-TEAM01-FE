@@ -21,21 +21,26 @@ export function IntroScreen({ isLoggedIn, isAuthLoading = false, onLogin, onStar
           </p>
         </Reveal>
         <Reveal className="mt-7">
-          <h1 className="font-display text-hero font-bold text-atelier-text md:text-[3.5rem]">1976,</h1>
+          <h1 className="font-display text-hero font-bold text-atelier-text md:text-[3.5rem]">1976년,</h1>
         </Reveal>
         <Reveal>
-          <p className="font-display text-hero font-bold text-atelier-gold md:text-[3.5rem]">München</p>
+          <p className="font-display text-hero font-bold text-atelier-gold md:text-[3.5rem]">뮌헨.</p>
         </Reveal>
         <Reveal className="mt-8">
           <p className="text-body text-atelier-text/90 text-pretty">
             당신은 새로운 여행용 제품을 개발하는{' '}
-            <strong className="font-bold text-atelier-gold">MCM 아틀리에</strong>의 수습 디자이너입니다.
+            <strong className="font-bold text-atelier-gold">MCM 아틀리에</strong>의 수습 디자이너다.
           </p>
         </Reveal>
         <Reveal className="mt-4">
           <p className="text-body text-atelier-text/90 text-pretty">
             내일 첫 프레젠테이션을 앞두고 완성했던{' '}
-            <strong className="font-bold text-atelier-gold">디자인 시안 두 장</strong>이 사라졌습니다.
+            <strong className="font-bold text-atelier-gold">디자인 시안 두 장</strong>이 사라졌다.
+          </p>
+        </Reveal>
+        <Reveal className="mt-4">
+          <p className="text-body text-atelier-text/90 text-pretty">
+            패턴실, 설계실, 촬영실을 조사해 시안을 되찾고 제품을 완성해야 한다.
           </p>
         </Reveal>
         <Reveal className="mt-10 w-full md:max-w-md">
@@ -68,7 +73,7 @@ export function IntroScreen({ isLoggedIn, isAuthLoading = false, onLogin, onStar
           )}
         </Reveal>
         <Reveal className="mt-4">
-          <p className="text-meta text-atelier-muted">설계실과 패턴실을 조사해 시안을 되찾으세요.</p>
+          <p className="text-meta text-atelier-muted">사라진 두 시안을 찾아 디자인을 완성하세요.</p>
         </Reveal>
       </RevealGroup>
     </div>

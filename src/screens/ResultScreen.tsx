@@ -23,7 +23,7 @@ export function ResultScreen({ caseData, answer, correct, direction, isLastCase,
 
   return (
     <ScreenShell
-      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
+      caseLabel={`CASE ${caseData.number} · ${caseData.briefingTitle}`}
       footer={
         <Button fullWidth onClick={onNext}>
           {isLastCase || !correct ? '최종 결과 보기 →' : '다음 사건 조사하기 →'}

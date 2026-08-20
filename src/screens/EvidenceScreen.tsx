@@ -14,7 +14,7 @@ export function EvidenceScreen({ caseData, onBack, onDeduce }: Props) {
     <ScreenShell
       onBack={onBack}
       backLabel="조사로 돌아가기"
-      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
+      caseLabel={`CASE ${caseData.number} · ${caseData.briefingTitle}`}
       footer={
         <Button fullWidth onClick={onDeduce}>
           최종 추리하기

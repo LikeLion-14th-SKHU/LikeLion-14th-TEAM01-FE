@@ -20,7 +20,7 @@ const ROOMS: Room[] = [
     id: 'drafting',
     caseId: 'function',
     name: '기능 시안',
-    code: 'FUNCTION',
+    code: 'CASE 1',
     summary: '스트랩과 내부 수납 설계',
     image: '/art/function.jpg',
   },
@@ -28,7 +28,7 @@ const ROOMS: Room[] = [
     id: 'pattern',
     caseId: 'signature',
     name: '패턴 시안',
-    code: 'SIGNATURE',
+    code: 'CASE 2',
     summary: '비세토스 패턴과 외관 디자인',
     image: '/art/signature.jpg',
   },
@@ -45,7 +45,7 @@ export function RoomSelectScreen({ completedCases, onSelect }: Props) {
       <SectionHeading
         eyebrow="INVESTIGATION PHASE"
         title="사라진 시안"
-        description="두 사건을 해결해 디자인을 완성하세요."
+        description="사라진 2개의 시안을 찾아 디자인을 완성하세요."
       />
 
       <RevealGroup

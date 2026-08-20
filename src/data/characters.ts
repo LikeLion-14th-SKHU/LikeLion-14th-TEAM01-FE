@@ -3,14 +3,12 @@ import type { CaseId, Character } from '../types/game';
 export const CHARACTERS: Character[] = [
   {
     id: 'clara',
-    name: '클라라 바우어',
+    name: '클라라',
     role: '패턴 장인',
     portrait: '/art/klara.png',
     standing: '/art/klara-cutout.png',
     standingScale: 0.9,
     backdrop: '/art/klara_room.png',
-    openingStatement:
-      '오후 2시에 SIGNATURE 시안을 빌렸어요. 패턴 작업을 마친 뒤 시안을 빨간색 포트폴리오에 넣어 아카이브 카트에 반납했습니다. 반납할 때 촬영실 입구가 조금 분주했던 건 기억나요.',
   },
   {
     id: 'johannes',
@@ -23,25 +21,21 @@ export const CHARACTERS: Character[] = [
   },
   {
     id: 'felix',
-    name: '펠릭스 슈미트',
+    name: '펠릭스',
     role: '제품 설계자',
     portrait: '/art/felix.png',
     standing: '/art/felix-cutout.png',
     standingScale: 0.8,
     backdrop: '/art/felix_room.png',
-    openingStatement:
-      '오후에 기능 테스트 준비를 끝내고 외부 미팅을 다녀왔습니다. 돌아와 보니 FUNCTION 설계도가 보이지 않았어요. 테스트 준비물과 설계도는 따로 보관해뒀습니다.',
   },
   {
     id: 'emil',
-    name: '에밀 크뤼거',
+    name: '에밀',
     role: '테스트 담당자',
     portrait: '/art/emil.png',
     standing: '/art/emil-cutout.png',
     standingScale: 0.7,
     backdrop: '/art/emil_room.jpg',
-    openingStatement:
-      '준비된 물건을 테스트실로 옮겨 기능 테스트를 진행했습니다. 설계실에 있던 다른 물건에는 손대지 않았어요.',
   },
 ];
 

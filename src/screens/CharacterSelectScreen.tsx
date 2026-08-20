@@ -33,7 +33,7 @@ export function CharacterSelectScreen({
     <ScreenShell
       onBack={onBack}
       backLabel="작업실 선택"
-      caseLabel={`CASE ${caseData.number} · ${caseData.code}`}
+      caseLabel={`CASE ${caseData.number} · ${caseData.briefingTitle}`}
       footer={
         allDone ? (
           <Button fullWidth onClick={onEvidence}>

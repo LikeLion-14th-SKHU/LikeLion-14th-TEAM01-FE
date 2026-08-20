@@ -113,26 +113,6 @@ export default function App() {
     reset();
   };
 
-  if (fieldEvidence) {
-    return (
-      <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">
-        <img
-          src="/art/designer-name.jpg"
-          alt=""
-          aria-hidden
-          className="pointer-events-none fixed inset-y-0 left-1/2 h-dvh w-full max-w-md -translate-x-1/2 object-cover object-center md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none fixed inset-y-0 left-1/2 w-full max-w-md -translate-x-1/2 bg-linear-to-b from-atelier-bg/60 via-atelier-bg/75 to-atelier-bg/95 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
-        />
-        <div className="relative z-10 min-h-dvh">
-          <FieldEvidenceScreen evidence={fieldEvidence} direction={evidenceDirection} />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative mx-auto min-h-dvh w-full max-w-md overflow-x-hidden bg-atelier-bg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]">
       <img
@@ -145,7 +125,7 @@ export default function App() {
         aria-hidden
         className="pointer-events-none fixed inset-y-0 left-1/2 w-full max-w-md -translate-x-1/2 bg-linear-to-b from-atelier-bg/60 via-atelier-bg/75 to-atelier-bg/95 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[1440px]"
       />
-      {isLoggedIn && (
+      {!fieldEvidence && isLoggedIn && (
         <AppHeader
           onMyPage={showMyPage}
           onLogout={() => {
@@ -159,8 +139,13 @@ export default function App() {
           }}
         />
       )}
-      <AnimatePresence mode="wait">
-        <motion.div
+      {fieldEvidence ? (
+        <div className="relative z-10 min-h-dvh">
+          <FieldEvidenceScreen evidence={fieldEvidence} direction={evidenceDirection} />
+        </div>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
           key={state.screen + (state.caseId ?? '') + (state.activeCharacterId ?? '')}
           className="relative z-10 min-h-dvh"
           initial={{ opacity: 0 }}
@@ -318,8 +303,9 @@ export default function App() {
           {state.screen === 'mypage' && (
             <MyPageScreen pass={pass} onBack={closeMyPage} onWithdraw={withdrawAccount} />
           )}
-        </motion.div>
-      </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 }

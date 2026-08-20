@@ -28,8 +28,8 @@ export function DirectionScreen({ onBack, onSelect }: Props) {
       <StepDots total={3} current={2} className="mb-8" />
       <SectionHeading
         eyebrow="STEP 2 · DESIGN DIRECTION"
-        title="어떤 순간을 위한 가방인가요?"
-        description="원하는 사용 장면을 선택하세요. 두 사건을 해결하며 선택한 실루엣을 하나의 디자인으로 완성합니다."
+        title="완성하고자 하는 가방의 디자인을 선택하세요."
+        description="선택한 디자인의 사라진 시안 2장을 찾아야 제품이 완성됩니다."
       />
 
       <RevealGroup

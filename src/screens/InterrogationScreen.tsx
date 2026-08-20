@@ -77,7 +77,7 @@ export function InterrogationScreen({ caseData, characterId, sessionId, initialA
 
       <header className="relative z-10 flex items-center justify-between px-5 pt-16 md:col-span-2 md:px-8 lg:px-10">
         <span className="font-mono text-caption font-semibold tracking-label text-atelier-gold">
-          CASE {caseData.number} · {caseData.code}
+          CASE {caseData.number} · {caseData.briefingTitle}
         </span>
         <button
           type="button"

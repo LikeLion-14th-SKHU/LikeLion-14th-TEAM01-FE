@@ -15,14 +15,14 @@ const COPY: Record<
   { label: string; title: string; description: string; status: string }
 > = {
   function: {
-    label: 'FUNCTION LAYER · 1 / 2',
-    title: '기능 설계가 복원되었습니다',
+    label: '기능 시안 · 1 / 2',
+    title: '기능 시안이 복원되었습니다',
     description: '실루엣 위에 스트랩과 수납 구조가 더해져 가방의 형태가 구현되었습니다.',
-    status: 'FUNCTION COMPLETE',
+    status: '기능 시안 복원 완료',
   },
   signature: {
-    label: 'SIGNATURE LAYER · 2 / 2',
-    title: '시그니처 디자인이 완성되었습니다',
+    label: '패턴 시안 · 2 / 2',
+    title: '패턴 시안이 복원되었습니다',
     description: '복원한 패턴이 가방에 적용되어 최종 디자인이 완성되었습니다.',
     status: 'DESIGN COMPLETE',
   },

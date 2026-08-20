@@ -51,7 +51,7 @@ export function MyPageScreen({ pass, onBack, onWithdraw }: Props) {
                 <p className="mt-4 text-small text-atelier-muted">
                   아직 발급된 Designer Pass가 없습니다.
                   <br />
-                  두 사건을 해결한 뒤 패스를 발급받아 주세요.
+                  사라진 두 시안을 찾은 뒤 패스를 발급받아 주세요.
                 </p>
               </div>
             </div>
