@@ -157,6 +157,12 @@ export const api = {
       body: JSON.stringify({ code }),
       authenticated: false,
     }),
+  judgeLogin: (loginId: string, password: string) =>
+    request<LoginExchangeResponse>('/detective/auth/judge-login', {
+      method: 'POST',
+      body: JSON.stringify({ loginId, password }),
+      authenticated: false,
+    }),
   logout: () => requestNoContent('/detective/auth/logout', { method: 'POST' }),
   withdrawMember: () => requestNoContent('/detective/members/me', { method: 'DELETE' }),
   setDesignerName: (designerName: string) =>

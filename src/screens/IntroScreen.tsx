@@ -5,13 +5,20 @@ interface Props {
   isLoggedIn: boolean;
   isAuthLoading?: boolean;
   onLogin: () => void;
+  onJudgeLogin: () => void;
   onStart: () => void;
 }
 
 const KAKAO_LOGIN_BUTTON =
   'https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_large_wide.png';
 
-export function IntroScreen({ isLoggedIn, isAuthLoading = false, onLogin, onStart }: Props) {
+export function IntroScreen({
+  isLoggedIn,
+  isAuthLoading = false,
+  onLogin,
+  onJudgeLogin,
+  onStart,
+}: Props) {
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center px-7 text-center md:px-12">
       <RevealGroup onView={false} stagger={0.09} className="relative z-10 flex w-full max-w-xl flex-col items-center">
@@ -72,6 +79,18 @@ export function IntroScreen({ isLoggedIn, isAuthLoading = false, onLogin, onStar
             </Button>
           )}
         </Reveal>
+        {!isLoggedIn && (
+          <Reveal className="mt-3 w-full md:max-w-md">
+            <button
+              type="button"
+              onClick={onJudgeLogin}
+              disabled={isAuthLoading}
+              className="min-h-11 w-full rounded-md border border-atelier-line px-6 font-mono text-meta text-atelier-muted transition-colors hover:border-atelier-gold-dim hover:text-atelier-text disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              관리자 로그인
+            </button>
+          </Reveal>
+        )}
         <Reveal className="mt-4">
           <p className="text-meta text-atelier-muted">사라진 두 시안을 찾아 디자인을 완성하세요.</p>
         </Reveal>

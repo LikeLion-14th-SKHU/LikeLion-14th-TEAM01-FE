@@ -14,6 +14,7 @@ export type RoomId = 'pattern' | 'drafting';
 
 export type Screen =
   | 'intro'
+  | 'judge-login'
   | 'register'
   | 'direction'
   | 'rooms'

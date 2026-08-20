@@ -82,6 +82,17 @@ export function useAuth() {
     window.location.assign(`${API_ORIGIN}/detective/auth/kakao/login`);
   }, []);
 
+  const loginAsJudge = useCallback(async (loginId: string, password: string) => {
+    setAuthError(null);
+    setIsAuthLoading(true);
+    try {
+      const result = await api.judgeLogin(loginId, password);
+      storeTokens(result.tokens);
+    } finally {
+      setIsAuthLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await api.logout();
@@ -102,6 +113,7 @@ export function useAuth() {
     isAuthLoading,
     authError,
     loginWithKakao,
+    loginAsJudge,
     logout,
     withdraw,
     clearAuthError,

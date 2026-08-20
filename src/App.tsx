@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useGame } from './state/useGame';
 import { DIRECTIONS } from './data/directions';
 import { IntroScreen } from './screens/IntroScreen';
+import { JudgeLoginScreen } from './screens/JudgeLoginScreen';
 import { RegisterScreen } from './screens/RegisterScreen';
 import { DirectionScreen } from './screens/DirectionScreen';
 import { RoomSelectScreen } from './screens/RoomSelectScreen';
@@ -53,6 +54,7 @@ export default function App() {
     isAuthLoading,
     authError,
     loginWithKakao,
+    loginAsJudge,
     logout,
     withdraw,
     clearAuthError,
@@ -158,9 +160,21 @@ export default function App() {
               isLoggedIn={isLoggedIn}
               isAuthLoading={isAuthLoading}
               onLogin={loginWithKakao}
+              onJudgeLogin={() => go('judge-login')}
               onStart={() =>
                 go(state.designerName.trim() ? (state.direction ? 'rooms' : 'direction') : 'register')
               }
+            />
+          )}
+
+          {state.screen === 'judge-login' && (
+            <JudgeLoginScreen
+              isSubmitting={isAuthLoading}
+              onBack={() => {
+                clearAuthError();
+                go('intro');
+              }}
+              onSubmit={loginAsJudge}
             />
           )}
 
