@@ -45,19 +45,7 @@
   --tracking-label: 0.14em;
   --tracking-eyebrow: 0.18em;
   --ease-atelier: cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-rise-in: rise-in 0.6s var(--ease-atelier) both;
   --animate-caret-blink: caret-blink 1s steps(1, end) infinite;
-
-  @keyframes rise-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
   @keyframes caret-blink {
     0%,

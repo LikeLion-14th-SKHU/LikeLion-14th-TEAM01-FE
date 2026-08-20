@@ -8,7 +8,6 @@ export interface Character {
   standing?: string;
   standingScale?: number;
   backdrop?: string;
-  openingStatement?: string;
 }
 
 export type MessageRole = 'detective' | 'character';
@@ -23,7 +22,6 @@ export interface Message {
 
 export interface AskRequest {
   characterId: string;
-  sessionId: string;
   question: string;
 }
 

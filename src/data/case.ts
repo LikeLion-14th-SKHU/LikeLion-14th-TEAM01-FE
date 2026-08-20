@@ -16,8 +16,6 @@ export interface DeductionOption {
 export interface CaseDefinition {
   id: CaseId;
   number: 1 | 2;
-  code: 'SIGNATURE' | 'FUNCTION';
-  roomName: string;
   briefingTitle: string;
   briefing: string[];
   investigationTitle: string;
@@ -37,8 +35,6 @@ export const CASES: Record<CaseId, CaseDefinition> = {
   signature: {
     id: 'signature',
     number: 2,
-    code: 'SIGNATURE',
-    roomName: '패턴실',
     briefingTitle: '패턴 시안',
     briefing: [
       '신제품 발표를 앞두고 외관과 비세토스 무늬가 담긴 패턴 시안이 사라졌습니다.',
@@ -103,8 +99,6 @@ export const CASES: Record<CaseId, CaseDefinition> = {
   function: {
     id: 'function',
     number: 1,
-    code: 'FUNCTION',
-    roomName: '설계실',
     briefingTitle: '기능 시안',
     briefing: [
       '가방의 스트랩과 수납 구조가 담긴 기능 시안이 테스트 직후 사라졌습니다.',

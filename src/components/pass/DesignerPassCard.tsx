@@ -1,9 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import type {
-  DesignerPass as DesignerPassData,
-  DesignerPassVariant,
-} from '../../types/designerPass';
+import type { DesignerPass as DesignerPassData } from '../../types/designerPass';
 import { cn } from '../../lib/cn';
 import { downloadDesignerPass } from '../../lib/downloadDesignerPass';
 import { DesignerPass } from './DesignerPass';
@@ -11,11 +8,10 @@ import { Button } from '../ui/Button';
 
 interface Props {
   pass: DesignerPassData;
-  variant?: DesignerPassVariant;
   className?: string;
 }
 
-export function DesignerPassCard({ pass, variant, className }: Props) {
+export function DesignerPassCard({ pass, className }: Props) {
   const [flipped, setFlipped] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -56,7 +52,7 @@ export function DesignerPassCard({ pass, variant, className }: Props) {
             aria-hidden={flipped}
             className="absolute inset-0 [backface-visibility:hidden]"
           >
-            <DesignerPass username={pass.designerName} variant={variant ?? pass.variant} />
+            <DesignerPass username={pass.designerName} variant={pass.variant} />
           </div>
 
           <div

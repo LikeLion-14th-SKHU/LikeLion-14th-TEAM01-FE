@@ -1,16 +1,10 @@
 import { api } from '../api/client';
 import type { CharacterType, ConversationResponse } from '../api/types';
+import { CHARACTER_TYPES } from '../data/characters';
 import type { AskCharacter } from '../types/game';
 
-const characterTypes: Record<string, CharacterType> = {
-  clara: 'CLARA',
-  johannes: 'JOHANNES',
-  felix: 'FELIX',
-  emil: 'EMIL',
-};
-
 const getCharacterType = (characterId: string): CharacterType => {
-  const type = characterTypes[characterId];
+  const type = CHARACTER_TYPES[characterId];
   if (!type) throw new Error('지원하지 않는 캐릭터입니다.');
   return type;
 };

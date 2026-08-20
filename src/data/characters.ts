@@ -1,6 +1,7 @@
+import type { CharacterType } from '../api/types';
 import type { CaseId, Character } from '../types/game';
 
-export const CHARACTERS: Character[] = [
+const CHARACTERS: Character[] = [
   {
     id: 'clara',
     name: '클라라',
@@ -42,6 +43,13 @@ export const CHARACTERS: Character[] = [
 export const CASE_CHARACTERS: Record<CaseId, Character[]> = {
   signature: CHARACTERS.filter((character) => ['clara', 'johannes'].includes(character.id)),
   function: CHARACTERS.filter((character) => ['felix', 'emil'].includes(character.id)),
+};
+
+export const CHARACTER_TYPES: Record<string, CharacterType> = {
+  clara: 'CLARA',
+  johannes: 'JOHANNES',
+  felix: 'FELIX',
+  emil: 'EMIL',
 };
 
 export const getCharacter = (id: string): Character => {

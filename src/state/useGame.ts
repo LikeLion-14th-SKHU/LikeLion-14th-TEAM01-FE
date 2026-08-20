@@ -1,11 +1,7 @@
 import { useCallback, useState } from 'react';
 import { api } from '../api/client';
-import type {
-  CaseType,
-  CharacterType,
-  DesignDirection,
-  GameProgressResponse,
-} from '../api/types';
+import type { CaseType, DesignDirection, GameProgressResponse } from '../api/types';
+import { CASE_CHARACTERS, CHARACTER_TYPES } from '../data/characters';
 import type { Direction } from '../data/directions';
 import type { CaseId } from '../types/game';
 import { clearStoredEvidenceDirection, storeEvidenceDirection } from '../lib/fieldEvidenceRoute';
@@ -29,7 +25,6 @@ export type Screen =
   | 'mypage';
 
 export interface GameState {
-  sessionId: string;
   screen: Screen;
   returnScreen: Exclude<Screen, 'mypage'> | null;
   designerName: string;
@@ -50,7 +45,6 @@ export interface GameState {
 export const MAX_ASKS = 3;
 
 const createInitialState = (): GameState => ({
-  sessionId: 'server',
   screen: 'intro',
   returnScreen: null,
   designerName: '',
@@ -88,18 +82,6 @@ const caseToApi: Record<CaseId, CaseType> = {
 const caseFromApi: Record<CaseType, CaseId> = {
   SIGNATURE: 'signature',
   FUNCTION: 'function',
-};
-
-const characterToApi: Record<string, CharacterType> = {
-  clara: 'CLARA',
-  johannes: 'JOHANNES',
-  felix: 'FELIX',
-  emil: 'EMIL',
-};
-
-const caseCharacters: Record<CaseId, string[]> = {
-  signature: ['clara', 'johannes'],
-  function: ['felix', 'emil'],
 };
 
 const getCompletedCases = (progress: GameProgressResponse): CaseId[] => {
@@ -157,9 +139,9 @@ export function useGame() {
 
       if (progress.status === 'IN_PROGRESS' && activeCase) {
         const conversations = await Promise.all(
-          caseCharacters[activeCase].map(async (id) => ({
+          CASE_CHARACTERS[activeCase].map(async ({ id }) => ({
             id,
-            conversation: await api.getConversation(characterToApi[id]),
+            conversation: await api.getConversation(CHARACTER_TYPES[id]),
           })),
         );
         for (const { id, conversation } of conversations) {
@@ -276,7 +258,7 @@ export function useGame() {
   }, []);
 
   const submitAnswer = useCallback(async (answer: string) => {
-    const characterType = characterToApi[answer];
+    const characterType = CHARACTER_TYPES[answer];
     if (!characterType) return;
     setState((current) => ({ ...current, isBusy: true, error: null }));
     try {

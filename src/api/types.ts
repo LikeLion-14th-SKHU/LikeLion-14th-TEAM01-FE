@@ -65,7 +65,6 @@ export interface DesignerPassResponse {
   passCode: string;
   issuedDate: string;
   grade: DesignerPassGrade | null;
-  displayName: string | null;
 }
 
 export interface MyPageResponse {

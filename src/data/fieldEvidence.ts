@@ -5,7 +5,6 @@ import type { Direction } from './directions';
 export type FieldEvidenceCharacterId = 'clara' | 'johannes' | 'felix' | 'emil';
 
 export interface FieldEvidenceDefinition {
-  characterId: FieldEvidenceCharacterId;
   characterName: string;
   role: string;
   caseLabel: string;
@@ -24,7 +23,6 @@ const findEvidence = (caseId: keyof typeof CASES, evidenceId: string): EvidenceD
 
 export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefinition> = {
   clara: {
-    characterId: 'clara',
     characterName: '클라라',
     role: '패턴 장인',
     caseLabel: 'CASE 2 · 패턴 시안',
@@ -33,7 +31,6 @@ export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefin
     record: findEvidence('signature', 'archive'),
   },
   emil: {
-    characterId: 'emil',
     characterName: '에밀',
     role: '테스트 담당자',
     caseLabel: 'CASE 1 · 기능 시안',
@@ -49,7 +46,6 @@ export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefin
     record: findEvidence('function', 'emil-record'),
   },
   johannes: {
-    characterId: 'johannes',
     characterName: '요하네스',
     role: '사진작가',
     caseLabel: 'CASE 2 · 패턴 시안',
@@ -65,7 +61,6 @@ export const FIELD_EVIDENCE: Record<FieldEvidenceCharacterId, FieldEvidenceDefin
     record: findEvidence('signature', 'contact'),
   },
   felix: {
-    characterId: 'felix',
     characterName: '펠릭스',
     role: '제품 설계자',
     caseLabel: 'CASE 1 · 기능 시안',

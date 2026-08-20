@@ -4,7 +4,6 @@ import type { AskCharacter, Character, Message } from '../types/game';
 
 interface Params {
   character: Character;
-  sessionId: string;
   initialAsksUsed?: number;
   maxAsks?: number;
   askCharacter: AskCharacter;
@@ -31,15 +30,12 @@ const normalizeSuggestions = (questions: string[] | undefined): string[] =>
 
 export function useInterrogation({
   character,
-  sessionId,
   initialAsksUsed = 0,
   maxAsks = 3,
   askCharacter,
 }: Params): Result {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [initialMessage, setInitialMessage] = useState(
-    character.openingStatement ?? DEFAULT_INITIAL_MESSAGE,
-  );
+  const [initialMessage, setInitialMessage] = useState(DEFAULT_INITIAL_MESSAGE);
   const [recommendedQuestions, setRecommendedQuestions] = useState<string[]>([]);
   const [asksUsed, setAsksUsed] = useState(() => Math.min(initialAsksUsed, maxAsks));
   const [conversationCompleted, setConversationCompleted] = useState(false);
@@ -56,11 +52,7 @@ export function useInterrogation({
         if (!active) return;
         setAsksUsed(Math.min(conversation.questionCount, maxAsks));
         setConversationCompleted(conversation.status === 'COMPLETED');
-        setInitialMessage(
-          conversation.initialMessage?.trim() ||
-            character.openingStatement ||
-            DEFAULT_INITIAL_MESSAGE,
-        );
+        setInitialMessage(conversation.initialMessage?.trim() || DEFAULT_INITIAL_MESSAGE);
         setRecommendedQuestions(normalizeSuggestions(conversation.recommendedQuestions));
         setMessages(
           conversation.messages.map((message) => ({
@@ -83,7 +75,7 @@ export function useInterrogation({
     return () => {
       active = false;
     };
-  }, [character.id, character.openingStatement, maxAsks]);
+  }, [character.id, maxAsks]);
 
   const asksLeft = Math.max(0, maxAsks - asksUsed);
 
@@ -106,11 +98,7 @@ export function useInterrogation({
       ]);
 
       try {
-        const response = await askCharacter({
-          characterId: character.id,
-          sessionId,
-          question,
-        });
+        const response = await askCharacter({ characterId: character.id, question });
         setMessages((prev) =>
           prev.map((message) =>
             message.id === answerId ? { ...message, content: response.reply } : message,
@@ -130,7 +118,7 @@ export function useInterrogation({
         inFlight.current = false;
       }
     },
-    [askCharacter, asksLeft, character.id, conversationCompleted, maxAsks, sessionId],
+    [askCharacter, asksLeft, character.id, conversationCompleted, maxAsks],
   );
 
   const completeEarly = useCallback(async (): Promise<boolean> => {
@@ -170,5 +158,3 @@ export function useInterrogation({
     completeEarly,
   };
 }
-
-export type { Params as UseInterrogationParams, Result as UseInterrogationResult };

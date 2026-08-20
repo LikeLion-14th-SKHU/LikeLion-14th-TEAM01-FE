@@ -76,7 +76,6 @@ export default function App() {
 
   const designerName = state.designerName.trim() || '수습 디자이너';
   const selectedDirection = DIRECTIONS.find((d) => d.id === state.direction) ?? null;
-  const track = selectedDirection?.track ?? '디자인 트랙';
   const activeCase = state.caseId ? getCase(state.caseId) : null;
   const fieldEvidenceId = getFieldEvidenceCharacterId();
   const fieldEvidence = fieldEvidenceId ? FIELD_EVIDENCE[fieldEvidenceId] : null;
@@ -98,13 +97,13 @@ export default function App() {
   }, [isLoggedIn, refreshRecommendations, state.completedCases, state.passEligible, state.screen]);
 
   const showPass = () => {
-    refreshPass(track)
+    refreshPass()
       .catch(() => undefined)
       .finally(() => go('pass'));
   };
 
   const showMyPage = () => {
-    refreshPass(track).catch(() => undefined);
+    refreshPass().catch(() => undefined);
     openMyPage();
   };
 
@@ -222,7 +221,6 @@ export default function App() {
             <InterrogationScreen
               caseData={activeCase}
               characterId={state.activeCharacterId}
-              sessionId={state.sessionId}
               initialAsksUsed={state.asked[state.activeCharacterId] ?? 0}
               onClose={closeCharacter}
             />
@@ -281,7 +279,7 @@ export default function App() {
           {state.screen === 'pass' && (
             <PassScreen
               pass={pass}
-              onIssue={() => refreshPass(track)}
+              onIssue={() => refreshPass()}
               onRestart={showMyPage}
             />
           )}

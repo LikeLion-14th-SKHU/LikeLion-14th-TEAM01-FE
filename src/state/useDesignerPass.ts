@@ -10,20 +10,11 @@ const GRADE_VARIANTS: Record<DesignerPassGrade, DesignerPassVariant> = {
   GOLDEN: 'gold',
 };
 
-const GRADE_DISPLAY_NAMES: Record<DesignerPassGrade, string> = {
-  BROWN: 'Archive Brown',
-  IVORY: 'Ivory Atelier',
-  NAVY: 'München Navy',
-  GOLDEN: 'Golden 1976',
-};
-
 export function useDesignerPass() {
   const [pass, setPass] = useState<DesignerPass | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const refresh = useCallback(async (track: string) => {
-    setIsLoading(true);
+  const refresh = useCallback(async () => {
     setError(null);
     try {
       const myPage = await api.getMyPage();
@@ -33,19 +24,14 @@ export function useDesignerPass() {
         issued
           ? {
               no: issued.passCode,
-              tier: 'OFFICIAL',
-              colorway: issued.displayName ?? GRADE_DISPLAY_NAMES[grade],
               variant: GRADE_VARIANTS[grade],
               designerName: myPage.designerName?.trim() || 'MCM 디자이너',
-              track,
               issueDate: issued.issuedDate.replaceAll('-', '. '),
             }
           : null,
       );
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Designer Pass를 불러오지 못했습니다.');
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -56,5 +42,5 @@ export function useDesignerPass() {
 
   const clearError = useCallback(() => setError(null), []);
 
-  return { pass, isLoading, error, refresh, clear, clearError };
+  return { pass, error, refresh, clear, clearError };
 }

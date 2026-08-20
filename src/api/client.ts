@@ -106,7 +106,7 @@ interface RequestOptions extends RequestInit {
   retryOnUnauthorized?: boolean;
 }
 
-const request = async <T>(path: string, options: RequestOptions = {}): Promise<T> => {
+const authorizedFetch = async (path: string, options: RequestOptions): Promise<Response> => {
   const { authenticated = true, retryOnUnauthorized = true, headers, ...init } = options;
   const tokens = readTokens();
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -122,31 +122,17 @@ const request = async <T>(path: string, options: RequestOptions = {}): Promise<T
 
   if (response.status === 401 && authenticated && retryOnUnauthorized && tokens?.refreshToken) {
     await refreshTokens();
-    return request<T>(path, { ...options, retryOnUnauthorized: false });
+    return authorizedFetch(path, { ...options, retryOnUnauthorized: false });
   }
 
-  return (await parseResponse<T>(response)).data;
+  return response;
 };
 
+const request = async <T>(path: string, options: RequestOptions = {}): Promise<T> =>
+  (await parseResponse<T>(await authorizedFetch(path, options))).data;
+
 const requestNoContent = async (path: string, options: RequestOptions = {}): Promise<void> => {
-  const { authenticated = true, retryOnUnauthorized = true, headers, ...init } = options;
-  const tokens = readTokens();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    headers: {
-      ...(init.body ? { 'Content-Type': 'application/json' } : {}),
-      ...(authenticated && tokens?.accessToken
-        ? { Authorization: `${tokens.tokenType || 'Bearer'} ${tokens.accessToken}` }
-        : {}),
-      ...headers,
-    },
-  });
-
-  if (response.status === 401 && authenticated && retryOnUnauthorized && tokens?.refreshToken) {
-    await refreshTokens();
-    return requestNoContent(path, { ...options, retryOnUnauthorized: false });
-  }
-
+  const response = await authorizedFetch(path, options);
   if (!response.ok) await parseResponse<never>(response);
 };
 
